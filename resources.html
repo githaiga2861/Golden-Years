@@ -13,23 +13,56 @@
 </head>
 <body>
 <a href="#main" class="skip">Skip to main content</a>
-<div class="topbar"><div class="wrap"><div class="topbar__left"><span class="topbar__item">📍 614 Harrison St, Suite C, Sumner, WA 98390</span><a class="topbar__item" href="mailto:rose.mbote@goldenyearshomehealthllc.com">✉ rose.mbote@goldenyearshomehealthllc.com</a></div><div class="topbar__left"><span class="topbar__item">Licensed • Insured • HIPAA-Conscious</span><a class="topbar__item" href="tel:+12064369751">📞 206-436-9751</a></div></div></div>
-<header class="header"><nav class="nav" aria-label="Primary">
-  <a class="brand" href="index.html"><span class="brand__mark"><img class="brand__logo" src="images/logo.png" alt="Golden Years Home Health Supported Living logo" onload="this.parentElement.classList.add('has-logo')" onerror="this.remove()">G</span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Health • Supported Living</span></span></a>
-  <ul class="navlinks">
-    <li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li>
-    <li class="has-drop"><a href="services.html">Services</a><ul class="dropdown dropdown--wide"><li><a href="services.html">All Services Overview</a></li><li><a href="services.html#personal-care">Personal Care Services</a></li><li><a href="services.html#medication">Medication Management</a></li><li><a href="services.html#respite">Respite Care</a></li><li><a href="services.html#pdn">Private Duty Nursing</a></li><li><a href="services.html#chronic">Chronic Disease Management</a></li><li><a href="nurse-delegation.html">Nurse Delegation</a></li><li><a href="hca-training.html">Caregiver Training</a></li><li><a href="services.html#post-surgery">Post-Surgery Care</a></li><li><a href="services.html#rn-visit">RN Visitation</a></li><li><a href="services.html#catheter">Catheter Care</a></li><li><a href="services.html#enteral">Enteral Feeds / G-Tube</a></li><li><a href="services.html#supported-living">Supported Living</a></li><li><a href="services.html#care-coordination">Care Coordination</a></li></ul></li>
-    <li class="has-drop"><a href="skilled-nursing.html">Skilled Nursing</a><ul class="dropdown"><li><a href="skilled-nursing.html">Overview</a></li><li><a href="skilled-nursing.html#wound">Wound Care</a></li><li><a href="skilled-nursing.html#glucose">Blood Glucose &amp; Insulin</a></li><li><a href="skilled-nursing.html#therapy">Therapy Services</a></li><li><a href="skilled-nursing.html#post-hosp">Post-Hospitalization</a></li><li><a href="skilled-nursing.html#team">Clinical Team</a></li></ul></li>
-    <li><a href="nurse-delegation.html">Nurse Delegation</a></li><li><a href="hca-training.html">HCA Training</a></li><li class="active"><a href="resources.html">Resources</a></li><li><a href="contact.html">Contact</a></li>
-  </ul>
-  <div class="nav__cta"><a class="nav__phone" href="tel:+12064369751">206-436-9751<span>Call our care team</span></a><a class="btn btn--gold" href="contact.html">Request Care</a><button class="hamburger" onclick="document.getElementById('mm').classList.add('open')"><span></span><span></span><span></span></button></div>
-</nav></header>
-<div class="mobile-menu" id="mm"><div class="mobile-menu__panel"><button class="mobile-menu__close" onclick="document.getElementById('mm').classList.remove('open')">×</button><div style="clear:both"></div><a href="index.html">Home</a><a href="about.html">About Us</a><a href="services.html">Services</a><a href="skilled-nursing.html" class="sub">— Skilled Nursing</a><a href="nurse-delegation.html" class="sub">— Nurse Delegation</a><a href="hca-training.html" class="sub">— HCA Training</a><a href="resources.html">Resources &amp; FAQ</a><a href="contact.html">Contact Us</a><a class="btn btn--gold" style="margin-top:18px;justify-content:center" href="contact.html">Request Care</a></div></div>
+<header class="header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="index.html"><span class="brand__mark"><img class="brand__logo" src="images/logo.png" alt="Golden Years Home Health Supported Living logo" onload="this.parentElement.classList.add('has-logo')" onerror="this.remove()">G</span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Health &bull; Supported Living</span></span></a>
+    <ul class="navlinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li class="has-drop"><a href="services.html">Services<i class="caret"></i></a>
+        <ul class="dropdown dropdown--wide">
+          <li><a href="services.html">All Services Overview</a></li>
+          <li><a href="services.html#personal-care">Personal Care Services</a></li>
+          <li><a href="services.html#medication">Medication Management</a></li>
+          <li><a href="services.html#respite">Respite Care</a></li>
+          <li><a href="services.html#pdn">Private Duty Nursing</a></li>
+          <li><a href="services.html#chronic">Chronic Disease Management</a></li>
+          <li><a href="nurse-delegation.html">Nurse Delegation</a></li>
+          <li><a href="hca-training.html">Caregiver Training</a></li>
+          <li><a href="services.html#post-surgery">Post-Surgery Care</a></li>
+          <li><a href="services.html#rn-visit">RN Visitation</a></li>
+          <li><a href="services.html#catheter">Catheter Care</a></li>
+          <li><a href="services.html#enteral">Enteral Feeds / G-Tube</a></li>
+          <li><a href="services.html#supported-living">Supported Living</a></li>
+          <li><a href="services.html#care-coordination">Care Coordination</a></li>
+        </ul></li>
+      <li class="has-drop"><a href="skilled-nursing.html">Skilled Nursing<i class="caret"></i></a>
+        <ul class="dropdown">
+          <li><a href="skilled-nursing.html">Skilled Nursing Overview</a></li>
+          <li><a href="skilled-nursing.html#wound">Wound Care</a></li>
+          <li><a href="skilled-nursing.html#glucose">Blood Glucose &amp; Insulin</a></li>
+          <li><a href="skilled-nursing.html#therapy">Therapy Services (PT/OT/ST)</a></li>
+          <li><a href="skilled-nursing.html#post-hosp">Post-Hospitalization Care</a></li>
+          <li><a href="skilled-nursing.html#team">Our Clinical Team</a></li>
+        </ul></li>
+      <li><a href="nurse-delegation.html">Nurse Delegation</a></li>
+      <li><a href="hca-training.html">HCA Training</a></li>
+      <li class="active"><a href="resources.html">Resources</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav__actions">
+      <a class="nav__phone" href="tel:+12064369751"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg><span>206-436-9751<small>Call our care team</small></span></a>
+      <a class="btn btn--primary" href="contact.html">Request Care</a>
+      <button class="hamburger" aria-label="Open menu" onclick="document.getElementById('mm').classList.add('open')"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+<div class="mobile-menu" id="mm"><div class="mobile-menu__panel"><button class="mobile-menu__close" onclick="document.getElementById('mm').classList.remove('open')">×</button><div style="clear:both"></div><a href="index.html">Home</a><a href="about.html">About Us</a><a href="services.html">Services</a><a href="skilled-nursing.html" class="sub">— Skilled Nursing</a><a href="nurse-delegation.html" class="sub">— Nurse Delegation</a><a href="hca-training.html" class="sub">— HCA Training</a><a href="resources.html">Resources &amp; FAQ</a><a href="contact.html">Contact Us</a><a class="btn btn--primary" style="margin-top:18px;justify-content:center" href="contact.html">Request Care</a></div></div>
 
 <main id="main">
 <section class="pagehero">
   <img class="pagehero__bg" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80" alt="Family reviewing care information">
-  <div class="pagehero__overlay"></div>
+  <div class="pagehero__overlay"></div><div class="pagehero__blob"></div>
   <div class="wrap"><div class="pagehero__inner">
     <div class="breadcrumb"><a href="index.html">Home</a><span>›</span>Resources</div>
     <h1>Resources &amp; Patient Information</h1>
@@ -57,13 +90,13 @@
 </section>
 
 <!-- BLOG -->
-<section class="section section--blush" id="blog">
+<section class="section section--mist" id="blog">
   <div class="wrap">
     <div class="center" style="margin-bottom:40px"><span class="eyebrow">Insights &amp; Guides</span><h2>Health Articles &amp; Caregiver Resources</h2><hr class="gold-rule center"></div>
     <div class="grid grid--3">
-      <article class="card"><div class="card__icon">📰</div><h3>5 Signs Your Loved One May Need Home Care</h3><p>Recognizing the early signals — from missed medications to mobility struggles — that it may be time to consider support at home.</p><a class="card__link" href="#">Read Article</a></article>
-      <article class="card"><div class="card__icon">📰</div><h3>A Family's Guide to Coordinating Home Care</h3><p>Practical tips for working with caregivers, physicians, and family members to keep your loved one's care running smoothly.</p><a class="card__link" href="#">Read Article</a></article>
-      <article class="card"><div class="card__icon">📰</div><h3>Managing Diabetes Safely at Home</h3><p>How blood glucose monitoring, medication support, and lifestyle guidance work together to keep complications at bay.</p><a class="card__link" href="#">Read Article</a></article>
+      <article class="card card--media"><div class="card__media"><img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=640&q=70" loading="lazy" alt="5 Signs Your Loved One May Need Home Care — Golden Years Home Health"><span class="card__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2Z"/><path d="M18 8h1.5a1.5 1.5 0 0 1 1.5 1.5V18a2 2 0 0 1-2 2"/><path d="M7 7h7M7 11h7M7 15h4"/></svg></span></div><div class="card__body"><h3>5 Signs Your Loved One May Need Home Care</h3><p>Recognizing the early signals — from missed medications to mobility struggles — that it may be time to consider support at home.</p><a class="card__link" href="#">Read Article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div></article>
+      <article class="card card--media"><div class="card__media"><img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=640&q=70" loading="lazy" alt="A Family's Guide to Coordinating Home Care — Golden Years Home Health"><span class="card__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2Z"/><path d="M18 8h1.5a1.5 1.5 0 0 1 1.5 1.5V18a2 2 0 0 1-2 2"/><path d="M7 7h7M7 11h7M7 15h4"/></svg></span></div><div class="card__body"><h3>A Family's Guide to Coordinating Home Care</h3><p>Practical tips for working with caregivers, physicians, and family members to keep your loved one's care running smoothly.</p><a class="card__link" href="#">Read Article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div></article>
+      <article class="card card--media"><div class="card__media"><img src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=640&q=70" loading="lazy" alt="Managing Diabetes Safely at Home — Golden Years Home Health"><span class="card__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2Z"/><path d="M18 8h1.5a1.5 1.5 0 0 1 1.5 1.5V18a2 2 0 0 1-2 2"/><path d="M7 7h7M7 11h7M7 15h4"/></svg></span></div><div class="card__body"><h3>Managing Diabetes Safely at Home</h3><p>How blood glucose monitoring, medication support, and lifestyle guidance work together to keep complications at bay.</p><a class="card__link" href="#">Read Article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></div></article>
     </div>
     <p style="text-align:center;margin-top:20px;font-size:.9rem;color:var(--slate)">More articles coming soon. Check back for the latest caregiver tips and health guidance.</p>
   </div>
@@ -128,12 +161,26 @@
 </main>
 
 <footer class="footer"><div class="wrap"><div class="footer__grid">
-  <div class="footer__brand"><a class="brand" href="index.html"><span class="brand__mark"><img class="brand__logo" src="images/logo.png" alt="Golden Years Home Health Supported Living logo" onload="this.parentElement.classList.add('has-logo')" onerror="this.remove()">G</span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub" style="color:var(--gold-light)">Home Health • Supported Living</span></span></a><p class="footer__tag">"Compassionate Care, Dignified Living, Trusted Support."</p><p style="font-size:.9rem">Nurse-led home health and supported living serving Sumner and the greater Pierce &amp; King County area of Washington State.</p><div class="footer__social"><a href="#">f</a><a href="#">in</a><a href="#">◎</a></div></div>
+  <div class="footer__brand"><a class="brand" href="index.html"><span class="brand__mark"><img class="brand__logo" src="images/logo.png" alt="Golden Years Home Health Supported Living logo" onload="this.parentElement.classList.add('has-logo')" onerror="this.remove()">G</span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub" style="color:var(--gold-light)">Home Health • Supported Living</span></span></a><p class="footer__tag">"Compassionate Care, Dignified Living, Trusted Support."</p><p style="font-size:.9rem">Nurse-led home health and supported living serving Sumner and the greater Pierce &amp; King County area of Washington State.</p><div class="footer__social"><a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8.5V7c0-1 .5-1.5 1.7-1.5H17V2.5h-2.5C11.8 2.5 11 4.3 11 6.3v2.2H8.5V12H11v9.5h3V12h2.3l.5-3.5Z"/></svg></a><a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10v7M7.5 7v.01M11.5 17v-4a2 2 0 0 1 4 0v4M11.5 17v-7" stroke="#052a2f"/></svg></a><a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></div></div>
   <div><h4>Services</h4><ul><li><a href="skilled-nursing.html">Skilled Nursing</a></li><li><a href="services.html#personal-care">Personal Care</a></li><li><a href="nurse-delegation.html">Nurse Delegation</a></li><li><a href="services.html#respite">Respite Care</a></li><li><a href="services.html#supported-living">Supported Living</a></li><li><a href="services.html">All Services</a></li></ul></div>
   <div><h4>Company</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="hca-training.html">HCA Training</a></li><li><a href="resources.html">Resources</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
-  <div><h4>Contact</h4><ul><li>📍 614 Harrison St, Suite C,<br>Sumner, WA 98390</li><li>📞 <a href="tel:+12064369751">206-436-9751</a></li><li>✉ <a href="mailto:rose.mbote@goldenyearshomehealthllc.com">rose.mbote@goldenyearshomehealthllc.com</a></li></ul></div>
+  <div><h4>Contact</h4><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5.2-8 12-8 12s-8-6.8-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> 614 Harrison St, Suite C,<br>Sumner, WA 98390</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg> <a href="tel:+12064369751">206-436-9751</a></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg> <a href="mailto:rose.mbote@goldenyearshomehealthllc.com">rose.mbote@goldenyearshomehealthllc.com</a></li></ul></div>
 </div><div class="footer__bottom"><span>© 2025 Golden Years Home Health Supported Living LLC. All Rights Reserved.</span><span><a href="resources.html#hipaa">HIPAA Privacy Notice</a> • <a href="resources.html#rights">Patient Rights</a> • <a href="contact.html">Accessibility</a></span></div></div></footer>
-<a class="fab" href="tel:+12064369751" aria-label="Call Golden Years">📞</a>
-<script>document.querySelectorAll('.acc__q').forEach(function(b){b.addEventListener('click',function(){this.parentElement.classList.toggle('open');});});window.addEventListener('click',function(e){var mm=document.getElementById('mm');if(e.target===mm)mm.classList.remove('open');});</script>
+<a class="fab" href="tel:+12064369751" aria-label="Call Golden Years"><span class="tx-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg></span></a>
+<script>
+(function(){
+  var h=document.querySelector('.header');
+  function onScroll(){ if(h) h.classList.toggle('scrolled', window.scrollY>20); }
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+  document.querySelectorAll('.acc__q').forEach(function(b){ b.addEventListener('click',function(){ this.parentElement.classList.toggle('open'); }); });
+  window.addEventListener('click',function(e){ var mm=document.getElementById('mm'); if(mm && e.target===mm) mm.classList.remove('open'); });
+  var els=document.querySelectorAll('.card,.split,.step,.quotecard,.stat,.leader,.callout,.role,.acc,.trustitem');
+  els.forEach(function(el){ el.classList.add('reveal'); });
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(el,i){ el.style.transitionDelay=((i%4)*0.07)+'s'; io.observe(el); });
+  } else { els.forEach(function(el){ el.classList.add('in'); }); }
+})();
+</script>
 </body>
 </html>

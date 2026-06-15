@@ -6,8 +6,8 @@
 
 :root{
   /* Primary — refined deep teal */
-  --teal:#0d5b62; --teal-600:#0a4d54; --teal-700:#073e44; --teal-900:#052a2f;
-  --teal-soft:#1c7079;
+  ---blue: #041E4F;--blue-600: #041a44;--blue-700: #031538;--blue-900: #020f26;
+  --blue-soft: #1a3a6b;
   /* Neutrals / backgrounds */
   --mist:#e9f2f0; --mist-2:#f3f8f7; --paper:#fbfdfc; --white:#ffffff;
   /* Gold — STRATEGIC ACCENT ONLY */
@@ -16,11 +16,11 @@
   --ink:#13292b; --slate:#566565; --slate-2:#7c8b8a;
   --line:#dde9e6; --line-2:#eef4f2;
   /* Effects */
-  --shadow-xs:0 1px 2px rgba(5,42,47,.05);
-  --shadow-sm:0 4px 16px rgba(5,42,47,.06);
-  --shadow-md:0 14px 40px rgba(5,42,47,.10);
-  --shadow-lg:0 28px 70px rgba(5,42,47,.16);
-  --ring:0 0 0 4px rgba(13,91,98,.12);
+  --shadow-xs:0 1px 2px rgba(4,30,79,.05);
+  --shadow-sm:0 4px 16px rgba(4,30,79,.06);
+  --shadow-md:0 14px 40px rgba(4,30,79,.10);
+  --shadow-lg:0 28px 70px rgba(4,30,79,.16);
+  --ring:0 0 0 4px rgba(4,30,79,.15);
   --r:16px; --r-lg:24px; --r-xl:30px;
   --maxw:1180px; --navw:1360px;
   --ease:cubic-bezier(.22,.61,.27,1);

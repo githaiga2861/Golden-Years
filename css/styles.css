@@ -171,7 +171,7 @@ main{padding-top:152px}
 .pagehero__bg{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;z-index:-3;transform:scale(1.06);animation:slowZoom 16s ease-out forwards}
 .pagehero__overlay{position:absolute;inset:0;z-index:-2;background:linear-gradient(100deg,rgba(4,30,79,.95),rgba(11,83,148,.72))}
 .pagehero__blob{position:absolute;width:360px;height:360px;border-radius:50%;filter:blur(70px);z-index:-1;background:radial-gradient(circle,rgba(198,162,86,.3),transparent 70%);top:-100px;right:-60px;animation:float 14s ease-in-out infinite}
-.pagehero__inner{position:relative;z-index:2;padding:164px 0 78px;max-width:780px}
+.pagehero__inner{position:relative;z-index:2;padding:184px 0 78px;max-width:780px}
 .pagehero h1{color:#fff;margin-bottom:14px}
 .pagehero p{color:rgba(255,255,255,.9);font-size:1.16rem;max-width:640px}
 .pagehero__inner>*{opacity:0;transform:translateY(20px);animation:rise .85s var(--ease) forwards}

@@ -98,7 +98,7 @@ ul{list-style:none}
 .topbar__social a:hover{background:rgba(255,255,255,.15);color:#fff}
 .topbar__social svg{width:14px;height:14px}
 body>*:not(.header){padding-top:0}
-main{padding-top:116px}
+main{padding-top:152px}
 .header.scrolled{background:#f9fcff;box-shadow:0 8px 34px rgba(4,30,79,.1)}
 .nav{display:flex;align-items:center;gap:16px;max-width:var(--navw);margin:0 auto;padding:10px 32px;flex-wrap:nowrap}
 .brand{display:flex;align-items:center;gap:13px;flex-shrink:0}

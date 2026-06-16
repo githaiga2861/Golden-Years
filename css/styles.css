@@ -95,10 +95,10 @@ main{padding-top:80px}
 .header.scrolled{background:#f9fcff;box-shadow:0 8px 34px rgba(4,30,79,.1)}
 .nav{display:flex;align-items:center;gap:12px;max-width:var(--navw);margin:0 auto;padding:10px 24px;flex-wrap:nowrap;overflow:visible;min-height:60px}
 .brand{display:flex;align-items:center;gap:13px;flex-shrink:0}
-.brand__mark{height:var(--logo-h);width:var(--logo-h);border-radius:18px;flex-shrink:0;position:relative;overflow:hidden;background:linear-gradient(140deg,var(--teal-soft),var(--teal-700));display:grid;place-items:center;color:#fff;font-family:'Playfair Display',serif;font-weight:700;font-size:2.6rem;box-shadow:var(--shadow-sm)}
+.brand__mark{height:var(--logo-h);width:var(--logo-h);border-radius:18px;flex-shrink:0;position:relative;overflow:hidden;background:transparent;display:grid;place-items:center;color:var(--teal-700);font-family:'Playfair Display',serif;font-weight:700;font-size:2.6rem;box-shadow:none}
 .brand__logo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:4px}
-.brand__mark.has-logo{background:transparent;box-shadow:none;width:auto;border-radius:0}
-.brand__mark.has-logo .brand__logo{position:static;height:100%;width:auto;padding:0}
+.brand__mark.has-logo{background:transparent;box-shadow:none;border-radius:0}
+.brand__mark.has-logo .brand__logo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:0}
 /* place brand (logo) at the top-right */
 .brand{flex-direction:row-reverse}
 .navlinks{order:1;justify-content:flex-start}

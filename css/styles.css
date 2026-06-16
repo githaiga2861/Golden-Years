@@ -348,8 +348,8 @@ main{padding-top:80px}
 .role p{font-size:.9rem;margin:0}
 
 /* ---------- Footer ---------- */
-.footer{background:var(--teal-900);color:rgba(255,255,255,.74);padding:74px 0 0}
-.footer__grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.25fr;gap:44px;padding-bottom:52px}
+.footer{background:var(--teal-900);color:rgba(255,255,255,.74);padding:100px 0 0}
+.footer__grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.25fr;gap:60px;padding-bottom:80px}
 .footer h4{color:#fff;font-family:'Inter',sans-serif;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px}
 .footer a{color:rgba(255,255,255,.74);font-size:.92rem;transition:color .25s,padding .25s}
 .footer a:hover{color:var(--gold)}
@@ -362,7 +362,7 @@ main{padding-top:80px}
 .footer__social a{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center;color:#fff;transition:all .3s var(--ease)}
 .footer__social a:hover{background:var(--gold);transform:translateY(-3px)}
 .footer__social svg{width:18px;height:18px}
-.footer__bottom{border-top:1px solid rgba(255,255,255,.13);padding:24px 0;font-size:.84rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer__bottom{border-top:1px solid rgba(255,255,255,.13);padding:32px 0;font-size:.84rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .footer__bottom a{font-size:.84rem}
 
 /* FAB */

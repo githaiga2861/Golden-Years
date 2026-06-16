@@ -8,7 +8,7 @@
   /* Primary — refined deep teal */
   --teal:#0b5394; --teal-600:#0a4a82; --teal-700:#073763; --teal-900:#041e4f;
   --teal-soft:#2f74b5;
-  --logo-h:96px;
+  --logo-h:108px;
   /* Neutrals / backgrounds */
   --mist:#e9f1fa; --mist-2:#f3f8fd; --paper:#fbfdff; --white:#ffffff;
   /* Gold — STRATEGIC ACCENT ONLY */
@@ -90,6 +90,13 @@ ul{list-style:none}
 /* ---------- HEADER (glass, full-width, single line) ---------- */
 .header{position:fixed;top:0;left:0;right:0;z-index:300;width:100%;background:#f9fcff;backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);transition:background .35s var(--ease),box-shadow .35s var(--ease),opacity .35s var(--ease);opacity:1;visibility:visible}
 .header::after{content:"";position:absolute;left:0;right:0;bottom:-26px;height:26px;background:linear-gradient(to bottom,rgba(4,30,79,.07),rgba(4,30,79,0));pointer-events:none}
+.topbar{background:var(--teal-700);color:rgba(255,255,255,.9);font-size:.82rem;font-weight:500;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:36px;max-width:100%}
+.topbar__phone{display:flex;align-items:center;gap:7px;color:#fff;white-space:nowrap}
+.topbar__phone svg{width:14px;height:14px;opacity:.85}
+.topbar__social{display:flex;align-items:center;gap:6px}
+.topbar__social a{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;color:rgba(255,255,255,.8);transition:all .25s var(--ease)}
+.topbar__social a:hover{background:rgba(255,255,255,.15);color:#fff}
+.topbar__social svg{width:14px;height:14px}
 body>*:not(.header){padding-top:0}
 main{padding-top:80px}
 .header.scrolled{background:#f9fcff;box-shadow:0 8px 34px rgba(4,30,79,.1)}
@@ -100,12 +107,11 @@ main{padding-top:80px}
 .brand__mark.has-logo{background:transparent;box-shadow:none;border-radius:0}
 .brand__mark.has-logo .brand__logo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:0}
 /* place brand (logo) at the top-right */
-.brand{flex-direction:row-reverse}
-.navlinks{order:1;justify-content:flex-start}
-.nav__actions{order:2}
-.brand{order:3}
-.brand__text{line-height:1.2;display:flex;flex-direction:column;gap:3px;text-align:right}
-.brand__name{display:block;font-family:'Playfair Display',serif;font-weight:700;font-size:1.32rem;line-height:1;color:var(--teal-700)}
+.navlinks{order:2;justify-content:center}
+.nav__actions{order:3}
+.brand{order:1}
+.brand__text{line-height:1.2;display:flex;flex-direction:column;gap:3px;text-align:left}
+.brand__name{display:block;font-family:'Playfair Display',serif;font-weight:800;font-size:1.45rem;line-height:1;color:var(--teal-700);letter-spacing:-.01em}
 .brand__sub{display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-deep);font-weight:600}
 
 .navlinks{display:flex;align-items:center;gap:0;list-style:none;flex:1;justify-content:center;overflow:hidden;min-width:0}
@@ -129,7 +135,7 @@ main{padding-top:80px}
 .dropdown a:hover::before{opacity:1}
 .dropdown--wide{min-width:560px;columns:2;column-gap:10px}
 
-.nav__actions{display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:nowrap}
+.nav__actions{display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:nowrap;display:none}
 .nav__phone{display:flex;align-items:center;gap:7px;font-weight:700;color:var(--teal-700);white-space:nowrap;font-size:.82rem}
 .nav__phone svg{width:26px;height:26px;padding:5px;background:var(--mist);border-radius:50%;color:var(--teal)}
 .nav__phone small{display:none}

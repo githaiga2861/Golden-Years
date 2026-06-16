@@ -33,7 +33,7 @@ This is a fast, fully responsive, dependency-free static website (plain HTML + C
 | **Type** | Static website (HTML5 + CSS3, a little vanilla JavaScript) |
 | **Framework** | None — no build tools, no npm, no dependencies |
 | **Fonts** | Playfair Display + Inter (loaded from Google Fonts) |
-| **Palette** | Royal Blue `#3447aa` · Blush White `#fbeaeb` · Golden Brown `#b8860b` |
+| **Palette** | Deep Teal `#0d5b62` · Mist neutrals `#e9f2f0` · Champagne Gold accent `#c6a256` |
 | **Responsive** | Yes — desktop, tablet, and mobile |
 | **Accessibility** | Skip link, ARIA labels, semantic HTML, keyboard-friendly |
 | **SEO** | Per-page meta tags, Open Graph tags, schema markup, sitemap, robots.txt |
@@ -199,12 +199,14 @@ All styling lives in **`css/styles.css`**. Brand colors are defined once at the 
 
 ```css
 :root {
-  --blue:   #3447aa;   /* primary brand blue */
-  --blush:  #fbeaeb;   /* soft background    */
-  --gold:   #b8860b;   /* golden-brown accent */
+  --teal:   #0d5b62;   /* primary brand colour      */
+  --teal-700:#073e44;  /* deep teal (footer, bands) */
+  --mist:   #e9f2f0;   /* soft section background   */
+  --gold:   #c6a256;   /* champagne gold — accents only */
   /* ...etc */
 }
 ```
+Gold is intentionally reserved for strategic accents (dividers, hover lines, star ratings, the floating call button, and one CTA per page) to keep the look clean and premium.
 
 Fonts are loaded in each page's `<head>` from Google Fonts (Playfair Display for headings, Inter for body text).
 

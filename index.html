@@ -97,90 +97,7 @@
 <main id="main">
 
 <!-- ===== HERO SLIDER ===== -->
-<section class="hero hero--slider">
-  <!-- Slide track -->
-  <div class="hslider">
-
-    <!-- SLIDE 1: Main brand -->
-    <div class="hslide active">
-      <img class="hero__bg" src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1600&q=80" alt="Compassionate caregiver assisting a senior at home">
-      <div class="hero__overlay"></div><div class="hero__blob hero__blob--1"></div><div class="hero__blob hero__blob--2"></div>
-      <div class="wrap"><div class="hero__inner">
-        <span class="eyebrow" style="color:var(--gold)">Nurse-Led Home Health Care in Washington State</span>
-        <h1>Compassionate Care,<br>Dignified Living,<br>Trusted Support.</h1>
-        <p>Golden Years Home Health Supported Living provides skilled nursing, personal care, nurse delegation, and supported living services — bringing professional, heartfelt care directly into your home across Sumner and the greater Pierce &amp; King County area.</p>
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="contact.html">Request Home Care</a>
-          <a class="btn btn--white-outline" href="services.html">Explore Our Services</a>
-        </div>
-        <div class="hero__badges">
-          <span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Licensed &amp; Insured</span>
-          <span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> HIPAA-Conscious</span>
-          <span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Washington State Certified</span>
-        </div>
-      </div></div>
-    </div>
-
-    <!-- SLIDE 2: Meet Rose / About the RN -->
-    <div class="hslide">
-      <img class="hero__bg" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=1600&q=80" alt="Registered nurse reviewing care plan">
-      <div class="hero__overlay"></div><div class="hero__blob hero__blob--1"></div><div class="hero__blob hero__blob--2"></div>
-      <div class="wrap"><div class="hero__inner">
-        <span class="eyebrow" style="color:var(--gold)">Meet Your Care Leader</span>
-        <h1>Nurse-Directed.<br>Family-Centred.<br>Always There.</h1>
-        <p>Every care plan at Golden Years is personally designed and supervised by <strong style="color:#fff">Rose Mbote, BSN, RN, RND, PDN</strong> — a registered nurse with deep roots in home health, chronic disease management, and supported living. You're not just getting a caregiver. You're getting a clinical team led by someone who truly cares.</p>
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="about.html">Meet Rose &amp; Our Team</a>
-          <a class="btn btn--white-outline" href="skilled-nursing.html">Our Nursing Services</a>
-        </div>
-        <div class="hero__badges">
-          <span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> BSN, RN, RND, PDN</span>
-          <span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> RN-Supervised Care and Visits</span>
-          <span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Personalised Care Plans</span>
-        </div>
-      </div></div>
-    </div>
-
-    <!-- SLIDE 3: Service Area Checker -->
-    <div class="hslide">
-      <img class="hero__bg" src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=1600&q=80" alt="Washington State community home care">
-      <div class="hero__overlay"></div><div class="hero__blob hero__blob--1"></div><div class="hero__blob hero__blob--2"></div>
-      <div class="wrap"><div class="hero__inner">
-        <span class="eyebrow" style="color:var(--gold)">Serving Pierce &amp; King County, WA</span>
-        <h1>Is Golden Years<br>Available<br>in Your Area?</h1>
-        <p>We proudly serve Sumner, Puyallup, Auburn, Bonney Lake, Tacoma, and surrounding communities. Enter your ZIP code or city below and we'll tell you instantly.</p>
-        <!-- ZIP checker -->
-        <div class="zipcheck">
-          <div class="zipcheck__row">
-            <input class="zipcheck__input" id="zipInput" type="text" maxlength="10" placeholder="Enter ZIP code or city…" autocomplete="postal-code" aria-label="Enter your ZIP code or city">
-            <button class="btn btn--primary zipcheck__btn" onclick="checkZip()">Check Coverage</button>
-          </div>
-          <div class="zipcheck__result" id="zipResult" aria-live="polite"></div>
-        </div>
-        <div class="hero__badges" style="margin-top:24px">
-          <span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Sumner &amp; Puyallup</span>
-          <span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Auburn &amp; Bonney Lake</span>
-          <span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Tacoma &amp; Surrounding Areas</span>
-        </div>
-      </div></div>
-    </div>
-
-  </div><!-- /hslider -->
-
-  <!-- Pill navigator -->
-  <div class="hslider__arrows" id="pillNav" data-slide="0">
-    <div class="hslider__fill"></div>
-    <button class="hslider__arrow hslider__arrow--prev" aria-label="Previous slide" onclick="moveSlide(-1)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <div class="hslider__spine"></div>
-    <button class="hslider__arrow hslider__arrow--next" aria-label="Next slide" onclick="moveSlide(1)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
-  </div>
-
-  <div class="scrollcue"><span></span></div>
-</section>
+<section class="hero hero--slider"><div class="hslider"><div class="hslide active"><img class="hero__bg" src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1600&q=80" alt="Caregiver assisting a senior at home"><div class="hero__overlay"></div><div class="hero__blob hero__blob--1"></div><div class="hero__blob hero__blob--2"></div><div class="wrap"><div class="hero__inner"><span class="eyebrow" style="color:var(--gold)">Nurse-Led Home Health Care in Washington State</span><h1>Compassionate Care,<br>Dignified Living,<br>Trusted Support.</h1><p>Golden Years Home Health Supported Living provides skilled nursing, personal care, nurse delegation, and supported living services — bringing professional, heartfelt care directly into your home across Sumner and the greater Pierce &amp; King County area.</p><div class="hero__cta"><a class="btn btn--primary" href="contact.html">Request Home Care</a><a class="btn btn--white-outline" href="services.html">Explore Our Services</a></div><div class="hero__badges"><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Licensed &amp; Insured</span><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> HIPAA-Conscious</span><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Washington State Certified</span><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> RN-Supervised Care</span></div></div></div></div><div class="hslide"><img class="hero__bg" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=1600&q=80" alt="Registered nurse reviewing care plan"><div class="hero__overlay"></div><div class="hero__blob hero__blob--1"></div><div class="hero__blob hero__blob--2"></div><div class="wrap"><div class="hero__inner"><span class="eyebrow" style="color:var(--gold)">Meet Your Care Leader</span><h1>Nurse-Directed.<br>Family-Centred.<br>Always There.</h1><p>Every care plan at Golden Years is personally designed and supervised by <strong style="color:#fff">Rose Mbote, BSN, RN, RND, PDN</strong> — a registered nurse with deep roots in home health, chronic disease management, and supported living.</p><div class="hero__cta"><a class="btn btn--primary" href="about.html">Meet Rose &amp; Our Team</a><a class="btn btn--white-outline" href="skilled-nursing.html">Our Nursing Services</a></div><div class="hero__badges"><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> BSN, RN, RND, PDN</span><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> RN-Supervised Every Visit</span><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Personalised Care Plans</span></div></div></div></div><div class="hslide"><img class="hero__bg" src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=1600&q=80" alt="Washington State community home care"><div class="hero__overlay"></div><div class="hero__blob hero__blob--1"></div><div class="hero__blob hero__blob--2"></div><div class="wrap"><div class="hero__inner"><span class="eyebrow" style="color:var(--gold)">Serving Pierce &amp; King County, WA</span><h1>Is Golden Years<br>Available<br>in Your Area?</h1><p>We proudly serve Sumner, Puyallup, Auburn, Bonney Lake, Tacoma, and surrounding communities. Enter your ZIP code or city below and we'll tell you instantly.</p><div class="zipcheck"><div class="zipcheck__row"><input class="zipcheck__input" id="zipInput" type="text" maxlength="10" placeholder="Enter ZIP code or city…" autocomplete="postal-code" aria-label="Enter your ZIP code or city"><button class="btn btn--primary zipcheck__btn" onclick="checkZip()">Check Coverage</button></div><div class="zipcheck__result" id="zipResult" aria-live="polite"></div></div><div class="hero__badges" style="margin-top:24px"><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Sumner &amp; Puyallup</span><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Auburn &amp; Bonney Lake</span><span class="hero__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Tacoma &amp; Surrounding Areas</span></div></div></div></div></div><div class="hslider__arrows" id="pillNav" data-slide="0"><div class="hslider__fill"></div><button class="hslider__arrow hslider__arrow--prev" aria-label="Previous slide" onclick="moveSlide(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="hslider__spine"></div><button class="hslider__arrow hslider__arrow--next" aria-label="Next slide" onclick="moveSlide(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button></div><div class="scrollcue"><span></span></div></section>
 
 <script>
 // ---- Hero Slider ----
@@ -479,6 +396,39 @@ document.getElementById('zipInput').addEventListener('keydown',function(e){if(e.
     els.forEach(function(el,i){ el.style.transitionDelay=((i%4)*0.07)+'s'; io.observe(el); });
   } else { els.forEach(function(el){ el.classList.add('in'); }); }
 })();
+
+// Hero Slider
+var _slides=document.querySelectorAll('.hslide');
+var _cur=0;
+var _timer;
+function goSlide(n){
+  if(!_slides.length) return;
+  _slides[_cur].classList.remove('active');
+  _cur=(n+_slides.length)%_slides.length;
+  _slides[_cur].classList.add('active');
+  var pill=document.getElementById('pillNav');
+  if(pill) pill.setAttribute('data-slide',_cur);
+  resetTimer();
+}
+function moveSlide(d){ goSlide(_cur+d); }
+function resetTimer(){ clearInterval(_timer); if(_slides.length>1) _timer=setInterval(function(){ moveSlide(1); },7000); }
+if(_slides.length) resetTimer();
+
+// ZIP checker
+var SERVED={'98390':1,'98391':1,'98372':1,'98373':1,'98374':1,'98375':1,'98001':1,'98002':1,'98003':1,'98023':1,'98047':1,'98058':1,'98188':1,'98198':1,'98354':1,'98387':1,'98388':1,'98394':1,'98401':1,'98402':1,'98403':1,'98404':1,'98405':1,'98406':1,'98407':1,'98408':1,'98409':1,'98418':1,'98421':1,'98422':1,'98424':1,'98443':1,'98444':1,'98445':1,'98446':1,'98465':1,'98466':1,'98467':1,'sumner':1,'puyallup':1,'auburn':1,'bonney lake':1,'tacoma':1,'federal way':1,'kent':1,'renton':1,'milton':1,'edgewood':1,'fife':1,'lakewood':1,'university place':1,'gig harbor':1,'graham':1,'spanaway':1,'parkland':1,'south hill':1,'orting':1,'enumclaw':1,'algona':1,'pacific':1,'buckley':1,'carbonado':1};
+function checkZip(){
+  var raw=document.getElementById('zipInput').value.trim();
+  var key=raw.toLowerCase().replace(/\s+/g,' ');
+  var box=document.getElementById('zipResult');
+  if(!raw){box.innerHTML='<span class="zr zr--warn">Please enter a ZIP code or city name.</span>';return;}
+  if(SERVED[key]||SERVED[raw]){
+    box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+raw+'</strong>! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px">Request care →</a></span>';
+  } else {
+    box.innerHTML='<span class="zr zr--no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg> We don\'t currently serve <strong>'+raw+'</strong>, but we\'re growing. <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px">Contact us anyway →</a></span>';
+  }
+}
+var zi=document.getElementById('zipInput');
+if(zi) zi.addEventListener('keydown',function(e){if(e.key==='Enter')checkZip();});
 </script>
 </body>
 </html>

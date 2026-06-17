@@ -160,8 +160,9 @@ main{padding-top:152px}
 .hero__badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:8px 17px;border-radius:50px;font-size:.82rem;font-weight:500;backdrop-filter:blur(6px)}
 .hero__badge svg{width:15px;height:15px;color:var(--gold)}
 /* staggered entrance */
-.hero__inner>*{opacity:0;transform:translateY(22px);animation:rise .9s var(--ease) forwards}
-.hero__inner>*:nth-child(1){animation-delay:.1s}.hero__inner>*:nth-child(2){animation-delay:.22s}.hero__inner>*:nth-child(3){animation-delay:.34s}.hero__inner>*:nth-child(4){animation-delay:.46s}.hero__inner>*:nth-child(5){animation-delay:.58s}
+.hero:not(.hero--slider) .hero__inner>*{opacity:0;transform:translateY(22px);animation:rise .9s var(--ease) forwards}
+.hero:not(.hero--slider) .hero__inner>*:nth-child(1){animation-delay:.1s}.hero:not(.hero--slider) .hero__inner>*:nth-child(2){animation-delay:.22s}.hero:not(.hero--slider) .hero__inner>*:nth-child(3){animation-delay:.34s}.hero:not(.hero--slider) .hero__inner>*:nth-child(4){animation-delay:.46s}.hero:not(.hero--slider) .hero__inner>*:nth-child(5){animation-delay:.58s}
+.hero--slider .hero__inner>*{opacity:1;transform:none;animation:none}
 @keyframes rise{to{opacity:1;transform:none}}
 .scrollcue{position:absolute;bottom:32px;right:40px;z-index:3;width:18px;height:32px;border:1px solid rgba(255,255,255,.3);border-radius:20px;display:grid;justify-items:center;padding-top:5px}
 .scrollcue span{width:1.5px;height:6px;background:rgba(255,255,255,.7);border-radius:2px;animation:scrolldot 1.8s infinite}

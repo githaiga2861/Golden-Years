@@ -170,17 +170,17 @@ main{padding-top:152px}
 /* ---- Hero Slider ---- */
 .hero--slider{overflow:hidden;min-height:100vh;display:block}
 .hslider{position:relative;width:100%;min-height:100vh;z-index:0}
-.hslide{position:absolute;inset:0;width:100%;min-height:100vh;opacity:0;visibility:hidden;transition:opacity .9s var(--ease),visibility .9s var(--ease)}
-.hslide.active{opacity:1;visibility:visible;position:relative}
+.hslide{position:absolute;inset:0;width:100%;min-height:100vh;opacity:0;visibility:hidden;transition:opacity .7s var(--ease),visibility .7s var(--ease)}
+.hslide.active{opacity:1 !important;visibility:visible !important;position:relative}
 .hslide .hero__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3;transform:scale(1.06);animation:slowZoom 18s ease-out forwards}
 .hslide.active .hero__bg{animation:slowZoom 18s ease-out forwards}
 .hslide .hero__overlay{position:absolute;inset:0;z-index:-2;background:linear-gradient(105deg,rgba(4,30,79,.94) 0%,rgba(7,55,99,.84) 48%,rgba(11,83,148,.5) 100%)}
 .hslide .hero__inner{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease) .3s,transform .7s var(--ease) .3s}
 .hslide.active .hero__inner{opacity:1;transform:none}
 /* override the auto-animate so only active slide children animate */
-.hslide .hero__inner>*{opacity:1;transform:none;animation:none}
-.hero--slider .hero__inner>*{opacity:1;transform:none;animation:none}
-.hslide.active .hero__inner{opacity:1;transform:none}
+.hero--slider .hero__inner>*{opacity:1 !important;transform:none !important;animation:none !important}
+.hslide .hero__inner{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease) .2s,transform .7s var(--ease) .2s}
+.hslide.active .hero__inner{opacity:1 !important;transform:none !important}
 
 /* Arrows */
 /* Pill navigator — single capsule spanning both arrows + progress fill */

@@ -168,10 +168,10 @@ main{padding-top:152px}
 @keyframes scrolldot{0%{opacity:0;transform:translateY(-3px)}40%{opacity:1}80%,100%{opacity:0;transform:translateY(8px)}}
 
 /* ---- Hero Slider ---- */
-.hero--slider{overflow:hidden}
-.hslider{position:absolute;inset:0;z-index:0}
-.hslide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s var(--ease),visibility .9s var(--ease)}
-.hslide.active{opacity:1;visibility:visible}
+.hero--slider{overflow:hidden;min-height:100vh;display:block}
+.hslider{position:relative;width:100%;min-height:100vh;z-index:0}
+.hslide{position:absolute;inset:0;width:100%;min-height:100vh;opacity:0;visibility:hidden;transition:opacity .9s var(--ease),visibility .9s var(--ease)}
+.hslide.active{opacity:1;visibility:visible;position:relative}
 .hslide .hero__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3;transform:scale(1.06);animation:slowZoom 18s ease-out forwards}
 .hslide.active .hero__bg{animation:slowZoom 18s ease-out forwards}
 .hslide .hero__overlay{position:absolute;inset:0;z-index:-2;background:linear-gradient(105deg,rgba(4,30,79,.94) 0%,rgba(7,55,99,.84) 48%,rgba(11,83,148,.5) 100%)}
@@ -179,6 +179,8 @@ main{padding-top:152px}
 .hslide.active .hero__inner{opacity:1;transform:none}
 /* override the auto-animate so only active slide children animate */
 .hslide .hero__inner>*{opacity:1;transform:none;animation:none}
+.hero--slider .hero__inner>*{opacity:1;transform:none;animation:none}
+.hslide.active .hero__inner{opacity:1;transform:none}
 
 /* Arrows */
 .hslider__arrow{position:absolute;top:50%;z-index:10;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.3);color:#fff;display:grid;place-items:center;cursor:pointer;transition:all .3s var(--ease)}

@@ -167,6 +167,54 @@ main{padding-top:152px}
 .scrollcue span{width:4px;height:8px;background:#fff;border-radius:3px;animation:scrolldot 1.8s infinite}
 @keyframes scrolldot{0%{opacity:0;transform:translateY(-3px)}40%{opacity:1}80%,100%{opacity:0;transform:translateY(8px)}}
 
+/* ---- Hero Slider ---- */
+.hero--slider{overflow:hidden}
+.hslider{position:absolute;inset:0;z-index:0}
+.hslide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s var(--ease),visibility .9s var(--ease)}
+.hslide.active{opacity:1;visibility:visible}
+.hslide .hero__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3;transform:scale(1.06);animation:slowZoom 18s ease-out forwards}
+.hslide.active .hero__bg{animation:slowZoom 18s ease-out forwards}
+.hslide .hero__overlay{position:absolute;inset:0;z-index:-2;background:linear-gradient(105deg,rgba(4,30,79,.94) 0%,rgba(7,55,99,.84) 48%,rgba(11,83,148,.5) 100%)}
+.hslide .hero__inner{opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease) .3s,transform .7s var(--ease) .3s}
+.hslide.active .hero__inner{opacity:1;transform:none}
+/* override the auto-animate so only active slide children animate */
+.hslide .hero__inner>*{opacity:1;transform:none;animation:none}
+
+/* Arrows */
+.hslider__arrow{position:absolute;top:50%;z-index:10;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.3);color:#fff;display:grid;place-items:center;cursor:pointer;transition:all .3s var(--ease)}
+.hslider__arrow:hover{background:rgba(255,255,255,.25);transform:translateY(-50%) scale(1.08)}
+.hslider__arrow svg{width:22px;height:22px}
+.hslider__arrow--prev{left:28px}
+.hslider__arrow--next{right:28px}
+
+/* Dots */
+.hslider__dots{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+.hdot{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.6);background:transparent;cursor:pointer;transition:all .3s var(--ease);padding:0}
+.hdot.active{background:#fff;border-color:#fff;transform:scale(1.25)}
+
+/* ZIP checker */
+.zipcheck{margin-top:28px;max-width:580px}
+.zipcheck__row{display:flex;gap:12px;flex-wrap:wrap}
+.zipcheck__input{flex:1;min-width:200px;padding:15px 20px;border-radius:50px;border:2px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-family:'Inter',sans-serif;font-size:1rem;font-weight:500;outline:none;transition:border-color .25s,background .25s}
+.zipcheck__input::placeholder{color:rgba(255,255,255,.55)}
+.zipcheck__input:focus{border-color:var(--gold);background:rgba(255,255,255,.18)}
+.zipcheck__result{margin-top:14px;min-height:44px}
+.zr{display:inline-flex;align-items:center;gap:9px;padding:12px 20px;border-radius:50px;font-weight:600;font-size:.95rem;flex-wrap:wrap}
+.zr--yes{background:rgba(16,120,60,.55);border:1.5px solid rgba(100,220,140,.5);color:#fff}
+.zr--no{background:rgba(140,30,30,.5);border:1.5px solid rgba(220,100,100,.45);color:#fff}
+.zr--warn{background:rgba(180,130,0,.45);border:1.5px solid rgba(220,180,60,.5);color:#fff;padding:10px 18px;border-radius:50px}
+.zr svg{flex-shrink:0}
+
+@media(max-width:640px){
+  .hslider__arrow{width:40px;height:40px}
+  .hslider__arrow svg{width:18px;height:18px}
+  .hslider__arrow--prev{left:12px}
+  .hslider__arrow--next{right:12px}
+  .zipcheck__row{flex-direction:column}
+  .zipcheck__input{min-width:0;width:100%}
+  .zipcheck__btn{width:100%;justify-content:center}
+}
+
 /* Page hero (inner) */
 .pagehero{position:relative;color:#fff;overflow:hidden;isolation:isolate}
 .pagehero__bg{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;z-index:-3;transform:scale(1.06);animation:slowZoom 16s ease-out forwards}

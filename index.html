@@ -167,13 +167,17 @@
 
   </div><!-- /hslider -->
 
-  <!-- Arrows -->
-  <button class="hslider__arrow hslider__arrow--prev" aria-label="Previous slide" onclick="moveSlide(-1)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-  </button>
-  <button class="hslider__arrow hslider__arrow--next" aria-label="Next slide" onclick="moveSlide(1)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-  </button>
+  <!-- Pill navigator -->
+  <div class="hslider__arrows" id="pillNav" data-slide="0">
+    <div class="hslider__fill"></div>
+    <button class="hslider__arrow hslider__arrow--prev" aria-label="Previous slide" onclick="moveSlide(-1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="hslider__spine"></div>
+    <button class="hslider__arrow hslider__arrow--next" aria-label="Next slide" onclick="moveSlide(1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
 
   <!-- Dots -->
   <div class="hslider__dots">
@@ -194,6 +198,8 @@ function goSlide(n){
   _cur=(n+_slides.length)%_slides.length;
   _slides[_cur].classList.add('active');
   _dots[_cur].classList.add('active');
+  var pill=document.getElementById('pillNav');
+  if(pill) pill.setAttribute('data-slide',_cur);
   resetTimer();
 }
 function moveSlide(d){goSlide(_cur+d);}

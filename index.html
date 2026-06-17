@@ -171,7 +171,7 @@ function checkZip(){
   var inLocal=SERVED_LOCAL[raw]||CITIES_LOCAL[key];
   var inWA=!!info;
   if(inLocal){
-    box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+cityName+(countyName?' ('+countyName+')')+'</strong> and surrounding areas! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Request care →</a></span>';
+    box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+cityName+(countyName?' ('+countyName+')':'')+'</strong> and surrounding areas! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Request care →</a></span>';
   } else if(CITIES_LOCAL[key]){
     box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+raw+'</strong> and surrounding areas! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Request care →</a></span>';
   } else if(inWA){
@@ -494,7 +494,7 @@ function checkZip(){
   var inLocal=SERVED_LOCAL[raw]||CITIES_LOCAL[key];
   var inWA=!!info;
   if(inLocal){
-    box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+cityName+(countyName?' ('+countyName+')')+'</strong> and surrounding areas! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Request care →</a></span>';
+    box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+cityName+(countyName?' ('+countyName+')':'')+'</strong> and surrounding areas! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Request care →</a></span>';
   } else if(CITIES_LOCAL[key]){
     box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+raw+'</strong> and surrounding areas! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Request care →</a></span>';
   } else if(inWA){

@@ -152,7 +152,7 @@ main{padding-top:152px}
 .hero__blob--1{width:420px;height:420px;background:radial-gradient(circle,rgba(47,116,181,.8),transparent 70%);top:-120px;right:-80px}
 .hero__blob--2{width:320px;height:320px;background:radial-gradient(circle,rgba(198,162,86,.35),transparent 70%);bottom:-120px;left:10%;animation-delay:-6s}
 @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(24px,-30px)}}
-.hero__inner{position:relative;z-index:2;padding:180px 0 116px;max-width:730px}
+.hero__inner{position:relative;z-index:2;padding:200px 0 116px;max-width:730px}
 .hero h1{color:#fff;margin-bottom:20px;text-shadow:0 2px 30px rgba(0,0,0,.15)}
 .hero p{color:rgba(255,255,255,.92);font-size:1.22rem;max-width:600px}
 .hero__cta{display:flex;gap:16px;flex-wrap:wrap;margin-top:34px}

@@ -132,15 +132,43 @@ var SERVED={
   'graham':1,'spanaway':1,'parkland':1,'south hill':1,'orting':1,
   'enumclaw':1,'algona':1,'pacific':1,'buckley':1,'carbonado':1
 };
+var _userTyping=false,_typeTimer;
+var zi2=document.getElementById('zipInput');
+if(zi2){
+  zi2.addEventListener('focus',function(){ clearInterval(_timer); _userTyping=true; });
+  zi2.addEventListener('input',function(){
+    _userTyping=true;
+    clearInterval(_timer);
+    clearTimeout(_typeTimer);
+    var val=this.value.trim();
+    if(!val){
+      // empty — resume after 4s
+      _typeTimer=setTimeout(function(){ _userTyping=false; resetTimer(); },4000);
+    } else {
+      // has value but not yet submitted — wait 6s of inactivity then resume
+      _typeTimer=setTimeout(function(){
+        var box=document.getElementById('zipResult');
+        if(!box||!box.innerHTML.trim()){ _userTyping=false; resetTimer(); }
+      },6000);
+    }
+  });
+  zi2.addEventListener('blur',function(){
+    var box=document.getElementById('zipResult');
+    // only resume auto-scroll if no result is showing
+    if(!box||!box.innerHTML.trim()){
+      _typeTimer=setTimeout(function(){ _userTyping=false; resetTimer(); },3000);
+    }
+  });
+}
 function checkZip(){
   var raw=document.getElementById('zipInput').value.trim();
   var key=raw.toLowerCase().replace(/\s+/g,' ');
   var box=document.getElementById('zipResult');
   if(!raw){box.innerHTML='<span class="zr zr--warn">Please enter a ZIP code or city name.</span>';return;}
   if(SERVED[key]||SERVED[raw]){
-    box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+raw+'</strong> and surrounding areas! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px">Request care →</a></span>';
+    box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+raw+'</strong>! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Request care →</a></span>';
   } else {
-    box.innerHTML='<span class="zr zr--no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg> We don\'t currently serve <strong>'+raw+'</strong>, but we\'re growing. <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px">Contact us anyway →</a></span>';
+    box.innerHTML='<span class="zr zr--no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg> We don\'t currently serve <strong>'+raw+'</strong>, but we\'re growing. <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Contact us anyway →</a></span>';
   }
 }
 document.getElementById('zipInput').addEventListener('keydown',function(e){if(e.key==='Enter')checkZip();});
@@ -411,20 +439,48 @@ function goSlide(n){
   resetTimer();
 }
 function moveSlide(d){ goSlide(_cur+d); }
-function resetTimer(){ clearInterval(_timer); if(_slides.length>1) _timer=setInterval(function(){ moveSlide(1); },7000); }
+function resetTimer(){ clearInterval(_timer); if(_slides.length>1 && !_userTyping) _timer=setInterval(function(){ moveSlide(1); },7000); }
 if(_slides.length) resetTimer();
 
 // ZIP checker
 var SERVED={'98390':1,'98391':1,'98372':1,'98373':1,'98374':1,'98375':1,'98001':1,'98002':1,'98003':1,'98023':1,'98047':1,'98058':1,'98188':1,'98198':1,'98354':1,'98387':1,'98388':1,'98394':1,'98401':1,'98402':1,'98403':1,'98404':1,'98405':1,'98406':1,'98407':1,'98408':1,'98409':1,'98418':1,'98421':1,'98422':1,'98424':1,'98443':1,'98444':1,'98445':1,'98446':1,'98465':1,'98466':1,'98467':1,'sumner':1,'puyallup':1,'auburn':1,'bonney lake':1,'tacoma':1,'federal way':1,'kent':1,'renton':1,'milton':1,'edgewood':1,'fife':1,'lakewood':1,'university place':1,'gig harbor':1,'graham':1,'spanaway':1,'parkland':1,'south hill':1,'orting':1,'enumclaw':1,'algona':1,'pacific':1,'buckley':1,'carbonado':1};
+var _userTyping=false,_typeTimer;
+var zi2=document.getElementById('zipInput');
+if(zi2){
+  zi2.addEventListener('focus',function(){ clearInterval(_timer); _userTyping=true; });
+  zi2.addEventListener('input',function(){
+    _userTyping=true;
+    clearInterval(_timer);
+    clearTimeout(_typeTimer);
+    var val=this.value.trim();
+    if(!val){
+      // empty — resume after 4s
+      _typeTimer=setTimeout(function(){ _userTyping=false; resetTimer(); },4000);
+    } else {
+      // has value but not yet submitted — wait 6s of inactivity then resume
+      _typeTimer=setTimeout(function(){
+        var box=document.getElementById('zipResult');
+        if(!box||!box.innerHTML.trim()){ _userTyping=false; resetTimer(); }
+      },6000);
+    }
+  });
+  zi2.addEventListener('blur',function(){
+    var box=document.getElementById('zipResult');
+    // only resume auto-scroll if no result is showing
+    if(!box||!box.innerHTML.trim()){
+      _typeTimer=setTimeout(function(){ _userTyping=false; resetTimer(); },3000);
+    }
+  });
+}
 function checkZip(){
   var raw=document.getElementById('zipInput').value.trim();
   var key=raw.toLowerCase().replace(/\s+/g,' ');
   var box=document.getElementById('zipResult');
   if(!raw){box.innerHTML='<span class="zr zr--warn">Please enter a ZIP code or city name.</span>';return;}
   if(SERVED[key]||SERVED[raw]){
-    box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+raw+'</strong>! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px">Request care →</a></span>';
+    box.innerHTML='<span class="zr zr--yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg> Great news — we serve <strong>'+raw+'</strong>! <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Request care →</a></span>';
   } else {
-    box.innerHTML='<span class="zr zr--no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg> We don\'t currently serve <strong>'+raw+'</strong>, but we\'re growing. <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px">Contact us anyway →</a></span>';
+    box.innerHTML='<span class="zr zr--no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg> We don\'t currently serve <strong>'+raw+'</strong>, but we\'re growing. <a href="contact.html" style="color:#fff;text-decoration:underline;margin-left:6px" onclick="_userTyping=false;resetTimer()">Contact us anyway →</a></span>';
   }
 }
 var zi=document.getElementById('zipInput');

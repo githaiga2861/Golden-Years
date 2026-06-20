@@ -450,7 +450,7 @@ function goSlide(n){
   resetTimer();
 }
 function moveSlide(d){ goSlide(_cur+d); }
-function resetTimer(){ clearInterval(_timer); if(_slides.length>1 && !_userTyping) _timer=setInterval(function(){ moveSlide(1); },6000); }
+function resetTimer(){ clearInterval(_timer); if(_slides.length>1 && !_userTyping) _timer=setInterval(function(){ moveSlide(1); },7000); }
 if(_slides.length) resetTimer();
 
 // ZIP checker

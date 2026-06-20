@@ -140,7 +140,7 @@ main{padding-top:152px}
 .nav__phone{display:flex;align-items:center;gap:7px;font-weight:700;color:var(--teal-700);white-space:nowrap;font-size:.82rem}
 .nav__phone svg{width:26px;height:26px;padding:5px;background:var(--mist);border-radius:50%;color:var(--teal)}
 .nav__phone small{display:none}
-.hamburger{display:none;background:none;border:none;cursor:pointer;padding:9px;flex-direction:column;gap:5px;margin-left:auto}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:9px;flex-direction:column;gap:5px;margin-left:auto;flex-shrink:0}
 .hamburger span{width:25px;height:2.5px;background:var(--teal-700);border-radius:3px;transition:.3s}
 
 /* ---------- HERO ---------- */

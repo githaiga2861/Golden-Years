@@ -85,9 +85,8 @@
       <li><a href="resources.html">Resources</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <div class="nav__actions">
-      <button class="hamburger" aria-label="Open menu" onclick="document.getElementById('mm').classList.add('open')"><span></span><span></span><span></span></button>
-    </div>
+    <div class="nav__actions"></div>
+    <button class="hamburger" aria-label="Open menu" onclick="document.getElementById('mm').classList.add('open')"><span></span><span></span><span></span></button>
   </nav>
 </header>
 
@@ -440,7 +439,10 @@ var _cur=0;
 var _timer;
 function goSlide(n){
   if(!_slides.length) return;
-  _slides[_cur].classList.remove('active');
+  var prev=_slides[_cur];
+  prev.classList.remove('active');
+  prev.classList.add('slide-out');
+  setTimeout(function(){ prev.classList.remove('slide-out'); },800);
   _cur=(n+_slides.length)%_slides.length;
   _slides[_cur].classList.add('active');
   var pill=document.getElementById('pillNav');
@@ -448,7 +450,7 @@ function goSlide(n){
   resetTimer();
 }
 function moveSlide(d){ goSlide(_cur+d); }
-function resetTimer(){ clearInterval(_timer); if(_slides.length>1 && !_userTyping) _timer=setInterval(function(){ moveSlide(1); },7000); }
+function resetTimer(){ clearInterval(_timer); if(_slides.length>1 && !_userTyping) _timer=setInterval(function(){ moveSlide(1); },6000); }
 if(_slides.length) resetTimer();
 
 // ZIP checker

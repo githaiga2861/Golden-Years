@@ -527,7 +527,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
   /* --- Centre-align all sections --- */
   .section{padding:52px 0;text-align:center}
-  .wrap{padding:0 18px}
+  .wrap{padding:0 18px;max-width:100%;overflow:hidden}
   .eyebrow{justify-content:center}
   .gold-rule{margin-left:auto;margin-right:auto}
   .lead{margin-left:auto;margin-right:auto;font-size:1.05rem}
@@ -546,11 +546,15 @@ html,body{max-width:100%;overflow-x:hidden}
   .step{text-align:center}
 
   /* --- Split / Leader --- */
-  .split,.leader{grid-template-columns:1fr;gap:32px;text-align:center}
+  .split,.leader{grid-template-columns:1fr;gap:32px;text-align:center;padding:20px;box-sizing:border-box;width:100%;overflow:hidden}
   .split__media::after,.leader__photo::after{display:none}
   .split--reverse .split__media{order:0}
+  .split__media img,.leader__photo img{width:100%;max-width:100%;border-radius:var(--r-lg)}
+  .leader__photo{width:100%;max-width:100%;overflow:hidden}
   .checks li{text-align:left}
   .svc-list{columns:1;text-align:left}
+  .leader__photo::after{display:none}
+  img{max-width:100%;height:auto}
 
   /* --- Forms --- */
   .field--row{grid-template-columns:1fr}

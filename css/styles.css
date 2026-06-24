@@ -516,7 +516,7 @@ html,body{max-width:100%;overflow-x:hidden}
   .brand__mark{height:80px;width:80px;border-radius:10px}
   .brand__name{font-size:1rem}
   .brand__sub{font-size:.55rem;letter-spacing:.14em}
-  .hamburger{display:flex !important;padding:8px;order:9;margin-left:auto}
+  .hamburger{display:flex !important;padding:8px;order:9 !important;margin-left:auto !important}
   .hamburger span{width:22px}
   .brand{order:1}
   .navlinks{order:2}

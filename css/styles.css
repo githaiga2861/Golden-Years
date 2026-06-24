@@ -528,6 +528,8 @@ html,body{max-width:100%;overflow-x:hidden}
   /* --- Centre-align all sections --- */
   .section{padding:52px 0;text-align:center}
   .wrap{padding:0 18px;max-width:100%;overflow:hidden}
+  .leader{padding:20px 18px;overflow:hidden;width:100%}
+  .leader a,.leader p,.leader__credentials{word-break:break-word;overflow-wrap:break-word;max-width:100%}
   .eyebrow{justify-content:center}
   .gold-rule{margin-left:auto;margin-right:auto}
   .lead{margin-left:auto;margin-right:auto;font-size:1.05rem}

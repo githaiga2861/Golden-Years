@@ -437,8 +437,9 @@ main{padding-top:166px}
 .footer__brand .brand__name{color:#fff}
 .footer__tag{font-family:'Playfair Display',serif;font-style:italic;font-size:1.12rem;color:var(--gold);margin:18px 0}
 .footer__social{display:flex;gap:11px;margin-top:18px}
-.footer__social a{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center;color:#fff;transition:all .3s var(--ease)}
-.footer__social a:hover{background:var(--gold);transform:translateY(-3px)}
+.footer__social a{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center;color:#fff;transition:background .3s var(--ease),transform .3s var(--ease)}
+.footer__social a:hover{background:rgba(255,255,255,.16);color:#fff;transform:translateY(-3px)}
+.footer__social a:hover svg{animation:phoneRing 1s var(--ease)}
 .footer__social svg{width:18px;height:18px}
 .footer__bottom{border-top:1px solid rgba(255,255,255,.13);padding:32px 0;font-size:.84rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .footer__bottom a{font-size:.84rem}

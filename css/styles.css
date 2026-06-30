@@ -92,11 +92,22 @@ ul{list-style:none}
 .header{position:fixed;top:0;left:0;right:0;z-index:300;width:100%;background:#f4f8fd;transition:background .35s var(--ease),box-shadow .35s var(--ease);opacity:1;visibility:visible}
 .header::after{content:"";position:absolute;left:0;right:0;bottom:-26px;height:26px;background:linear-gradient(to bottom,rgba(4,30,79,.07),rgba(4,30,79,0));pointer-events:none}
 .topbar{background:var(--teal-700);color:rgba(255,255,255,.9);font-size:1.02rem;font-weight:500;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;max-width:100%}
-.topbar__phone{display:flex;align-items:center;gap:10px;color:#fff;white-space:nowrap}
-.topbar__phone svg{width:21px;height:21px;opacity:.85}
+.topbar__phone{display:flex;align-items:center;gap:8px;color:#fff;white-space:nowrap;padding:6px 12px;border-radius:9px;transition:background .25s var(--ease)}
+.topbar__phone:hover{color:#fff;background:rgba(255,255,255,.14)}
+.topbar__phone svg{width:21px;height:21px;opacity:.85;transition:opacity .25s var(--ease)}
+.topbar__phone:hover svg{opacity:1;animation:phoneRing 1s var(--ease)}
+@keyframes phoneRing{
+  0%,100%{transform:rotate(0)}
+  15%{transform:rotate(-12deg)}
+  30%{transform:rotate(10deg)}
+  45%{transform:rotate(-8deg)}
+  60%{transform:rotate(6deg)}
+  75%{transform:rotate(-3deg)}
+}
 .topbar__social{display:flex;align-items:center;gap:10px}
-.topbar__social a{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;color:rgba(255,255,255,.8);transition:all .25s var(--ease)}
+.topbar__social a{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;color:rgba(255,255,255,.8);transition:background .25s var(--ease),color .25s var(--ease)}
 .topbar__social a:hover{background:rgba(255,255,255,.15);color:#fff}
+.topbar__social a:hover svg{animation:phoneRing 1s var(--ease)}
 .topbar__social svg{width:23px;height:23px}
 body>*:not(.header){padding-top:0}
 main{padding-top:166px}

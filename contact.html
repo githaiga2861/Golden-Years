@@ -172,18 +172,18 @@
         <input type="hidden" name="from_name" value="Golden Years Website">
          <input type="hidden" name="replyto" value="">
         <div class="field--row">
-          <div class="field"><label for="c-patient">Patient Name</label><input id="c-patient" type="text"></div>
-          <div class="field"><label for="c-dob">Date of Birth</label><input id="c-dob" type="date"></div>
+          <div class="field"><label for="c-patient">Patient Name</label><input id="c-patient" name="Patient Name" type="text"></div>
+          <div class="field"><label for="c-dob">Date of Birth</label><input id="c-dob" name="Date of Birth" type="date"></div>
         </div>
-        <div class="field"><label for="c-diag">Primary Diagnosis / Medical Condition</label><input id="c-diag" type="text" placeholder="e.g., post-surgical recovery, diabetes, mobility support"></div>
+        <div class="field"><label for="c-diag">Primary Diagnosis / Medical Condition</label><input id="c-diag" name="Primary Diagnosis" type="text" placeholder="e.g., post-surgical recovery, diabetes, mobility support"></div>
         <div class="field--row">
-          <div class="field"><label for="c-phys">Physician / Referring Provider</label><input id="c-phys" type="text"></div>
+          <div class="field"><label for="c-phys">Physician / Referring Provider</label><input id="c-phys" name="Physician / Referring Provider" type="text"></div>
           <div class="field"><label for="c-ins">Insurance Type</label>
-            <select id="c-ins"><option value="">Please select…</option><option>Medicare</option><option>Medicaid</option><option>Long-Term Care Insurance</option><option>Private Pay</option><option>Other / Not Sure</option></select>
+            <select id="c-ins" name="Insurance Type"><option value="">Please select…</option><option>Medicare</option><option>Medicaid</option><option>Long-Term Care Insurance</option><option>Private Pay</option><option>Other / Not Sure</option></select>
           </div>
         </div>
         <div class="field"><label for="c-services">Services Needed</label>
-          <select id="c-services">
+          <select id="c-services" name="Services Needed">
             <option value="">Please select…</option>
             <option>Skilled Nursing</option><option>Private Duty Nursing</option><option>RN Visitation</option>
             <option>Personal Care Services</option><option>Medication Management</option><option>Chronic Disease Management</option>
@@ -193,10 +193,11 @@
           </select>
         </div>
         <div class="field--row">
-          <div class="field"><label for="c-start">Preferred Start Date</label><input id="c-start" type="date"></div>
-          <div class="field"><label for="c-contact">Best Contact Number</label><input id="c-contact" type="tel"></div>
+          <div class="field"><label for="c-start">Preferred Start Date</label><input id="c-start" name="Preferred Start Date" type="date"></div>
+          <div class="field"><label for="c-contact">Best Contact Number</label><input id="c-contact" name="Best Contact Number" type="tel"></div>
         </div>
-        <div class="field"><label for="c-notes">Additional Notes</label><textarea id="c-notes" placeholder="Anything else that would help us prepare for your assessment…"></textarea></div>
+        <div class="field"><label for="c-email">Email Address</label><input id="c-email" name="email" type="email" placeholder="So we can reply by email if needed"></div>
+        <div class="field"><label for="c-notes">Additional Notes</label><textarea id="c-notes" name="Additional Notes" placeholder="Anything else that would help us prepare for your assessment…"></textarea></div>
         <div class="consent"><input id="c-consent" type="checkbox" required><label for="c-consent" style="font-weight:400;margin:0">I understand this is an initial inquiry and consent to be contacted by Golden Years Home Health. *</label></div>
         <button class="btn btn--primary" type="submit" style="width:100%;justify-content:center">Submit Care Inquiry</button>
       </form>

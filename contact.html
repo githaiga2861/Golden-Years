@@ -108,14 +108,15 @@
         <input type="hidden" name="access_key" value="40d97e85-7635-4c96-9e51-7624f70df2b0">
         <input type="hidden" name="subject" value="New Website Inquiry — Golden Years Home Health">
         <input type="hidden" name="from_name" value="Golden Years Website">
-        <div class="field"><label for="g-name">Full Name *</label><input id="g-name" type="text" required></div>
+         <input type="hidden" name="replyto" value="">
+        <div class="field"><label for="g-name">Full Name *</label><input id="g-name" name="Full Name" type="text" required></div>
         <div class="field--row">
-          <div class="field"><label for="g-email">Email Address *</label><input id="g-email" type="email" required></div>
-          <div class="field"><label for="g-phone">Phone Number *</label><input id="g-phone" type="tel" required></div>
+          <div class="field"><label for="g-email">Email Address *</label><input id="g-email" name="email" type="email" required></div>
+          <div class="field"><label for="g-phone">Phone Number *</label><input id="g-phone" name="Phone" type="tel" required></div>
         </div>
         <div class="field--row">
           <div class="field"><label for="g-role">I Am A *</label>
-            <select id="g-role" required>
+            <select id="g-role" name="I Am A" required>
               <option value="">Please select…</option>
               <option>Client / Patient</option>
               <option>Family Member</option>
@@ -125,11 +126,11 @@
             </select>
           </div>
           <div class="field"><label for="g-time">Best Time to Contact</label>
-            <select id="g-time"><option value="">No preference</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
+            <select id="g-time" name="Best Time to Contact"><option value="">No preference</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
           </div>
         </div>
         <div class="field"><label for="g-service">Service I'm Interested In</label>
-          <select id="g-service">
+          <select id="g-service" name="Service Interested In">
             <option value="">Please select…</option>
             <option>Skilled Nursing</option><option>Private Duty Nursing</option><option>RN Visitation</option>
             <option>Personal Care Services</option><option>Medication Management</option><option>Chronic Disease Management</option>
@@ -138,7 +139,7 @@
             <option>Supported Living Services</option><option>Care Coordination</option><option>Not Sure — Please Advise</option>
           </select>
         </div>
-        <div class="field"><label for="g-msg">Message / Additional Information</label><textarea id="g-msg" placeholder="Tell us a little about your situation and how we can help…"></textarea></div>
+        <div class="field"><label for="g-msg">Message / Additional Information</label><textarea id="g-msg" name="Message" placeholder="Tell us a little about your situation and how we can help…"></textarea></div>
         <div class="consent"><input id="g-consent" type="checkbox" required><label for="g-consent" style="font-weight:400;margin:0">I agree to be contacted by Golden Years Home Health regarding my inquiry. *</label></div>
         <button class="btn btn--primary" type="submit" style="width:100%;justify-content:center">Send Message</button>
       </form>
@@ -169,6 +170,7 @@
         <input type="hidden" name="access_key" value="40d97e85-7635-4c96-9e51-7624f70df2b0">
         <input type="hidden" name="subject" value="New Care Inquiry — Golden Years Home Health">
         <input type="hidden" name="from_name" value="Golden Years Website">
+         <input type="hidden" name="replyto" value="">
         <div class="field--row">
           <div class="field"><label for="c-patient">Patient Name</label><input id="c-patient" type="text"></div>
           <div class="field"><label for="c-dob">Date of Birth</label><input id="c-dob" type="date"></div>
@@ -221,6 +223,9 @@
 function submitWeb3Form(e,formId,thanksId){
   e.preventDefault();
   var form=document.getElementById(formId);
+  var emailField=form.querySelector('input[type="email"]');
+  var replytoField=form.querySelector('input[name="replyto"]');
+  if(emailField&&replytoField) replytoField.value=emailField.value;
   var data=new FormData(form);
   var btn=form.querySelector('button[type="submit"]');
   if(btn){ btn.disabled=true; btn.textContent='Sending…'; }

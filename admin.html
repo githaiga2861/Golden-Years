@@ -135,7 +135,7 @@
       <span class="eyebrow center">Staff Only</span>
       <h1>Golden Years Admin</h1>
       <hr class="gold-rule center">
-      <p class="lead center" style="font-size:1rem">Enter the admin password to manage jobs, articles, enquiries, and applications.</p>
+      <p class="lead center" style="font-size:1rem">Enter the admin password to manage articles, enquiries, and careers.</p>
       <div class="form" style="margin-top:20px">
         <div class="field"><label for="pw">Password</label><div style="position:relative"><input id="pw" type="password" onkeydown="if(event.key==='Enter')checkPw()" style="padding-right:48px"><button type="button" onclick="togglePw()" aria-label="Show or hide password" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:8px;display:grid;place-items:center;color:var(--slate)"><svg id="pwEye" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
         <button class="btn btn--primary" onclick="checkPw()" style="width:100%;justify-content:center">Enter</button>
@@ -149,11 +149,15 @@
       <div class="adm-tabs">
         <button class="adm-tab active" id="tab-articles" onclick="showTab('articles')">Articles</button>
         <button class="adm-tab" id="tab-enquiries" onclick="showTab('enquiries')">Enquiries</button>
+        <a class="adm-tab" href="careers-admin.html" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px">Careers Management <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </div>
 
       <!-- ARTICLES -->
       <div id="pane-articles">
-        <p class="formnote" style="margin-bottom:18px">Review drafts and approve them to publish. Published articles appear on Resources and the Articles page. To write a new article, use the <a href="article.html">article form</a>.</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+          <p class="formnote" style="margin:0;flex:1;min-width:220px">Review drafts and approve them to publish. Published articles appear on the Resources and Articles pages.</p>
+          <a class="btn btn--primary" href="article.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M12 5v14M5 12h14"/></svg>Write an Article</a>
+        </div>
         <div id="articlesAdmin"><div class="job-loading"><div class="job-spinner"></div>Loading…</div></div>
       </div>
 
@@ -180,64 +184,23 @@ function toast(m){var t=document.getElementById('toast');if(!t)return;t.textCont
 </script>
 <script>
 var ADMIN_PW='GoldenYears2026';  // <-- change to your chosen password (same as careers-admin)
-function togglePw(){
-  var inp=document.getElementById('pw');
-  var eye=document.getElementById('pwEye');
-  if(inp.type==='password'){
-    inp.type='text';
-    eye.innerHTML='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/>';
-  } else {
-    inp.type='password';
-    eye.innerHTML='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
-  }
-}
+function togglePw(){var inp=document.getElementById('pw');var eye=document.getElementById('pwEye');if(inp.type==='password'){inp.type='text';eye.innerHTML='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/>';}else{inp.type='password';eye.innerHTML='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';}}
 function _gotoParam(){return new URLSearchParams(location.search).get('goto');}
 function _applyGoto(){var g=_gotoParam();if(g==='articles'||g==='enquiries'){showTab(g);}}
 function openAdmin(){document.getElementById('gate').style.display='none';document.getElementById('panel').style.display='block';loadAll();_applyGoto();}
-function checkPw(){
-  if(document.getElementById('pw').value===ADMIN_PW){
-    try{sessionStorage.setItem('gy_admin','1');}catch(e){}
-    openAdmin();
-  }else{document.getElementById('pwErr').style.display='block';}
-}
+function checkPw(){if(document.getElementById('pw').value===ADMIN_PW){try{sessionStorage.setItem('gy_admin','1');}catch(e){}openAdmin();}else{document.getElementById('pwErr').style.display='block';}}
 try{if(sessionStorage.getItem('gy_admin')==='1'){document.addEventListener('DOMContentLoaded',openAdmin);}}catch(e){}
 function loadAll(){loadArticlesAdmin();loadEnquiries();}
 function fmtDate(d){try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});}catch(e){return '';}}
-
-function showTab(t){
-  ['articles','enquiries'].forEach(function(x){
-    document.getElementById('pane-'+x).style.display=(x===t)?'block':'none';
-    document.getElementById('tab-'+x).classList.toggle('active',x===t);
-  });
-}
-
-/* ---------- JOBS ---------- */
-function resetJobForm(){['j-id','j-title','j-category','j-location','j-salary','j-reference','j-schedule','j-territories','j-summary','j-image','j-ef','j-req','j-pref'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('jobFormTitle').textContent='Add a New Job';document.getElementById('saveJobBtn').textContent='Save Job';}
-async function saveJob(){
-  var rec={title:document.getElementById('j-title').value.trim(),category:document.getElementById('j-category').value.trim(),location:document.getElementById('j-location').value.trim(),salary:document.getElementById('j-salary').value.trim(),reference:document.getElementById('j-reference').value.trim(),schedule:document.getElementById('j-schedule').value.trim(),territories:document.getElementById('j-territories').value.trim(),summary:document.getElementById('j-summary').value.trim(),card_image:document.getElementById('j-image').value.trim(),essential_functions:document.getElementById('j-ef').value.trim(),requirements:document.getElementById('j-req').value.trim(),preferred:document.getElementById('j-pref').value.trim(),published:true,featured:true};
-  if(!rec.title||!rec.category||!rec.location||!rec.summary){toast('Title, category, location, and summary are required.');return;}
-  var id=document.getElementById('j-id').value;var btn=document.getElementById('saveJobBtn');btn.disabled=true;btn.textContent='Saving…';
-  try{var res=id?await sb.from('jobs').update(rec).eq('id',id):await sb.from('jobs').insert([rec]);if(res.error)throw res.error;toast(id?'Job updated.':'Job posted — now live.');resetJobForm();loadJobsAdmin();}
-  catch(e){toast('Save failed: '+(e.message||'try again'));}
-  btn.disabled=false;btn.textContent='Save Job';
-}
-async function loadJobsAdmin(){
-  var box=document.getElementById('jobsAdmin');
-  try{var r=await sb.from('jobs').select('*').order('created_at',{ascending:false});if(r.error)throw r.error;
-    if(!r.data.length){box.innerHTML='<div class="job-empty"><p>No jobs posted yet.</p></div>';return;}
-    box.innerHTML=r.data.map(function(j){return '<div class="adm-row"><div class="adm-row__body"><h3>'+esc(j.title)+'</h3><p style="font-size:.9rem">'+esc(j.category||'')+' · '+esc(j.location||'')+(j.salary?' · '+esc(j.salary):'')+'</p><div class="adm-actions"><a class="adm-btn" href="job.html?id='+j.id+'" target="_blank">Preview</a><button class="adm-btn" onclick=\'editJob('+JSON.stringify(j).replace(/'/g,"&#39;")+')\'>Edit</button><button class="adm-btn adm-btn--warn" onclick="delJob(\''+j.id+'\')">Delete</button></div></div></div>';}).join('');
-  }catch(e){box.innerHTML='<div class="job-empty"><p>Could not load jobs.</p></div>';}
-}
-function editJob(j){document.getElementById('j-id').value=j.id;document.getElementById('j-title').value=j.title||'';document.getElementById('j-category').value=j.category||'';document.getElementById('j-location').value=j.location||'';document.getElementById('j-salary').value=j.salary||'';document.getElementById('j-reference').value=j.reference||'';document.getElementById('j-schedule').value=j.schedule||'';document.getElementById('j-territories').value=j.territories||'';document.getElementById('j-summary').value=j.summary||'';document.getElementById('j-image').value=j.card_image||'';document.getElementById('j-ef').value=j.essential_functions||'';document.getElementById('j-req').value=j.requirements||'';document.getElementById('j-pref').value=j.preferred||'';document.getElementById('jobFormTitle').textContent='Edit Job';document.getElementById('saveJobBtn').textContent='Update Job';document.getElementById('pane-jobs').scrollIntoView({behavior:'smooth'});}
-async function delJob(id){if(!confirm('Delete this job permanently?'))return;try{var r=await sb.from('jobs').delete().eq('id',id);if(r.error)throw r.error;toast('Job deleted.');loadJobsAdmin();}catch(e){toast('Delete failed.');}}
+function showTab(t){['articles','enquiries'].forEach(function(x){document.getElementById('pane-'+x).style.display=(x===t)?'block':'none';document.getElementById('tab-'+x).classList.toggle('active',x===t);});}
 
 /* ---------- ARTICLES ---------- */
 async function loadArticlesAdmin(){
   var box=document.getElementById('articlesAdmin');
   try{var r=await sb.from('articles').select('*').order('created_at',{ascending:false});if(r.error)throw r.error;
-    if(!r.data.length){box.innerHTML='<div class="job-empty"><p>No articles yet.</p></div>';return;}
-    box.innerHTML=r.data.map(function(a){var live=a.published;var img=a.card_image?'<img class="pub-row__img" src="'+esc(a.card_image)+'" alt="" style="width:110px;height:80px;border-radius:10px;object-fit:cover;flex-shrink:0">':'';
-      return '<div class="adm-row">'+img+'<div class="adm-row__body"><span class="pub-status '+(live?'pub-status--live':'pub-status--draft')+'">'+(live?'● Live':'○ Draft')+'</span><h3 style="margin-top:8px">'+esc(a.title)+'</h3><p style="font-size:.9rem">'+esc(a.subtitle||'')+' · <span style="color:var(--slate-2)">'+fmtDate(a.created_at)+'</span></p><div class="adm-actions">'+(live?'<button class="adm-btn adm-btn--warn" onclick="setPub(\''+a.id+'\',false)">Unpublish</button>':'<button class="adm-btn pub-btn--go" style="background:var(--teal);color:#fff;border-color:var(--teal)" onclick="setPub(\''+a.id+'\',true)">Approve &amp; Publish</button>')+'<a class="adm-btn" href="article.html?id='+a.id+'" target="_blank">Preview</a><button class="adm-btn adm-btn--warn" onclick="delArticle(\''+a.id+'\')">Delete</button></div></div></div>';}).join('');
+    if(!r.data.length){box.innerHTML='<div class="job-empty"><p>No articles yet. Use “Write an Article” to create your first one.</p></div>';return;}
+    box.innerHTML=r.data.map(function(a){var live=a.published;var img=a.card_image?'<img src="'+esc(a.card_image)+'" alt="" style="width:110px;height:80px;border-radius:10px;object-fit:cover;flex-shrink:0">':'';
+      return '<div class="adm-row">'+img+'<div class="adm-row__body"><span class="pub-status '+(live?'pub-status--live':'pub-status--draft')+'">'+(live?'● Live':'○ Draft')+'</span><h3 style="margin-top:8px">'+esc(a.title)+'</h3><p style="font-size:.9rem">'+esc(a.subtitle||'')+' · <span style="color:var(--slate-2)">'+fmtDate(a.created_at)+'</span></p><div class="adm-actions">'+(live?'<button class="adm-btn adm-btn--warn" onclick="setPub(\''+a.id+'\',false)">Unpublish</button>':'<button class="adm-btn" style="background:var(--teal);color:#fff;border-color:var(--teal)" onclick="setPub(\''+a.id+'\',true)">Approve &amp; Publish</button>')+'<a class="adm-btn" href="article.html?id='+a.id+'" target="_blank">Preview</a><button class="adm-btn adm-btn--warn" onclick="delArticle(\''+a.id+'\')">Delete</button></div></div></div>';}).join('');
   }catch(e){box.innerHTML='<div class="job-empty"><p>Could not load articles.</p></div>';}
 }
 async function setPub(id,val){try{var r=await sb.from('articles').update({published:val}).eq('id',id);if(r.error)throw r.error;toast(val?'Article published — now live!':'Article unpublished.');loadArticlesAdmin();}catch(e){toast('Update failed.');}}
@@ -251,30 +214,19 @@ async function loadEnquiries(){
     box.innerHTML=r.data.map(function(en){
       var extra='';
       if(en.details){try{var d=typeof en.details==='string'?JSON.parse(en.details):en.details;for(var k in d){if(d[k])extra+='<div style="font-size:.86rem;color:var(--slate)"><strong style="color:var(--ink)">'+esc(k)+':</strong> '+esc(d[k])+'</div>';}}catch(e){}}
-      return '<div class="adm-row"><div class="adm-row__body"><span class="pub-status '+(en.form_type==='Care Inquiry'?'pub-status--live':'pub-status--draft')+'">'+esc(en.form_type||'Enquiry')+'</span><h3 style="margin-top:8px">'+esc(en.name||'(no name)')+'</h3><p style="font-size:.9rem">'+esc(en.email||'')+(en.phone?' · '+esc(en.phone):'')+' · <span style="color:var(--slate-2)">'+fmtDate(en.created_at)+'</span></p>'+(en.message?'<p style="font-size:.9rem;margin-top:6px">'+esc(en.message)+'</p>':'')+extra+'<div class="adm-actions">'+(en.email?'<button class="adm-btn" style="background:var(--teal);color:#fff;border-color:var(--teal)" onclick="toggleReply(\''+en.id+'\')">Reply</button>':'')+'<button class="adm-btn adm-btn--warn" onclick="delEnquiry(\''+en.id+'\')">Delete</button></div>'+(en.email?'<div id="rep-'+en.id+'" style="display:none;margin-top:12px"><textarea id="repmsg-'+en.id+'" placeholder="Type your reply…" style="width:100%;min-height:90px;padding:12px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:.92rem"></textarea><button class="adm-btn" style="background:var(--teal);color:#fff;border-color:var(--teal);margin-top:8px" onclick="sendReply(\''+en.id+'\',\''+esc(en.email)+'\')">Open Email to Send</button></div>':'')+'</div></div>';
+      var mailto=en.email?'mailto:'+esc(en.email)+'?subject='+encodeURIComponent('Re: Your enquiry to Golden Years Home Health')+'&body='+encodeURIComponent('Hello '+(en.name||'')+',\n\nThank you for reaching out to Golden Years Home Health.\n\n'):'';
+      return '<div class="adm-row"><div class="adm-row__body"><span class="pub-status '+(en.form_type==='Care Inquiry'?'pub-status--live':'pub-status--draft')+'">'+esc(en.form_type||'Enquiry')+'</span><h3 style="margin-top:8px">'+esc(en.name||'(no name)')+'</h3><p style="font-size:.9rem">'+esc(en.email||'')+(en.phone?' · '+esc(en.phone):'')+' · <span style="color:var(--slate-2)">'+fmtDate(en.created_at)+'</span></p>'+(en.message?'<p style="font-size:.9rem;margin-top:6px">'+esc(en.message)+'</p>':'')+extra+'<div class="adm-actions">'+(en.email?'<a class="adm-btn" style="background:var(--teal);color:#fff;border-color:var(--teal)" href="'+mailto+'">Reply by Email</a>':'')+'<button class="adm-btn adm-btn--warn" onclick="delEnquiry(\''+en.id+'\')">Delete</button></div></div></div>';
     }).join('');
   }catch(e){box.innerHTML='<div class="job-empty"><p>Could not load enquiries. Make sure the enquiries table exists in Supabase.</p></div>';}
 }
-function toggleReply(id){var d=document.getElementById('rep-'+id);if(d)d.style.display=(d.style.display==='none'||!d.style.display)?'block':'none';}
-function sendReply(id,email){var m=document.getElementById('repmsg-'+id);var body=encodeURIComponent(m&&m.value?m.value:'');var sub=encodeURIComponent('Re: Your enquiry to Golden Years Home Health');window.location.href='mailto:'+email+'?subject='+sub+'&body='+body;}
 async function delEnquiry(id){if(!confirm('Delete this enquiry?'))return;try{var r=await sb.from('enquiries').delete().eq('id',id);if(r.error)throw r.error;toast('Enquiry deleted.');loadEnquiries();}catch(e){toast('Delete failed.');}}
-
-/* ---------- APPLICATIONS ---------- */
-async function loadApps(){
-  var box=document.getElementById('appsAdmin');
-  try{var r=await sb.from('applications').select('*').order('created_at',{ascending:false});if(r.error)throw r.error;
-    if(!r.data.length){box.innerHTML='<div class="job-empty"><p>No applications yet.</p></div>';return;}
-    box.innerHTML=r.data.map(function(a){var d=fmtDate(a.created_at);return '<div class="adm-row"><div class="adm-row__body"><h3>'+esc(a.applicant_name)+' — <span style="color:var(--teal-soft);font-size:.95rem">'+esc(a.job_title||'')+'</span></h3><p style="font-size:.9rem">'+esc(a.email)+' · '+esc(a.phone)+(a.location?' · '+esc(a.location):'')+' · <span style="color:var(--slate-2)">'+d+'</span></p>'+(a.message?'<p style="font-size:.9rem;margin-top:6px">'+esc(a.message)+'</p>':'')+'<div class="adm-actions">'+(a.resume_url?'<a class="adm-btn pub-btn--go" style="background:var(--teal);color:#fff;border-color:var(--teal)" href="'+esc(a.resume_url)+'" target="_blank">Download Resume</a>':'')+'<a class="adm-btn" href="mailto:'+esc(a.email)+'?subject=Your application to Golden Years Home Health">Reply by Email</a><button class="adm-btn adm-btn--warn" onclick="delApp(\''+a.id+'\')">Delete</button></div></div></div>';}).join('');
-  }catch(e){box.innerHTML='<div class="job-empty"><p>Could not load applications.</p></div>';}
-}
-async function delApp(id){if(!confirm('Delete this application?'))return;try{var r=await sb.from('applications').delete().eq('id',id);if(r.error)throw r.error;toast('Application deleted.');loadApps();}catch(e){toast('Delete failed.');}}
 </script>
 <footer class="footer"><div class="wrap"><div class="footer__grid">
   <div class="footer__brand"><a class="brand" href="index.html"><span class="brand__mark"><img class="brand__logo" src="images/logo.png" alt="Golden Years Home Health Supported Living logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub" style="color:var(--gold-light)">Home Health • Supported Living</span></span></a><p class="footer__tag">"Compassionate Care, Dignified Living, Trusted Support."</p><p style="font-size:.9rem">Nurse-led home health and supported living serving Sumner and the greater Pierce &amp; King County area of Washington State.</p><div class="footer__social"><a href="https://www.facebook.com/share/1D7sYp1msU/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8.5V7c0-1 .5-1.5 1.7-1.5H17V2.5h-2.5C11.8 2.5 11 4.3 11 6.3v2.2H8.5V12H11v9.5h3V12h2.3l.5-3.5Z"/></svg></a><a href="mailto:contact@goldenyearshomehealthllc.com" aria-label="Email Us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg></a><a href="https://www.instagram.com/goldenyearshomehealth?igsh=aGVhajcybGlqOHRt" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></div></div>
   <div><h4>Services</h4><ul><li><a href="skilled-nursing.html">Skilled Nursing</a></li><li><a href="services.html#personal-care">Personal Care</a></li><li><a href="nurse-delegation.html">Nurse Delegation</a></li><li><a href="services.html#respite">Respite Care</a></li><li><a href="services.html#supported-living">Supported Living</a></li><li><a href="services.html">All Services</a></li></ul></div>
   <div><h4>Company</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="hca-training.html">HCA Training</a></li><li><a href="resources.html">Resources</a></li><li><a href="careers.html">Careers</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
   <div><h4>Contact</h4><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5.2-8 12-8 12s-8-6.8-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> 614 Harrison St, Suite C,<br>Sumner, WA 98390</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg> <a href="tel:+12067171234">(206) 717-1234</a></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg> <a href="mailto:contact@goldenyearshomehealthllc.com">contact@goldenyearshomehealthllc.com</a></li></ul></div>
-</div><div class="footer__bottom"><span>© 2025 Golden Years Home Health Supported Living LLC. All Rights Reserved.</span><span><a href="resources.html#hipaa">HIPAA Privacy Notice</a> • <a href="resources.html#rights">Patient Rights</a> • <a href="contact.html">Accessibility</a></span></div><div style="text-align:center;padding:14px 0 24px"><a href="admin.html" style="font-size:.76rem;color:rgba(255,255,255,.38);letter-spacing:.05em">Staff Admin</a></div></div></footer>
+</div><div class="footer__bottom"><span>© 2025 Golden Years Home Health Supported Living LLC. All Rights Reserved.</span><span><a href="resources.html#hipaa">HIPAA Privacy Notice</a> • <a href="resources.html#rights">Patient Rights</a> • <a href="contact.html">Accessibility</a></span></div></div></footer>
 <a class="fab" href="tel:+12067171234" aria-label="Call Golden Years"><span class="tx-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg></span></a>
 <script>
 (function(){

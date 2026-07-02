@@ -48,6 +48,7 @@
 .jd-fact strong{display:block;font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;color:var(--teal-soft);margin-bottom:5px}
 .jd-fact span{color:var(--ink);font-weight:600}
 .jd-body{white-space:pre-line;color:var(--ink);line-height:1.75}
+.jd-list{margin:0 0 0 1.2rem;color:var(--ink);line-height:1.7}.jd-list li{margin-bottom:8px}
 .jd-body ul{margin:0 0 0 1.2rem}
 .jd-notice{background:var(--mist);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:18px 22px;font-size:.92rem;color:var(--slate)}
 @media(max-width:640px){.jd-grid{grid-template-columns:1fr}}
@@ -195,8 +196,29 @@ var CURRENT_JOB=null;
 function factsHTML(j){
   var f='';
   function fact(l,v){return v?'<div class="jd-fact"><strong>'+l+'</strong><span>'+esc(v)+'</span></div>':'';}
-  f+=fact('Location',j.location);f+=fact('Category',j.category);f+=fact('Salary',j.salary);f+=fact('Reference No.',j.reference);
+  f+=fact('Location',j.location);f+=fact('Category',j.category);f+=fact('Employment Type',j.employment_type);f+=fact('Compensation',j.salary);f+=fact('Reference No.',j.reference);
   return f;
+}
+function bulletBlock(title,body){
+  if(!body||!body.trim()) return '';
+  var items=body.split(/\n+/).map(function(l){return l.replace(/^[-\u2022\s]+/,'').trim();}).filter(Boolean);
+  if(!items.length) return '';
+  return '<div class="jd-block"><h2>'+title+'</h2><ul class="jd-list">'+items.map(function(i){return '<li>'+esc(i)+'</li>';}).join('')+'</ul></div>';
+}
+function respBlock(title,body){
+  if(!body||!body.trim()) return '';
+  var lines=body.split(/\n/),groups=[],cur=null;
+  lines.forEach(function(ln){var t=ln.trim();if(!t)return;
+    if(/^[-\u2022]/.test(t)){if(!cur){cur={h:'',items:[]};groups.push(cur);}cur.items.push(t.replace(/^[-\u2022\s]+/,'').trim());}
+    else{cur={h:t,items:[]};groups.push(cur);}});
+  if(!groups.length) return '';
+  var inner=groups.map(function(g){return (g.h?'<h3 style="margin:20px 0 8px;color:var(--teal-700)">'+esc(g.h)+'</h3>':'')+(g.items.length?'<ul class="jd-list">'+g.items.map(function(i){return '<li>'+esc(i)+'</li>';}).join('')+'</ul>':'');}).join('');
+  return '<div class="jd-block"><h2>'+title+'</h2>'+inner+'</div>';
+}
+function paraBlock(title,body){
+  if(!body||!body.trim()) return '';
+  var ps=body.split(/\n\s*\n/).map(function(p){return '<p>'+esc(p.trim()).replace(/\n/g,'<br>')+'</p>';}).join('');
+  return '<div class="jd-block"><h2>'+title+'</h2><div class="jd-body">'+ps+'</div></div>';
 }
 function block(title,body){
   if(!body||!body.trim()) return '';
@@ -214,16 +236,20 @@ async function loadJob(id){
     html+='<button class="btn btn--primary" onclick="openApply()" style="margin-bottom:34px">Apply Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>';
     if(j.application_form){html+='<div class="jd-notice" style="border-left-color:var(--teal);margin-bottom:34px"><strong>Application form:</strong> Please download our application form, fill it out, and upload it together with your resume when you apply.<br><a class="btn btn--ghost" href="'+esc(j.application_form)+'" target="_blank" download style="margin-top:12px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download Application Form</a></div>';}
     html+='<div class="jd-block"><h2>Job Details</h2><div class="jd-grid">'+factsHTML(j)+'</div></div>';
+    html+=paraBlock('About Us',j.about_us);
+    html+=paraBlock('Position Overview',j.overview);
+    html+=respBlock('Key Responsibilities',j.responsibilities);
+    html+=bulletBlock('Essential Job Functions',j.essential_functions);
+    html+=bulletBlock('Qualifications &amp; Requirements',j.requirements);
+    html+=bulletBlock('Preferred Skills',j.preferred);
+    html+=bulletBlock('Benefits',j.benefits);
     if(j.schedule||j.territories){
       html+='<div class="jd-block"><h2>Position Details</h2><div class="jd-grid">';
       if(j.schedule) html+='<div class="jd-fact"><strong>Expected Schedule</strong><span>'+esc(j.schedule)+'</span></div>';
       if(j.territories) html+='<div class="jd-fact"><strong>Locations / Territories</strong><span>'+esc(j.territories)+'</span></div>';
       html+='</div></div>';
     }
-    html+=block('Essential Job Functions',j.essential_functions);
-    html+=block('Requirements',j.requirements);
-    html+=block('Preferred Qualities',j.preferred);
-    html+='<div class="jd-block"><h2>Notice for Washington State Applicants</h2><div class="jd-notice">In accordance with Washington State law, Golden Years Home Health Supported Living LLC provides equal employment opportunities to all applicants without regard to race, color, religion, sex, national origin, age, disability, veteran status, or any other protected status. Certain positions require a background check, and clinical roles require valid Washington State licensure or certification. Pay ranges shown reflect Washington State pay-transparency requirements and may vary based on experience, credentials, and assignment.</div></div>';
+    html+='<div class="jd-block"><h2>Equal Opportunity Employer</h2><div class="jd-notice">'+esc(j.eeo||'Golden Years Home Health Supported Living LLC is an equal opportunity employer. In accordance with Washington State law, certain positions require a background check, and clinical roles require valid Washington State licensure or certification. Pay ranges reflect Washington State pay-transparency requirements and may vary based on experience, credentials, and assignment.')+'</div></div>';
     html+='<button class="btn btn--primary" onclick="openApply()" style="margin-top:10px">Apply for this Position <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>';
     document.getElementById('jobDetail').innerHTML=html;
     loadSimilar(j);

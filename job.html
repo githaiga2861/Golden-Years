@@ -163,6 +163,7 @@
       <div class="field"><label for="a-loc">Your Location (City / ZIP)</label><input id="a-loc" type="text" placeholder="e.g., Sumner, WA 98390"></div>
       <div class="field"><label for="a-msg">Why are you a great fit? (optional)</label><textarea id="a-msg" placeholder="Tell us briefly about your experience and why you'd like to join Golden Years…"></textarea></div>
       <div class="field"><label for="a-resume">Upload Resume * (PDF or Word)</label><input id="a-resume" type="file" accept=".pdf,.doc,.docx"></div>
+      <div class="field" id="a-form-wrap" style="display:none"><label for="a-form">Upload Completed Application Form (optional)</label><input id="a-form" type="file" accept=".pdf,.doc,.docx"><p class="formnote" style="margin:8px 0 0">If you downloaded our application form above, attach your filled copy here.</p></div>
       <div class="consent"><input id="a-consent" type="checkbox" required><label for="a-consent" style="font-weight:400;margin:0">I confirm the information provided is accurate and consent to be contacted about my application. *</label></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn btn--primary" id="applyBtn" type="button" onclick="submitApplication()" style="flex:1;justify-content:center;min-width:150px">Submit Application</button>
@@ -211,6 +212,7 @@ async function loadJob(id){
     var html='<span class="eyebrow">Now Hiring</span><h1 style="margin-bottom:8px">'+esc(j.title)+'</h1>';
     if(j.summary) html+='<p class="lead" style="margin-bottom:24px">'+esc(j.summary)+'</p>';
     html+='<button class="btn btn--primary" onclick="openApply()" style="margin-bottom:34px">Apply Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>';
+    if(j.application_form){html+='<div class="jd-notice" style="border-left-color:var(--teal);margin-bottom:34px"><strong>Application form:</strong> Please download our application form, fill it out, and upload it together with your resume when you apply.<br><a class="btn btn--ghost" href="'+esc(j.application_form)+'" target="_blank" download style="margin-top:12px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download Application Form</a></div>';}
     html+='<div class="jd-block"><h2>Job Details</h2><div class="jd-grid">'+factsHTML(j)+'</div></div>';
     if(j.schedule||j.territories){
       html+='<div class="jd-block"><h2>Position Details</h2><div class="jd-grid">';
@@ -247,6 +249,7 @@ function openApply(){
   var j=CURRENT_JOB;if(!j)return;
   document.getElementById('a-jobid').value=j.id;
   document.getElementById('a-jobtitle').value=j.title;
+  var afw=document.getElementById('a-form-wrap');if(afw)afw.style.display=j.application_form?'block':'none';
   var pf='<span class="job-tag">'+esc(j.title)+'</span>';
   if(j.schedule) pf+='<span class="job-tag">'+esc(j.schedule)+'</span>';
   if(j.location) pf+='<span class="job-tag">'+esc(j.location)+'</span>';
@@ -279,15 +282,28 @@ async function submitApplication(){
     var up=await sb.storage.from('resumes').upload(path,file,{cacheControl:'3600',upsert:false});
     if(up.error) throw up.error;
     var resumeUrl=sb.storage.from('resumes').getPublicUrl(path).data.publicUrl;
+    var filledUrl='';
+    var formInput=document.getElementById('a-form');
+    if(formInput&&formInput.files&&formInput.files[0]){
+      btn.textContent='Uploading form…';
+      var ff=formInput.files[0];
+      if(ff.size>10*1024*1024){toast('Form must be under 10MB.');btn.disabled=false;btn.textContent='Submit Application';return;}
+      var fext=(ff.name.split('.').pop()||'pdf').toLowerCase();
+      var fpath='filledform-'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+fext;
+      var fup=await sb.storage.from('resumes').upload(fpath,ff,{cacheControl:'3600',upsert:false});
+      if(fup.error) throw fup.error;
+      filledUrl=sb.storage.from('resumes').getPublicUrl(fpath).data.publicUrl;
+    }
     btn.textContent='Submitting…';
-    var ins=await sb.from('applications').insert([{job_id:jobId,job_title:jobTitle,applicant_name:name,email:email,phone:phone,location:loc,message:msg,resume_url:resumeUrl}]);
+    var ins=await sb.from('applications').insert([{job_id:jobId,job_title:jobTitle,applicant_name:name,email:email,phone:phone,location:loc,message:msg,resume_url:resumeUrl,filled_form_url:filledUrl}]);
     if(ins.error) throw ins.error;
     // email via web3forms
     var body='NEW JOB APPLICATION\n\n'+
       'POSITION: '+jobTitle+'\n\n'+
       'APPLICANT: '+name+'\nEMAIL: '+email+'\nPHONE: '+phone+'\nLOCATION: '+(loc||'-')+'\n\n'+
       'WHY A GOOD FIT:\n'+(msg||'-')+'\n\n'+
-      'RESUME (click to download): '+resumeUrl+'\n\n'+
+      'RESUME (click to download): '+resumeUrl+'\n'+
+      (filledUrl?'COMPLETED APPLICATION FORM: '+filledUrl+'\n':'')+'\n'+
       'VIEW & MANAGE IN YOUR ADMIN PAGE: '+SITE_BASE+'/careers-admin.html?goto=applications'+'\n\n'+
       'Tip: You can review every application, download resumes, and reply more easily from your careers admin page. Or reply directly to this email to reach the applicant.';
     try{

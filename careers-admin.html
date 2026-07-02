@@ -176,9 +176,15 @@
           <div class="field"><label for="j-summary">Short Summary (shown on the card) *</label><textarea id="j-summary" style="min-height:70px" placeholder="One or two sentences describing the role"></textarea></div>
           <div class="field"><label for="j-image">Card Image URL (optional)</label><input id="j-image" type="text" placeholder="Paste an image link, or leave blank"></div>
           <div class="field"><label for="j-form">Application Form (optional — PDF or Word)</label><input id="j-form" type="file" accept=".pdf,.doc,.docx"><p class="formnote" style="margin:8px 0 0">Attach a blank application form applicants can download, fill, and upload back with their resume. Leave empty to keep resume-only.</p><p id="j-form-current" style="font-size:.85rem;margin:6px 0 0"></p></div>
+          <div class="field"><label for="j-emptype">Employment Type</label><select id="j-emptype"><option value="">Please select…</option><option>Full-Time</option><option>Part-Time</option><option>PRN / As-Needed</option><option>Per Diem</option><option>Contract</option></select></div>
+          <div class="field"><label for="j-about">About Us</label><textarea id="j-about" style="min-height:110px" placeholder="About Golden Years (pre-filled — edit if needed)."></textarea></div>
+          <div class="field"><label for="j-overview">Position Overview *</label><textarea id="j-overview" style="min-height:120px" placeholder="A full paragraph describing the role's purpose and what the person will do day to day."></textarea></div>
+          <div class="field"><label for="j-resp">Key Responsibilities (grouped)</label><textarea id="j-resp" style="min-height:180px" placeholder="Group heading on its own line, then each duty on a new line starting with a dash (-). Example:&#10;Care Coordination &amp; Scheduling&#10;- Coordinate daily caregiver schedules&#10;- Match caregivers to client needs&#10;Documentation &amp; Compliance&#10;- Maintain accurate client records&#10;- Ensure HIPAA compliance"></textarea><p class="formnote" style="margin:8px 0 0">Type a group heading on its own line, then each duty beneath it starting with a dash (-). Repeat for each group.</p></div>
           <div class="field"><label for="j-ef">Essential Job Functions</label><textarea id="j-ef" placeholder="List the core duties. One per line."></textarea></div>
           <div class="field"><label for="j-req">Requirements</label><textarea id="j-req" placeholder="Licensure, experience, certifications. One per line."></textarea></div>
           <div class="field"><label for="j-pref">Preferred Qualities</label><textarea id="j-pref" placeholder="Nice-to-have qualities. One per line."></textarea></div>
+          <div class="field"><label for="j-benefits">Benefits</label><textarea id="j-benefits" style="min-height:110px" placeholder="One benefit per line (pre-filled — edit if needed)."></textarea></div>
+          <div class="field"><label for="j-eeo">Equal Opportunity / WA Notice</label><textarea id="j-eeo" style="min-height:110px" placeholder="Equal opportunity statement (pre-filled — edit if needed)."></textarea></div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <button class="btn btn--primary" id="saveJobBtn" type="button" onclick="saveJob()" style="flex:1;justify-content:center;min-width:150px">Save Job</button>
             <button class="btn btn--ghost" type="button" onclick="resetForm()" style="flex:1;justify-content:center;min-width:120px">Clear Form</button>
@@ -241,10 +247,17 @@ function showTab(t){
 }
 function resetForm(){
   ['j-id','j-title','j-category','j-location','j-salary','j-reference','j-schedule','j-territories','j-summary','j-image','j-ef','j-req','j-pref'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('j-overview').value='';document.getElementById('j-emptype').value='';document.getElementById('j-resp').value='';
+  document.getElementById('j-about').value=GY_DEFAULT_ABOUT;document.getElementById('j-benefits').value=GY_DEFAULT_BENEFITS;document.getElementById('j-eeo').value=GY_DEFAULT_EEO;
   var jf0=document.getElementById('j-form');if(jf0)jf0.value='';var jfc0=document.getElementById('j-form-current');if(jfc0)jfc0.innerHTML='';
   document.getElementById('formTitle').textContent='Add a New Job';
   document.getElementById('saveJobBtn').textContent='Save Job';
 }
+var GY_DEFAULT_ABOUT="Golden Years Home Health Supported Living LLC is a nurse-led home health and supported living agency based in Sumner, Washington, proudly serving families across Pierce, King, Thurston, Lewis, Pacific, Clallam, and Jefferson Counties. Founded and led by Rose Mbote, BSN, RN, RND, PDN, we are committed to compassionate, dignified, and professional care that helps our clients live safely and comfortably in their own homes. We support our team with hands-on training, nurse mentorship, and a collaborative, mission-driven work environment.";
+var GY_DEFAULT_BENEFITS="Competitive pay based on experience and credentials\nFlexible scheduling that respects your life\nPaid training and ongoing professional development\nSupportive, nurse-led team and mentorship\nMeaningful work caring for people in your own community";
+var GY_DEFAULT_EEO="Golden Years Home Health Supported Living LLC is an equal opportunity employer. We provide equal employment opportunities to all applicants and employees without regard to race, color, religion, sex, sexual orientation, gender identity, national origin, age, disability, veteran status, or any other status protected by applicable federal, state, or local law. In accordance with Washington State law, certain positions require a background check, and clinical roles require valid Washington State licensure or certification. Pay ranges reflect Washington State pay-transparency requirements and may vary based on experience, credentials, and assignment.";
+function fillJobDefaults(){var a=document.getElementById('j-about');if(a&&!a.value)a.value=GY_DEFAULT_ABOUT;var b=document.getElementById('j-benefits');if(b&&!b.value)b.value=GY_DEFAULT_BENEFITS;var e=document.getElementById('j-eeo');if(e&&!e.value)e.value=GY_DEFAULT_EEO;}
+document.addEventListener('DOMContentLoaded',fillJobDefaults);
 async function saveJob(){
   var rec={
     title:document.getElementById('j-title').value.trim(),
@@ -259,9 +272,17 @@ async function saveJob(){
     essential_functions:document.getElementById('j-ef').value.trim(),
     requirements:document.getElementById('j-req').value.trim(),
     preferred:document.getElementById('j-pref').value.trim(),
+    about_us:document.getElementById('j-about').value.trim(),
+    overview:document.getElementById('j-overview').value.trim(),
+    employment_type:document.getElementById('j-emptype').value.trim(),
+    responsibilities:document.getElementById('j-resp').value.trim(),
+    benefits:document.getElementById('j-benefits').value.trim(),
+    eeo:document.getElementById('j-eeo').value.trim(),
     published:true,featured:true
   };
   if(!rec.title||!rec.category||!rec.location||!rec.summary){toast('Title, category, location, and summary are required.');return;}
+  if(!rec.overview){toast('Please add a Position Overview.');return;}
+  if(!rec.responsibilities){toast('Please add Key Responsibilities.');return;}
   var id=document.getElementById('j-id').value;
   var btn=document.getElementById('saveJobBtn');btn.disabled=true;btn.textContent='Saving…';
   try{
@@ -314,6 +335,12 @@ function editJob(j){
   document.getElementById('j-ef').value=j.essential_functions||'';
   document.getElementById('j-req').value=j.requirements||'';
   document.getElementById('j-pref').value=j.preferred||'';
+  document.getElementById('j-about').value=j.about_us||'';
+  document.getElementById('j-overview').value=j.overview||'';
+  document.getElementById('j-emptype').value=j.employment_type||'';
+  document.getElementById('j-resp').value=j.responsibilities||'';
+  document.getElementById('j-benefits').value=j.benefits||'';
+  document.getElementById('j-eeo').value=j.eeo||'';
   var jf=document.getElementById('j-form');if(jf)jf.value='';
   var jfc=document.getElementById('j-form-current');if(jfc)jfc.innerHTML=j.application_form?'Current form attached: <a href="'+esc(j.application_form)+'" target="_blank" style="color:var(--teal)">view</a>. Choosing a new file replaces it.':'';
   document.getElementById('formTitle').textContent='Edit Job';

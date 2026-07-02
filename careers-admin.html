@@ -218,15 +218,16 @@ function togglePw(){
     eye.innerHTML='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
   }
 }
+function _gotoParam(){return new URLSearchParams(location.search).get('goto');}
+function _applyGoto(){var g=_gotoParam();if(g==='applications'||g==='apps'){showTab('apps');}else if(g==='jobs'){showTab('jobs');}}
+function openAdmin(){document.getElementById('gate').style.display='none';document.getElementById('panel').style.display='block';loadJobsAdmin();loadApps();_applyGoto();}
 function checkPw(){
   if(document.getElementById('pw').value===ADMIN_PW){
-    document.getElementById('gate').style.display='none';
-    document.getElementById('panel').style.display='block';
     try{sessionStorage.setItem('gy_admin','1');}catch(e){}
-    loadJobsAdmin();loadApps();
+    openAdmin();
   }else{document.getElementById('pwErr').style.display='block';}
 }
-try{if(sessionStorage.getItem('gy_admin')==='1'){document.addEventListener('DOMContentLoaded',function(){document.getElementById('gate').style.display='none';document.getElementById('panel').style.display='block';loadJobsAdmin();loadApps();});}}catch(e){}
+try{if(sessionStorage.getItem('gy_admin')==='1'){document.addEventListener('DOMContentLoaded',openAdmin);}}catch(e){}
 
 function showTab(t){
   document.getElementById('jobsTab').style.display=t==='jobs'?'block':'none';

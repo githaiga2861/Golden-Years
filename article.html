@@ -252,15 +252,15 @@ async function submitArticle(){
     var ins=await sb.from('articles').insert([{title:title,subtitle:sub,author:author,body:body,card_image:imageUrl,card_svg:card_svg,published:false}]).select().single();
     if(ins.error) throw ins.error;
     var newId=ins.data.id;
-    var publishLink=SITE_BASE+'/publish.html?id='+newId;
+    var adminLink=SITE_BASE+'/admin.html?goto=articles';
     var previewLink=SITE_BASE+'/article.html?id='+newId;
     btn.textContent='Notifying office…';
     var emailBody='A new article draft has been created on the Golden Years website.\n\n'+
       'TITLE: '+title+'\nSUMMARY: '+sub+(author?'\nAUTHOR: '+author:'')+'\n\n'+
       '--- ARTICLE BODY ---\n'+body+'\n--- END ---\n\n'+
-      'REVIEW & PUBLISH (make it live): '+publishLink+'\n'+
+      'REVIEW & APPROVE IN YOUR ADMIN PAGE: '+adminLink+'\n'+
       'PREVIEW THE DRAFT: '+previewLink+'\n\n'+
-      'Open the publish link, review the article, and click Publish to make it visible on the website.';
+      'Tip: You can review, approve, publish, and manage all articles more easily from your admin page.';
     try{
       await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({
         access_key:WEB3_KEY,

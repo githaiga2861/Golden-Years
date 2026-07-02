@@ -147,50 +147,13 @@
     <div id="panel" style="display:none">
       <div class="center" style="margin-bottom:20px"><span class="eyebrow center">Admin Dashboard</span><h1>Manage Your Website</h1><hr class="gold-rule center"></div>
       <div class="adm-tabs">
-        <button class="adm-tab active" id="tab-jobs" onclick="showTab('jobs')">Jobs</button>
-        <button class="adm-tab" id="tab-articles" onclick="showTab('articles')">Articles</button>
+        <button class="adm-tab active" id="tab-articles" onclick="showTab('articles')">Articles</button>
         <button class="adm-tab" id="tab-enquiries" onclick="showTab('enquiries')">Enquiries</button>
         <button class="adm-tab" id="tab-applications" onclick="showTab('applications')">Applications</button>
       </div>
 
-      <!-- JOBS -->
-      <div id="pane-jobs">
-        <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
-          <a class="btn btn--ghost" href="careers-admin.html" target="_blank" style="font-size:.9rem"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Open Full Careers Admin</a>
-        </div>
-        <div class="form" style="margin-bottom:30px">
-          <h3 id="jobFormTitle">Add a New Job</h3>
-          <p class="formnote">Fields marked * are required. The job appears on the Careers page as soon as you save.</p>
-          <input type="hidden" id="j-id">
-          <div class="field"><label for="j-title">Job Title *</label><input id="j-title" type="text" placeholder="e.g., Registered Nurse (RN) — Home Health"></div>
-          <div class="field--row">
-            <div class="field"><label for="j-category">Category *</label><input id="j-category" type="text" placeholder="e.g., Nursing, Caregiving"></div>
-            <div class="field"><label for="j-location">Location *</label><input id="j-location" type="text" placeholder="e.g., Sumner, WA / Pierce County"></div>
-          </div>
-          <div class="field--row">
-            <div class="field"><label for="j-salary">Salary / Pay Range</label><input id="j-salary" type="text" placeholder="e.g., $38–$48 / hour"></div>
-            <div class="field"><label for="j-reference">Reference No.</label><input id="j-reference" type="text" placeholder="e.g., GY-RN-2026-014"></div>
-          </div>
-          <div class="field--row">
-            <div class="field"><label for="j-schedule">Expected Schedule</label><input id="j-schedule" type="text" placeholder="e.g., Full-time, Mon–Fri"></div>
-            <div class="field"><label for="j-territories">Locations / Territories</label><input id="j-territories" type="text" placeholder="e.g., Sumner, Puyallup, Auburn"></div>
-          </div>
-          <div class="field"><label for="j-summary">Short Summary *</label><textarea id="j-summary" style="min-height:70px"></textarea></div>
-          <div class="field"><label for="j-image">Card Image URL (optional)</label><input id="j-image" type="text"></div>
-          <div class="field"><label for="j-ef">Essential Job Functions</label><textarea id="j-ef" placeholder="One per line."></textarea></div>
-          <div class="field"><label for="j-req">Requirements</label><textarea id="j-req" placeholder="One per line."></textarea></div>
-          <div class="field"><label for="j-pref">Preferred Qualities</label><textarea id="j-pref" placeholder="One per line."></textarea></div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn btn--primary" id="saveJobBtn" type="button" onclick="saveJob()" style="flex:1;justify-content:center;min-width:150px">Save Job</button>
-            <button class="btn btn--ghost" type="button" onclick="resetJobForm()" style="flex:1;justify-content:center;min-width:120px">Clear Form</button>
-          </div>
-        </div>
-        <h3 style="margin-bottom:14px">Current Postings</h3>
-        <div id="jobsAdmin"><div class="job-loading"><div class="job-spinner"></div>Loading…</div></div>
-      </div>
-
       <!-- ARTICLES -->
-      <div id="pane-articles" style="display:none">
+      <div id="pane-articles">
         <p class="formnote" style="margin-bottom:18px">Review drafts and approve them to publish. Published articles appear on Resources and the Articles page. To write a new article, use the <a href="article.html">article form</a>.</p>
         <div id="articlesAdmin"><div class="job-loading"><div class="job-spinner"></div>Loading…</div></div>
       </div>
@@ -244,11 +207,11 @@ function checkPw(){
   }else{document.getElementById('pwErr').style.display='block';}
 }
 try{if(sessionStorage.getItem('gy_admin')==='1'){document.addEventListener('DOMContentLoaded',function(){document.getElementById('gate').style.display='none';document.getElementById('panel').style.display='block';loadAll();});}}catch(e){}
-function loadAll(){loadJobsAdmin();loadArticlesAdmin();loadEnquiries();loadApps();}
+function loadAll(){loadArticlesAdmin();loadEnquiries();loadApps();}
 function fmtDate(d){try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});}catch(e){return '';}}
 
 function showTab(t){
-  ['jobs','articles','enquiries','applications'].forEach(function(x){
+  ['articles','enquiries','applications'].forEach(function(x){
     document.getElementById('pane-'+x).style.display=(x===t)?'block':'none';
     document.getElementById('tab-'+x).classList.toggle('active',x===t);
   });

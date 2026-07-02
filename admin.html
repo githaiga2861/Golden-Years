@@ -191,15 +191,16 @@ function togglePw(){
     eye.innerHTML='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
   }
 }
+function _gotoParam(){return new URLSearchParams(location.search).get('goto');}
+function _applyGoto(){var g=_gotoParam();if(g==='articles'||g==='enquiries'){showTab(g);}}
+function openAdmin(){document.getElementById('gate').style.display='none';document.getElementById('panel').style.display='block';loadAll();_applyGoto();}
 function checkPw(){
   if(document.getElementById('pw').value===ADMIN_PW){
-    document.getElementById('gate').style.display='none';
-    document.getElementById('panel').style.display='block';
     try{sessionStorage.setItem('gy_admin','1');}catch(e){}
-    loadAll();
+    openAdmin();
   }else{document.getElementById('pwErr').style.display='block';}
 }
-try{if(sessionStorage.getItem('gy_admin')==='1'){document.addEventListener('DOMContentLoaded',function(){document.getElementById('gate').style.display='none';document.getElementById('panel').style.display='block';loadAll();});}}catch(e){}
+try{if(sessionStorage.getItem('gy_admin')==='1'){document.addEventListener('DOMContentLoaded',openAdmin);}}catch(e){}
 function loadAll(){loadArticlesAdmin();loadEnquiries();}
 function fmtDate(d){try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});}catch(e){return '';}}
 
@@ -250,10 +251,12 @@ async function loadEnquiries(){
     box.innerHTML=r.data.map(function(en){
       var extra='';
       if(en.details){try{var d=typeof en.details==='string'?JSON.parse(en.details):en.details;for(var k in d){if(d[k])extra+='<div style="font-size:.86rem;color:var(--slate)"><strong style="color:var(--ink)">'+esc(k)+':</strong> '+esc(d[k])+'</div>';}}catch(e){}}
-      return '<div class="adm-row"><div class="adm-row__body"><span class="pub-status '+(en.form_type==='Care Inquiry'?'pub-status--live':'pub-status--draft')+'">'+esc(en.form_type||'Enquiry')+'</span><h3 style="margin-top:8px">'+esc(en.name||'(no name)')+'</h3><p style="font-size:.9rem">'+esc(en.email||'')+(en.phone?' · '+esc(en.phone):'')+' · <span style="color:var(--slate-2)">'+fmtDate(en.created_at)+'</span></p>'+(en.message?'<p style="font-size:.9rem;margin-top:6px">'+esc(en.message)+'</p>':'')+extra+'<div class="adm-actions">'+(en.email?'<a class="adm-btn" href="mailto:'+esc(en.email)+'?subject=Re: Your enquiry to Golden Years Home Health">Reply by Email</a>':'')+'<button class="adm-btn adm-btn--warn" onclick="delEnquiry(\''+en.id+'\')">Delete</button></div></div></div>';
+      return '<div class="adm-row"><div class="adm-row__body"><span class="pub-status '+(en.form_type==='Care Inquiry'?'pub-status--live':'pub-status--draft')+'">'+esc(en.form_type||'Enquiry')+'</span><h3 style="margin-top:8px">'+esc(en.name||'(no name)')+'</h3><p style="font-size:.9rem">'+esc(en.email||'')+(en.phone?' · '+esc(en.phone):'')+' · <span style="color:var(--slate-2)">'+fmtDate(en.created_at)+'</span></p>'+(en.message?'<p style="font-size:.9rem;margin-top:6px">'+esc(en.message)+'</p>':'')+extra+'<div class="adm-actions">'+(en.email?'<button class="adm-btn" style="background:var(--teal);color:#fff;border-color:var(--teal)" onclick="toggleReply(\''+en.id+'\')">Reply</button>':'')+'<button class="adm-btn adm-btn--warn" onclick="delEnquiry(\''+en.id+'\')">Delete</button></div>'+(en.email?'<div id="rep-'+en.id+'" style="display:none;margin-top:12px"><textarea id="repmsg-'+en.id+'" placeholder="Type your reply…" style="width:100%;min-height:90px;padding:12px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:.92rem"></textarea><button class="adm-btn" style="background:var(--teal);color:#fff;border-color:var(--teal);margin-top:8px" onclick="sendReply(\''+en.id+'\',\''+esc(en.email)+'\')">Open Email to Send</button></div>':'')+'</div></div>';
     }).join('');
   }catch(e){box.innerHTML='<div class="job-empty"><p>Could not load enquiries. Make sure the enquiries table exists in Supabase.</p></div>';}
 }
+function toggleReply(id){var d=document.getElementById('rep-'+id);if(d)d.style.display=(d.style.display==='none'||!d.style.display)?'block':'none';}
+function sendReply(id,email){var m=document.getElementById('repmsg-'+id);var body=encodeURIComponent(m&&m.value?m.value:'');var sub=encodeURIComponent('Re: Your enquiry to Golden Years Home Health');window.location.href='mailto:'+email+'?subject='+sub+'&body='+body;}
 async function delEnquiry(id){if(!confirm('Delete this enquiry?'))return;try{var r=await sb.from('enquiries').delete().eq('id',id);if(r.error)throw r.error;toast('Enquiry deleted.');loadEnquiries();}catch(e){toast('Delete failed.');}}
 
 /* ---------- APPLICATIONS ---------- */

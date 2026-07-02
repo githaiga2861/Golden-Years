@@ -146,6 +146,9 @@
     <!-- PANEL -->
     <div id="panel" style="display:none">
       <div class="center" style="margin-bottom:20px"><span class="eyebrow center">Admin Dashboard</span><h1>Manage Your Website</h1><hr class="gold-rule center"></div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:18px">
+        <button class="btn btn--ghost" onclick="signOut()" style="font-size:.9rem"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Sign Out</button>
+      </div>
       <div class="adm-tabs">
         <button class="adm-tab active" id="tab-articles" onclick="showTab('articles')">Articles</button>
         <button class="adm-tab" id="tab-enquiries" onclick="showTab('enquiries')">Enquiries</button>
@@ -189,6 +192,7 @@ function _gotoParam(){return new URLSearchParams(location.search).get('goto');}
 function _applyGoto(){var g=_gotoParam();if(g==='articles'||g==='enquiries'){showTab(g);}}
 function openAdmin(){document.getElementById('gate').style.display='none';document.getElementById('panel').style.display='block';loadAll();_applyGoto();}
 function checkPw(){if(document.getElementById('pw').value===ADMIN_PW){try{sessionStorage.setItem('gy_admin','1');}catch(e){}openAdmin();}else{document.getElementById('pwErr').style.display='block';}}
+function signOut(){try{sessionStorage.removeItem('gy_admin');}catch(e){}location.href='admin.html';}
 try{if(sessionStorage.getItem('gy_admin')==='1'){document.addEventListener('DOMContentLoaded',openAdmin);}}catch(e){}
 function loadAll(){loadArticlesAdmin();loadEnquiries();}
 function fmtDate(d){try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});}catch(e){return '';}}

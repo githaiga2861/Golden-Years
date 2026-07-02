@@ -288,7 +288,8 @@ async function submitApplication(){
       'APPLICANT: '+name+'\nEMAIL: '+email+'\nPHONE: '+phone+'\nLOCATION: '+(loc||'-')+'\n\n'+
       'WHY A GOOD FIT:\n'+(msg||'-')+'\n\n'+
       'RESUME (click to download): '+resumeUrl+'\n\n'+
-      'Reply directly to this email to reach the applicant.';
+      'VIEW & MANAGE IN YOUR ADMIN PAGE: '+SITE_BASE+'/careers-admin.html?goto=applications'+'\n\n'+
+      'Tip: You can review every application, download resumes, and reply more easily from your careers admin page. Or reply directly to this email to reach the applicant.';
     try{
       await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({
         access_key:WEB3_KEY,subject:'New Job Application: '+jobTitle+' — '+name,from_name:'Golden Years Careers',email:'contact@goldenyearshomehealthllc.com',replyto:email,message:body

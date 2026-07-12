@@ -2,10 +2,397 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="canonical" href="https://goldenyearshomehealthllc.com/careers-admin">
-<meta http-equiv="refresh" content="0; url=/careers-admin">
-<script>var q=location.search||'';var h=location.hash||'';location.replace('/careers-admin'+q+h);</script>
-<title>Redirecting…</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers Admin | Golden Years Home Health</title>
+<meta name="description" content="Staff-only careers administration.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="apple-touch-icon" href="/images/favicon.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* ===== Careers system styles ===== */
+.job-search{background:#fff;border-radius:var(--r-xl);box-shadow:var(--shadow-md);padding:22px;display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;max-width:940px;margin-top:8px}
+.job-search .field{margin:0}
+.job-search input,.job-search select{width:100%;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:.96rem;color:var(--ink);background:var(--mist-2)}
+.job-search input:focus,.job-search select:focus{outline:none;border-color:var(--teal);background:#fff;box-shadow:var(--ring)}
+.job-search .btn{width:100%;justify-content:center;white-space:nowrap}
+@media(max-width:820px){.job-search{grid-template-columns:1fr 1fr}.job-search .btn{grid-column:1/-1}}
+@media(max-width:520px){.job-search{grid-template-columns:1fr}}
+.career-hi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px}
+.hi-card{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-sm);min-height:200px;display:flex;align-items:flex-end;color:#fff;isolation:isolate;transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.hi-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.hi-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hi-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(4,30,79,.9),rgba(4,30,79,.15) 70%);z-index:-1}
+.hi-card span{padding:20px;font-family:'Playfair Display',serif;font-size:1.16rem;font-weight:600;line-height:1.25}
+.job-list{display:flex;flex-direction:column;gap:16px}
+.job-item{background:#fff;border:1px solid var(--line-2);border-radius:var(--r-lg);padding:26px 28px;box-shadow:var(--shadow-xs);transition:box-shadow .3s,border-color .3s,transform .3s;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.job-item:hover{box-shadow:var(--shadow-sm);border-color:var(--line);transform:translateY(-2px)}
+.job-item__meta{flex:1;min-width:220px}
+.job-item__meta h3{margin-bottom:8px}
+.job-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.job-tag{display:inline-flex;align-items:center;gap:6px;background:var(--mist);color:var(--teal-700);font-size:.8rem;font-weight:600;padding:5px 13px;border-radius:50px}
+.job-tag svg{width:13px;height:13px}
+.job-item .btn{flex-shrink:0}
+.job-empty{text-align:center;padding:60px 24px;background:var(--mist-2);border-radius:var(--r-lg);color:var(--slate)}
+.job-loading{text-align:center;padding:60px 0;color:var(--slate)}
+.job-spinner{width:42px;height:42px;border:3px solid var(--mist);border-top-color:var(--teal);border-radius:50%;animation:jspin .8s linear infinite;margin:0 auto 16px}
+@keyframes jspin{to{transform:rotate(360deg)}}
+/* Job detail page */
+.job-detail{max-width:820px}
+.jd-block{margin-bottom:34px}
+.jd-block h2{font-size:1.5rem;margin-bottom:12px;color:var(--teal-700)}
+.jd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.jd-fact{background:var(--mist-2);border:1px solid var(--line-2);border-radius:14px;padding:16px 18px}
+.jd-fact strong{display:block;font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;color:var(--teal-soft);margin-bottom:5px}
+.jd-fact span{color:var(--ink);font-weight:600}
+.jd-body{white-space:pre-line;color:var(--ink);line-height:1.75}
+.jd-body ul{margin:0 0 0 1.2rem}
+.jd-notice{background:var(--mist);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:18px 22px;font-size:.92rem;color:var(--slate)}
+@media(max-width:640px){.jd-grid{grid-template-columns:1fr}}
+/* Apply modal */
+.apply-wrap{display:none;position:fixed;inset:0;z-index:9990;background:rgba(4,30,79,.55);overflow-y:auto;padding:40px 16px}
+.apply-card{max-width:640px;margin:0 auto}
+.apply-prefill{background:var(--teal-900);color:#fff;border-radius:var(--r-lg) var(--r-lg) 0 0;padding:22px 28px}
+.apply-prefill h3{color:#fff;margin-bottom:10px}
+.apply-prefill .job-tag{background:rgba(255,255,255,.14);color:#fff}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal-900);color:#fff;padding:14px 26px;border-radius:50px;font-weight:600;font-size:.92rem;box-shadow:var(--shadow-lg);opacity:0;transition:all .4s var(--ease);z-index:9999;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Admin */
+.admin-gate{max-width:420px;margin:0 auto;text-align:center}
+.adm-row{display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--line-2);border-radius:var(--r-lg);padding:20px;margin-bottom:14px;box-shadow:var(--shadow-xs)}
+.adm-row__body{flex:1;min-width:0}
+.adm-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.adm-btn{font-size:.84rem;font-weight:600;padding:8px 16px;border-radius:50px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:all .25s}
+.adm-btn:hover{border-color:var(--teal);color:var(--teal)}
+.adm-btn--warn:hover{border-color:#c0392b;color:#c0392b}
+.adm-tabs{display:flex;gap:10px;margin-bottom:26px;flex-wrap:wrap}
+.adm-tab{padding:10px 22px;border-radius:50px;background:var(--mist);color:var(--teal-700);font-weight:600;cursor:pointer;border:none;font-size:.92rem}
+.adm-tab.active{background:var(--teal);color:#fff}
+</style>
+<meta name="robots" content="noindex, nofollow">
 </head>
-<body><p>Redirecting to <a href="/careers-admin">/careers-admin</a>…</p></body>
-</html>
+
+<body>
+<a href="#main" class="skip">Skip to main content</a>
+<header class="header">
+  <div class="topbar">
+    <a class="topbar__phone" href="tel:+12067171234"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg>(206) 717-1234</a>
+    <div class="topbar__social">
+      <a href="https://www.facebook.com/share/1D7sYp1msU/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8.5V7c0-1 .5-1.5 1.7-1.5H17V2.5h-2.5C11.8 2.5 11 4.3 11 6.3v2.2H8.5V12H11v9.5h3V12h2.3l.5-3.5Z"/></svg></a>
+      <a href="mailto:contact@goldenyearshomehealthllc.com" aria-label="Email Us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg></a>
+      <a href="https://www.instagram.com/goldenyearshomehealth?igsh=aGVhajcybGlqOHRt" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+    </div>
+  </div>
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years Home Health Supported Living logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Health &bull; Supported Living</span></span></a>
+    <ul class="navlinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li class="has-drop"><a href="/services">Services<i class="caret"></i></a>
+        <ul class="dropdown dropdown--wide">
+          <li><a href="/services">All Services Overview</a></li>
+          <li><a href="/services#personal-care">Personal Care Services</a></li>
+          <li><a href="/services#medication">Medication Management</a></li>
+          <li><a href="/services#respite">Respite Care</a></li>
+          <li><a href="/services#pdn">Private Duty Nursing</a></li>
+          <li><a href="/services#chronic">Chronic Disease Management</a></li>
+          <li><a href="/nurse-delegation">Nurse Delegation</a></li>
+          <li><a href="/hca-training">Caregiver Training</a></li>
+          <li><a href="/services#post-surgery">Post-Surgery Care</a></li>
+          <li><a href="/services#rn-visit">RN Visitation</a></li>
+          <li><a href="/services#catheter">Catheter Care</a></li>
+          <li><a href="/services#enteral">Enteral Feeds / G-Tube</a></li>
+          <li><a href="/services#supported-living">Supported Living</a></li>
+          <li><a href="/services#care-coordination">Care Coordination</a></li>
+        </ul></li>
+      <li class="has-drop"><a href="/skilled-nursing">Skilled Nursing<i class="caret"></i></a>
+        <ul class="dropdown">
+          <li><a href="/skilled-nursing">Skilled Nursing Overview</a></li>
+          <li><a href="/skilled-nursing#wound">Wound Care</a></li>
+          <li><a href="/skilled-nursing#glucose">Blood Glucose &amp; Insulin</a></li>
+          <li><a href="/skilled-nursing#therapy">Therapy Services (PT/OT/ST)</a></li>
+          <li><a href="/skilled-nursing#post-hosp">Post-Hospitalization Care</a></li>
+          <li><a href="/skilled-nursing#team">Our Clinical Team</a></li>
+          <li><a href="/nurse-delegation">Nurse Delegation</a></li>
+          <li><a href="/hca-training">HCA Training</a></li>
+        </ul></li>
+      <li><a href="/resources">Resources</a></li>
+      <li class="active"><a href="/careers">Careers</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    <div class="nav__actions"></div>
+    <button class="hamburger" aria-label="Open menu" onclick="document.getElementById('mm').classList.add('open')"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+<div class="mobile-menu" id="mm"><div class="mobile-menu__panel"><div class="mobile-menu__head"><a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Health &bull; Supported Living</span></span></a><button class="mobile-menu__close" aria-label="Close menu" onclick="document.getElementById('mm').classList.remove('open')">×</button></div><nav class="mobile-menu__nav"><a class="mm-item" href="/">Home</a><a class="mm-item" href="/about">About Us</a><div class="mm-group"><button class="mm-group__toggle" onclick="this.parentElement.classList.toggle('open')">Services <i class="mm-arrow"></i></button><div class="mm-group__links"><a href="/services">All Services</a><a href="/services#personal-care">Personal Care</a><a href="/services#medication">Medication Management</a><a href="/services#respite">Respite Care</a><a href="/services#pdn">Private Duty Nursing</a><a href="/services#chronic">Chronic Disease Management</a><a href="/services#post-surgery">Post-Surgery Care</a><a href="/services#supported-living">Supported Living</a></div></div><div class="mm-group"><button class="mm-group__toggle" onclick="this.parentElement.classList.toggle('open')">Skilled Nursing <i class="mm-arrow"></i></button><div class="mm-group__links"><a href="/skilled-nursing">Overview</a><a href="/skilled-nursing#wound">Wound Care</a><a href="/skilled-nursing#glucose">Blood Glucose &amp; Insulin</a><a href="/skilled-nursing#therapy">Therapy Services</a><a href="/skilled-nursing#post-hosp">Post-Hospitalization</a><a href="/nurse-delegation">Nurse Delegation</a><a href="/hca-training">HCA Training</a></div></div><a class="mm-item" href="/resources">Resources &amp; FAQ</a><a class="mm-item" href="/careers">Careers</a><a class="mm-item" href="/contact">Contact Us</a></nav><div class="mobile-menu__foot"><a class="btn btn--primary" href="/contact">Request Care</a><a class="mm-tel" href="tel:+12067171234"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg>(206) 717-1234</a></div></div></div>
+<main id="main">
+<section class="section" style="padding-top:200px;min-height:70vh">
+  <div class="wrap">
+
+    <!-- PASSWORD GATE -->
+    <div id="gate" class="admin-gate">
+      <span class="eyebrow center">Staff Only</span>
+      <h1>Careers Admin</h1>
+      <hr class="gold-rule center">
+      <p class="lead center" style="font-size:1rem">Enter the admin password to manage job postings and view applications.</p>
+      <div class="form" style="margin-top:20px">
+        <div class="field"><label for="pw">Password</label><div style="position:relative"><input id="pw" type="password" onkeydown="if(event.key==='Enter')checkPw()" style="padding-right:48px"><button type="button" onclick="togglePw()" aria-label="Show or hide password" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:8px;display:grid;place-items:center;color:var(--slate)"><svg id="pwEye" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+        <button class="btn btn--primary" onclick="checkPw()" style="width:100%;justify-content:center">Enter</button>
+        <p id="pwErr" style="color:#c0392b;margin-top:12px;display:none;font-size:.9rem">Incorrect password. Please try again.</p>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="panel" style="display:none">
+      <div class="center" style="margin-bottom:20px"><span class="eyebrow center">Careers Admin</span><h1>Manage Careers</h1><hr class="gold-rule center"></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:18px">
+        <a class="btn btn--ghost" href="/admin" style="font-size:.9rem"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M15 18l-6-6 6-6"/></svg>Back to Admin</a>
+      </div>
+      <div class="adm-tabs">
+        <button class="adm-tab active" id="tabJobs" onclick="showTab('jobs')">Job Postings</button>
+        <button class="adm-tab" id="tabApps" onclick="showTab('apps')">Applications</button>
+      </div>
+
+      <!-- JOBS TAB -->
+      <div id="jobsTab">
+        <div class="form" style="margin-bottom:30px">
+          <h3 id="formTitle">Add a New Job</h3>
+          <p class="formnote">Fields marked * are required. The job appears on the Careers page as soon as you save it.</p>
+          <input type="hidden" id="j-id">
+          <div class="field"><label for="j-title">Job Title *</label><input id="j-title" type="text" placeholder="e.g., Registered Nurse (RN) — Home Health"></div>
+          <div class="field--row">
+            <div class="field"><label for="j-category">Category *</label><input id="j-category" type="text" placeholder="e.g., Nursing, Caregiving, Administration"></div>
+            <div class="field"><label for="j-location">Location *</label><input id="j-location" type="text" placeholder="e.g., Sumner, WA / Pierce County"></div>
+          </div>
+          <div class="field--row">
+            <div class="field"><label for="j-salary">Salary / Pay Range</label><input id="j-salary" type="text" placeholder="e.g., $38–$48 / hour"></div>
+            <div class="field"><label for="j-reference">Reference No.</label><input id="j-reference" type="text" placeholder="e.g., GY-RN-2026-014"></div>
+          </div>
+          <div class="field--row">
+            <div class="field"><label for="j-schedule">Expected Schedule</label><input id="j-schedule" type="text" placeholder="e.g., Full-time, Mon–Fri, day shift"></div>
+            <div class="field"><label for="j-territories">Locations / Territories</label><input id="j-territories" type="text" placeholder="e.g., Sumner, Puyallup, Auburn"></div>
+          </div>
+          <div class="field"><label for="j-summary">Short Summary (shown on the card) *</label><textarea id="j-summary" style="min-height:70px" placeholder="One or two sentences describing the role"></textarea></div>
+          <div class="field"><label for="j-image">Card Image URL (optional)</label><input id="j-image" type="text" placeholder="Paste an image link, or leave blank"></div>
+          <div class="field"><label for="j-form">Application Form (optional — PDF or Word)</label><input id="j-form" type="file" accept=".pdf,.doc,.docx"><p class="formnote" style="margin:8px 0 0">Attach a blank application form applicants can download, fill, and upload back with their resume. Leave empty to keep resume-only.</p><p id="j-form-current" style="font-size:.85rem;margin:6px 0 0"></p></div>
+          <div class="field"><label for="j-emptype">Employment Type</label><select id="j-emptype"><option value="">Please select…</option><option>Full-Time</option><option>Part-Time</option><option>PRN / As-Needed</option><option>Per Diem</option><option>Contract</option></select></div>
+          <div class="field"><label for="j-about">About Us</label><textarea id="j-about" style="min-height:110px" placeholder="About Golden Years (pre-filled — edit if needed)."></textarea></div>
+          <div class="field"><label for="j-overview">Position Overview *</label><textarea id="j-overview" style="min-height:120px" placeholder="A full paragraph describing the role's purpose and what the person will do day to day."></textarea></div>
+          <div class="field"><label for="j-resp">Key Responsibilities (grouped)</label><textarea id="j-resp" style="min-height:180px" placeholder="Group heading on its own line, then each duty on a new line starting with a dash (-). Example:&#10;Care Coordination &amp; Scheduling&#10;- Coordinate daily caregiver schedules&#10;- Match caregivers to client needs&#10;Documentation &amp; Compliance&#10;- Maintain accurate client records&#10;- Ensure HIPAA compliance"></textarea><p class="formnote" style="margin:8px 0 0">Type a group heading on its own line, then each duty beneath it starting with a dash (-). Repeat for each group.</p></div>
+          <div class="field"><label for="j-ef">Essential Job Functions</label><textarea id="j-ef" placeholder="List the core duties. One per line."></textarea></div>
+          <div class="field"><label for="j-req">Requirements</label><textarea id="j-req" placeholder="Licensure, experience, certifications. One per line."></textarea></div>
+          <div class="field"><label for="j-pref">Preferred Qualities</label><textarea id="j-pref" placeholder="Nice-to-have qualities. One per line."></textarea></div>
+          <div class="field"><label for="j-benefits">Benefits</label><textarea id="j-benefits" style="min-height:110px" placeholder="One benefit per line (pre-filled — edit if needed)."></textarea></div>
+          <div class="field"><label for="j-eeo">Equal Opportunity / WA Notice</label><textarea id="j-eeo" style="min-height:110px" placeholder="Equal opportunity statement (pre-filled — edit if needed)."></textarea></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn--primary" id="saveJobBtn" type="button" onclick="saveJob()" style="flex:1;justify-content:center;min-width:150px">Save Job</button>
+            <button class="btn btn--ghost" type="button" onclick="resetForm()" style="flex:1;justify-content:center;min-width:120px">Clear Form</button>
+          </div>
+        </div>
+        <h3 style="margin-bottom:14px">Current Postings</h3>
+        <div id="jobsAdmin"><div class="job-loading"><div class="job-spinner"></div>Loading…</div></div>
+      </div>
+
+      <!-- APPLICATIONS TAB -->
+      <div id="appsTab" style="display:none">
+        <h3 style="margin-bottom:14px">Submitted Applications</h3>
+        <div id="appsList"><div class="job-loading"><div class="job-spinner"></div>Loading…</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>const SUPABASE_URL='https://uldywugntkykeftuzxys.supabase.co';
+const SUPABASE_KEY='sb_publishable_kCCHxG8VAO_APnGWxCgLDg_Wj6Vxjj7';
+const SITE_BASE='https://goldenyearshomehealthllc.com';
+const WEB3_KEY='40d97e85-xxxx-xxxx-xxxx-7624f70df2b0';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(m){var t=document.getElementById('toast');if(!t)return;t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3200);}
+</script>
+<script>
+var ADMIN_PW='GoldenYears2026';  // change this to your chosen password
+function togglePw(){
+  var inp=document.getElementById('pw');
+  var eye=document.getElementById('pwEye');
+  if(inp.type==='password'){
+    inp.type='text';
+    eye.innerHTML='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/>';
+  } else {
+    inp.type='password';
+    eye.innerHTML='<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
+  }
+}
+function _gotoParam(){return new URLSearchParams(location.search).get('goto');}
+function _applyGoto(){var g=_gotoParam();if(g==='applications'||g==='apps'){showTab('apps');}else if(g==='jobs'){showTab('jobs');}}
+function openAdmin(){document.getElementById('gate').style.display='none';document.getElementById('panel').style.display='block';loadJobsAdmin();loadApps();_applyGoto();}
+function checkPw(){
+  if(document.getElementById('pw').value===ADMIN_PW){
+    try{sessionStorage.setItem('gy_admin','1');}catch(e){}
+    openAdmin();
+  }else{document.getElementById('pwErr').style.display='block';}
+}
+try{if(sessionStorage.getItem('gy_admin')==='1'){document.addEventListener('DOMContentLoaded',openAdmin);}}catch(e){}
+
+function showTab(t){
+  document.getElementById('jobsTab').style.display=t==='jobs'?'block':'none';
+  document.getElementById('appsTab').style.display=t==='apps'?'block':'none';
+  document.getElementById('tabJobs').classList.toggle('active',t==='jobs');
+  document.getElementById('tabApps').classList.toggle('active',t==='apps');
+}
+function resetForm(){
+  ['j-id','j-title','j-category','j-location','j-salary','j-reference','j-schedule','j-territories','j-summary','j-image','j-ef','j-req','j-pref'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('j-overview').value='';document.getElementById('j-emptype').value='';document.getElementById('j-resp').value='';
+  document.getElementById('j-about').value=GY_DEFAULT_ABOUT;document.getElementById('j-benefits').value=GY_DEFAULT_BENEFITS;document.getElementById('j-eeo').value=GY_DEFAULT_EEO;
+  var jf0=document.getElementById('j-form');if(jf0)jf0.value='';var jfc0=document.getElementById('j-form-current');if(jfc0)jfc0.innerHTML='';
+  document.getElementById('formTitle').textContent='Add a New Job';
+  document.getElementById('saveJobBtn').textContent='Save Job';
+}
+var GY_DEFAULT_ABOUT="Golden Years Home Health Supported Living LLC is a nurse-led home health and supported living agency based in Sumner, Washington, proudly serving families across Pierce, King, Thurston, Lewis, Pacific, Clallam, and Jefferson Counties. Founded and led by Rose Mbote, BSN, RN, RND, PDN, we are committed to compassionate, dignified, and professional care that helps our clients live safely and comfortably in their own homes. We support our team with hands-on training, nurse mentorship, and a collaborative, mission-driven work environment.";
+var GY_DEFAULT_BENEFITS="Competitive pay based on experience and credentials\nFlexible scheduling that respects your life\nPaid training and ongoing professional development\nSupportive, nurse-led team and mentorship\nMeaningful work caring for people in your own community";
+var GY_DEFAULT_EEO="Golden Years Home Health Supported Living LLC is an equal opportunity employer. We provide equal employment opportunities to all applicants and employees without regard to race, color, religion, sex, sexual orientation, gender identity, national origin, age, disability, veteran status, or any other status protected by applicable federal, state, or local law. In accordance with Washington State law, certain positions require a background check, and clinical roles require valid Washington State licensure or certification. Pay ranges reflect Washington State pay-transparency requirements and may vary based on experience, credentials, and assignment.";
+function fillJobDefaults(){var a=document.getElementById('j-about');if(a&&!a.value)a.value=GY_DEFAULT_ABOUT;var b=document.getElementById('j-benefits');if(b&&!b.value)b.value=GY_DEFAULT_BENEFITS;var e=document.getElementById('j-eeo');if(e&&!e.value)e.value=GY_DEFAULT_EEO;}
+document.addEventListener('DOMContentLoaded',fillJobDefaults);
+async function saveJob(){
+  var rec={
+    title:document.getElementById('j-title').value.trim(),
+    category:document.getElementById('j-category').value.trim(),
+    location:document.getElementById('j-location').value.trim(),
+    salary:document.getElementById('j-salary').value.trim(),
+    reference:document.getElementById('j-reference').value.trim(),
+    schedule:document.getElementById('j-schedule').value.trim(),
+    territories:document.getElementById('j-territories').value.trim(),
+    summary:document.getElementById('j-summary').value.trim(),
+    card_image:document.getElementById('j-image').value.trim(),
+    essential_functions:document.getElementById('j-ef').value.trim(),
+    requirements:document.getElementById('j-req').value.trim(),
+    preferred:document.getElementById('j-pref').value.trim(),
+    about_us:document.getElementById('j-about').value.trim(),
+    overview:document.getElementById('j-overview').value.trim(),
+    employment_type:document.getElementById('j-emptype').value.trim(),
+    responsibilities:document.getElementById('j-resp').value.trim(),
+    benefits:document.getElementById('j-benefits').value.trim(),
+    eeo:document.getElementById('j-eeo').value.trim(),
+    published:true,featured:true
+  };
+  if(!rec.title||!rec.category||!rec.location||!rec.summary){toast('Title, category, location, and summary are required.');return;}
+  if(!rec.overview){toast('Please add a Position Overview.');return;}
+  if(!rec.responsibilities){toast('Please add Key Responsibilities.');return;}
+  var id=document.getElementById('j-id').value;
+  var btn=document.getElementById('saveJobBtn');btn.disabled=true;btn.textContent='Saving…';
+  try{
+    var formInput=document.getElementById('j-form');
+    if(formInput&&formInput.files&&formInput.files[0]){
+      btn.textContent='Uploading form…';
+      var ff=formInput.files[0];
+      if(ff.size>10*1024*1024){toast('Form must be under 10MB.');btn.disabled=false;btn.textContent='Save Job';return;}
+      var fext=(ff.name.split('.').pop()||'pdf').toLowerCase();
+      var fpath='jobform-'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+fext;
+      var fup=await sb.storage.from('job-forms').upload(fpath,ff,{cacheControl:'3600',upsert:false});
+      if(fup.error) throw fup.error;
+      rec.application_form=sb.storage.from('job-forms').getPublicUrl(fpath).data.publicUrl;
+      btn.textContent='Saving…';
+    }
+    var res=id?await sb.from('jobs').update(rec).eq('id',id):await sb.from('jobs').insert([rec]);
+    if(res.error) throw res.error;
+    toast(id?'Job updated.':'Job posted — now live on Careers.');
+    resetForm();loadJobsAdmin();
+  }catch(e){toast('Save failed: '+(e.message||'try again'));}
+  btn.disabled=false;btn.textContent='Save Job';
+}
+async function loadJobsAdmin(){
+  var box=document.getElementById('jobsAdmin');
+  try{
+    var r=await sb.from('jobs').select('*').order('created_at',{ascending:false});
+    if(r.error) throw r.error;
+    if(!r.data.length){box.innerHTML='<div class="job-empty"><p>No jobs posted yet. Use the form above to add your first opening.</p></div>';return;}
+    box.innerHTML=r.data.map(function(j){
+      return '<div class="adm-row"><div class="adm-row__body"><h3>'+esc(j.title)+'</h3><p style="font-size:.9rem">'+esc(j.category||'')+' · '+esc(j.location||'')+(j.salary?' · '+esc(j.salary):'')+'</p><div class="adm-actions">'+
+        '<a class="adm-btn" href="/job?id='+j.id+'" target="_blank">Preview</a>'+
+        (j.application_form?'<a class="adm-btn" href="'+esc(j.application_form)+'" target="_blank">Application Form</a>':'')+
+        '<button class="adm-btn" onclick=\'editJob('+JSON.stringify(j).replace(/'/g,"&#39;")+')\'>Edit</button>'+
+        '<button class="adm-btn adm-btn--warn" onclick="delJob(\''+j.id+'\')">Delete</button>'+
+        '</div></div></div>';
+    }).join('');
+  }catch(e){box.innerHTML='<div class="job-empty"><p>Could not load jobs.</p></div>';}
+}
+function editJob(j){
+  document.getElementById('j-id').value=j.id;
+  document.getElementById('j-title').value=j.title||'';
+  document.getElementById('j-category').value=j.category||'';
+  document.getElementById('j-location').value=j.location||'';
+  document.getElementById('j-salary').value=j.salary||'';
+  document.getElementById('j-reference').value=j.reference||'';
+  document.getElementById('j-schedule').value=j.schedule||'';
+  document.getElementById('j-territories').value=j.territories||'';
+  document.getElementById('j-summary').value=j.summary||'';
+  document.getElementById('j-image').value=j.card_image||'';
+  document.getElementById('j-ef').value=j.essential_functions||'';
+  document.getElementById('j-req').value=j.requirements||'';
+  document.getElementById('j-pref').value=j.preferred||'';
+  document.getElementById('j-about').value=j.about_us||'';
+  document.getElementById('j-overview').value=j.overview||'';
+  document.getElementById('j-emptype').value=j.employment_type||'';
+  document.getElementById('j-resp').value=j.responsibilities||'';
+  document.getElementById('j-benefits').value=j.benefits||'';
+  document.getElementById('j-eeo').value=j.eeo||'';
+  var jf=document.getElementById('j-form');if(jf)jf.value='';
+  var jfc=document.getElementById('j-form-current');if(jfc)jfc.innerHTML=j.application_form?'Current form attached: <a href="'+esc(j.application_form)+'" target="_blank" style="color:var(--teal)">view</a>. Choosing a new file replaces it.':'';
+  document.getElementById('formTitle').textContent='Edit Job';
+  document.getElementById('saveJobBtn').textContent='Update Job';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+async function delJob(id){
+  if(!confirm('Delete this job permanently?')) return;
+  try{var r=await sb.from('jobs').delete().eq('id',id);if(r.error)throw r.error;toast('Job deleted.');loadJobsAdmin();}
+  catch(e){toast('Delete failed.');}
+}
+async function loadApps(){
+  var box=document.getElementById('appsList');
+  try{
+    var r=await sb.from('applications').select('*').order('created_at',{ascending:false});
+    if(r.error) throw r.error;
+    if(!r.data.length){box.innerHTML='<div class="job-empty"><p>No applications yet.</p></div>';return;}
+    box.innerHTML=r.data.map(function(a){
+      var d=new Date(a.created_at).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+      return '<div class="adm-row"><div class="adm-row__body"><h3>'+esc(a.applicant_name)+' — <span style="color:var(--teal-soft);font-size:.95rem">'+esc(a.job_title||'')+'</span></h3>'+
+        '<p style="font-size:.9rem">'+esc(a.email)+' · '+esc(a.phone)+(a.location?' · '+esc(a.location):'')+' · <span style="color:var(--slate-2)">'+d+'</span></p>'+
+        (a.message?'<p style="font-size:.9rem;margin-top:6px">'+esc(a.message)+'</p>':'')+
+        '<div class="adm-actions">'+
+          (a.resume_url?'<a class="adm-btn pub-btn--go" href="'+esc(a.resume_url)+'" target="_blank">Download Resume</a>':'')+
+          (a.filled_form_url?'<a class="adm-btn" href="'+esc(a.filled_form_url)+'" target="_blank">Completed Form</a>':'')+
+          '<a class="adm-btn" href="mailto:'+esc(a.email)+'?subject=Your application to Golden Years Home Health">Reply by Email</a>'+
+          '<button class="adm-btn adm-btn--warn" onclick="delApp(\''+a.id+'\')">Delete</button>'+
+        '</div></div></div>';
+    }).join('');
+  }catch(e){box.innerHTML='<div class="job-empty"><p>Could not load applications.</p></div>';}
+}
+async function delApp(id){
+  if(!confirm('Delete this application?')) return;
+  try{var r=await sb.from('applications').delete().eq('id',id);if(r.error)throw r.error;toast('Application deleted.');loadApps();}
+  catch(e){toast('Delete failed.');}
+}
+</script>
+<footer class="footer"><div class="wrap"><div class="footer__grid">
+  <div class="footer__brand"><a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years Home Health Supported Living logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub" style="color:var(--gold-light)">Home Health • Supported Living</span></span></a><p class="footer__tag">"Compassionate Care, Dignified Living, Trusted Support."</p><p style="font-size:.9rem">Nurse-led home health and supported living serving Sumner and the greater Pierce &amp; King County area of Washington State.</p><div class="footer__social"><a href="https://www.facebook.com/share/1D7sYp1msU/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8.5V7c0-1 .5-1.5 1.7-1.5H17V2.5h-2.5C11.8 2.5 11 4.3 11 6.3v2.2H8.5V12H11v9.5h3V12h2.3l.5-3.5Z"/></svg></a><a href="mailto:contact@goldenyearshomehealthllc.com" aria-label="Email Us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg></a><a href="https://www.instagram.com/goldenyearshomehealth?igsh=aGVhajcybGlqOHRt" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></div></div>
+  <div><h4>Services</h4><ul><li><a href="/skilled-nursing">Skilled Nursing</a></li><li><a href="/services#personal-care">Personal Care</a></li><li><a href="/nurse-delegation">Nurse Delegation</a></li><li><a href="/services#respite">Respite Care</a></li><li><a href="/services#supported-living">Supported Living</a></li><li><a href="/services">All Services</a></li></ul></div>
+  <div><h4>Company</h4><ul><li><a href="/">Home</a></li><li><a href="/about">About Us</a></li><li><a href="/hca-training">HCA Training</a></li><li><a href="/resources">Resources</a></li><li><a href="/careers">Careers</a></li><li><a href="/contact">Contact Us</a></li></ul></div>
+  <div><h4>Contact</h4><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5.2-8 12-8 12s-8-6.8-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> 614 Harrison St, Suite C,<br>Sumner, WA 98390</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg> <a href="tel:+12067171234">(206) 717-1234</a></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg> <a href="mailto:contact@goldenyearshomehealthllc.com">contact@goldenyearshomehealthllc.com</a></li></ul></div>
+</div><div class="footer__bottom"><span>© 2025 Golden Years Home Health Supported Living LLC. All Rights Reserved.</span><span><a href="/resources#hipaa">HIPAA Privacy Notice</a> • <a href="/resources#rights">Patient Rights</a> • <a href="/contact">Accessibility</a></span></div><div style="text-align:center;padding:14px 0 24px"><a href="/admin" style="font-size:.76rem;color:rgba(255,255,255,.38);letter-spacing:.05em">Staff Admin</a></div></div></footer>
+<a class="fab" href="tel:+12067171234" aria-label="Call Golden Years"><span class="tx-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg></span></a>
+<script>
+(function(){
+  var h=document.querySelector('.header');
+  function onScroll(){ if(h) h.classList.toggle('scrolled', window.scrollY>20); }
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('click',function(e){ var mm=document.getElementById('mm'); if(mm && e.target===mm) mm.classList.remove('open'); });
+})();
+</script>
+
+</body></html>

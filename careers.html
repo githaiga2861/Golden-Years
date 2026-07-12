@@ -2,10 +2,338 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers — Join Our Team | Golden Years Home Health</title>
+<meta name="description" content="Explore careers at Golden Years Home Health Supported Living in Sumner, WA. Search nursing and caregiving jobs across Pierce, King, Thurston, Lewis, and Pacific Counties.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="apple-touch-icon" href="/images/favicon.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* ===== Careers system styles ===== */
+.job-search{background:#fff;border-radius:var(--r-xl);box-shadow:var(--shadow-md);padding:22px;display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;max-width:940px;margin:8px auto 0}
+.job-search .field{margin:0}
+.job-search input,.job-search select{width:100%;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:.96rem;color:var(--ink);background:var(--mist-2)}
+.job-search input:focus,.job-search select:focus{outline:none;border-color:var(--teal);background:#fff;box-shadow:var(--ring)}
+.job-search .btn{width:100%;justify-content:center;white-space:nowrap}
+@media(max-width:820px){.job-search{grid-template-columns:1fr 1fr}.job-search .btn{grid-column:1/-1}}
+@media(max-width:520px){.job-search{grid-template-columns:1fr}}
+.career-hi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px}
+.hi-card{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-sm);min-height:200px;display:flex;align-items:flex-end;color:#fff;isolation:isolate;transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.hi-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.hi-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hi-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(4,30,79,.9),rgba(4,30,79,.15) 70%);z-index:-1}
+.hi-card span{padding:20px;font-family:'Playfair Display',serif;font-size:1.16rem;font-weight:600;line-height:1.25}
+.job-list{display:flex;flex-direction:column;gap:16px}
+.job-item{background:#fff;border:1px solid var(--line-2);border-radius:var(--r-lg);padding:26px 28px;box-shadow:var(--shadow-xs);transition:box-shadow .3s,border-color .3s,transform .3s;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.job-item:hover{box-shadow:var(--shadow-sm);border-color:var(--line);transform:translateY(-2px)}
+.job-item__meta{flex:1;min-width:220px}
+.job-item__meta h3{margin-bottom:8px}
+.job-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.job-tag{display:inline-flex;align-items:center;gap:6px;background:var(--mist);color:var(--teal-700);font-size:.8rem;font-weight:600;padding:5px 13px;border-radius:50px}
+.job-tag svg{width:13px;height:13px}
+.job-item .btn{flex-shrink:0}
+.job-empty{text-align:center;padding:60px 24px;background:var(--mist-2);border-radius:var(--r-lg);color:var(--slate)}
+.job-loading{text-align:center;padding:60px 0;color:var(--slate)}
+.job-spinner{width:42px;height:42px;border:3px solid var(--mist);border-top-color:var(--teal);border-radius:50%;animation:jspin .8s linear infinite;margin:0 auto 16px}
+@keyframes jspin{to{transform:rotate(360deg)}}
+/* Job detail page */
+.job-detail{max-width:820px}
+.jd-block{margin-bottom:34px}
+.jd-block h2{font-size:1.5rem;margin-bottom:12px;color:var(--teal-700)}
+.jd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.jd-fact{background:var(--mist-2);border:1px solid var(--line-2);border-radius:14px;padding:16px 18px}
+.jd-fact strong{display:block;font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;color:var(--teal-soft);margin-bottom:5px}
+.jd-fact span{color:var(--ink);font-weight:600}
+.jd-body{white-space:pre-line;color:var(--ink);line-height:1.75}
+.jd-body ul{margin:0 0 0 1.2rem}
+.jd-notice{background:var(--mist);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:18px 22px;font-size:.92rem;color:var(--slate)}
+@media(max-width:640px){.jd-grid{grid-template-columns:1fr}}
+/* Apply modal */
+.apply-wrap{display:none;position:fixed;inset:0;z-index:9990;background:rgba(4,30,79,.55);overflow-y:auto;padding:40px 16px}
+.apply-card{max-width:640px;margin:0 auto}
+.apply-prefill{background:var(--teal-900);color:#fff;border-radius:var(--r-lg) var(--r-lg) 0 0;padding:22px 28px}
+.apply-prefill h3{color:#fff;margin-bottom:10px}
+.apply-prefill .job-tag{background:rgba(255,255,255,.14);color:#fff}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal-900);color:#fff;padding:14px 26px;border-radius:50px;font-weight:600;font-size:.92rem;box-shadow:var(--shadow-lg);opacity:0;transition:all .4s var(--ease);z-index:9999;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Admin */
+.admin-gate{max-width:420px;margin:0 auto;text-align:center}
+.adm-row{display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--line-2);border-radius:var(--r-lg);padding:20px;margin-bottom:14px;box-shadow:var(--shadow-xs)}
+.adm-row__body{flex:1;min-width:0}
+.adm-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.adm-btn{font-size:.84rem;font-weight:600;padding:8px 16px;border-radius:50px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:all .25s}
+.adm-btn:hover{border-color:var(--teal);color:var(--teal)}
+.adm-btn--warn:hover{border-color:#c0392b;color:#c0392b}
+.adm-tabs{display:flex;gap:10px;margin-bottom:26px;flex-wrap:wrap}
+.adm-tab{padding:10px 22px;border-radius:50px;background:var(--mist);color:var(--teal-700);font-weight:600;cursor:pointer;border:none;font-size:.92rem}
+.adm-tab.active{background:var(--teal);color:#fff}
+</style>
+<!-- gy-seo-block -->
 <link rel="canonical" href="https://goldenyearshomehealthllc.com/careers">
-<meta http-equiv="refresh" content="0; url=/careers">
-<script>var q=location.search||'';var h=location.hash||'';location.replace('/careers'+q+h);</script>
-<title>Redirecting…</title>
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="geo.region" content="US-WA">
+<meta name="geo.placename" content="Sumner, Washington">
+<meta name="geo.position" content="47.2043;-122.2404">
+<meta name="ICBM" content="47.2043, -122.2404">
+<meta name="theme-color" content="#0b5394">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Golden Years Home Health Supported Living LLC">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://goldenyearshomehealthllc.com/careers">
+<meta property="og:title" content="Careers — Join Our Team | Golden Years Home Health, WA">
+<meta property="og:description" content="Nursing and caregiving jobs in Washington State. Hiring RNs, CNAs, and Home Care Aides across Pierce, King & Thurston Counties. Apply today.">
+<meta property="og:image" content="https://goldenyearshomehealthllc.com/images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Careers — Join Our Team | Golden Years Home Health, WA">
+<meta name="twitter:description" content="Nursing and caregiving jobs in Washington State. Hiring RNs, CNAs, and Home Care Aides across Pierce, King & Thurston Counties. Apply today.">
+<meta name="twitter:image" content="https://goldenyearshomehealthllc.com/images/logo.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+  {
+   "@type": "ListItem",
+   "position": 1,
+   "name": "Home",
+   "item": "https://goldenyearshomehealthllc.com/"
+  },
+  {
+   "@type": "ListItem",
+   "position": 2,
+   "name": "Careers",
+   "item": "https://goldenyearshomehealthllc.com/careers"
+  }
+ ]
+}
+</script>
 </head>
-<body><p>Redirecting to <a href="/careers">/careers</a>…</p></body>
-</html>
+
+<body>
+<a href="#main" class="skip">Skip to main content</a>
+<header class="header">
+  <div class="topbar">
+    <a class="topbar__phone" href="tel:+12067171234"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg>(206) 717-1234</a>
+    <div class="topbar__social">
+      <a href="https://www.facebook.com/share/1D7sYp1msU/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8.5V7c0-1 .5-1.5 1.7-1.5H17V2.5h-2.5C11.8 2.5 11 4.3 11 6.3v2.2H8.5V12H11v9.5h3V12h2.3l.5-3.5Z"/></svg></a>
+      <a href="mailto:contact@goldenyearshomehealthllc.com" aria-label="Email Us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg></a>
+      <a href="https://www.instagram.com/goldenyearshomehealth?igsh=aGVhajcybGlqOHRt" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+    </div>
+  </div>
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years Home Health Supported Living logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Health &bull; Supported Living</span></span></a>
+    <ul class="navlinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li class="has-drop"><a href="/services">Services<i class="caret"></i></a>
+        <ul class="dropdown dropdown--wide">
+          <li><a href="/services">All Services Overview</a></li>
+          <li><a href="/services#personal-care">Personal Care Services</a></li>
+          <li><a href="/services#medication">Medication Management</a></li>
+          <li><a href="/services#respite">Respite Care</a></li>
+          <li><a href="/services#pdn">Private Duty Nursing</a></li>
+          <li><a href="/services#chronic">Chronic Disease Management</a></li>
+          <li><a href="/nurse-delegation">Nurse Delegation</a></li>
+          <li><a href="/hca-training">Caregiver Training</a></li>
+          <li><a href="/services#post-surgery">Post-Surgery Care</a></li>
+          <li><a href="/services#rn-visit">RN Visitation</a></li>
+          <li><a href="/services#catheter">Catheter Care</a></li>
+          <li><a href="/services#enteral">Enteral Feeds / G-Tube</a></li>
+          <li><a href="/services#supported-living">Supported Living</a></li>
+          <li><a href="/services#care-coordination">Care Coordination</a></li>
+        </ul></li>
+      <li class="has-drop"><a href="/skilled-nursing">Skilled Nursing<i class="caret"></i></a>
+        <ul class="dropdown">
+          <li><a href="/skilled-nursing">Skilled Nursing Overview</a></li>
+          <li><a href="/skilled-nursing#wound">Wound Care</a></li>
+          <li><a href="/skilled-nursing#glucose">Blood Glucose &amp; Insulin</a></li>
+          <li><a href="/skilled-nursing#therapy">Therapy Services (PT/OT/ST)</a></li>
+          <li><a href="/skilled-nursing#post-hosp">Post-Hospitalization Care</a></li>
+          <li><a href="/skilled-nursing#team">Our Clinical Team</a></li>
+          <li><a href="/nurse-delegation">Nurse Delegation</a></li>
+          <li><a href="/hca-training">HCA Training</a></li>
+        </ul></li>
+      <li><a href="/resources">Resources</a></li>
+      <li class="active"><a href="/careers">Careers</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    <div class="nav__actions"></div>
+    <button class="hamburger" aria-label="Open menu" onclick="document.getElementById('mm').classList.add('open')"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+<div class="mobile-menu" id="mm"><div class="mobile-menu__panel"><div class="mobile-menu__head"><a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Health &bull; Supported Living</span></span></a><button class="mobile-menu__close" aria-label="Close menu" onclick="document.getElementById('mm').classList.remove('open')">×</button></div><nav class="mobile-menu__nav"><a class="mm-item" href="/">Home</a><a class="mm-item" href="/about">About Us</a><div class="mm-group"><button class="mm-group__toggle" onclick="this.parentElement.classList.toggle('open')">Services <i class="mm-arrow"></i></button><div class="mm-group__links"><a href="/services">All Services</a><a href="/services#personal-care">Personal Care</a><a href="/services#medication">Medication Management</a><a href="/services#respite">Respite Care</a><a href="/services#pdn">Private Duty Nursing</a><a href="/services#chronic">Chronic Disease Management</a><a href="/services#post-surgery">Post-Surgery Care</a><a href="/services#supported-living">Supported Living</a></div></div><div class="mm-group"><button class="mm-group__toggle" onclick="this.parentElement.classList.toggle('open')">Skilled Nursing <i class="mm-arrow"></i></button><div class="mm-group__links"><a href="/skilled-nursing">Overview</a><a href="/skilled-nursing#wound">Wound Care</a><a href="/skilled-nursing#glucose">Blood Glucose &amp; Insulin</a><a href="/skilled-nursing#therapy">Therapy Services</a><a href="/skilled-nursing#post-hosp">Post-Hospitalization</a><a href="/nurse-delegation">Nurse Delegation</a><a href="/hca-training">HCA Training</a></div></div><a class="mm-item" href="/resources">Resources &amp; FAQ</a><a class="mm-item" href="/careers">Careers</a><a class="mm-item" href="/contact">Contact Us</a></nav><div class="mobile-menu__foot"><a class="btn btn--primary" href="/contact">Request Care</a><a class="mm-tel" href="tel:+12067171234"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg>(206) 717-1234</a></div></div></div>
+<main id="main">
+<!-- HERO with quote slideshow -->
+<section class="hero hero--slider" style="min-height:auto">
+  <div class="hslider" style="min-height:auto">
+    <div class="hslide active">
+      <img class="hero__bg" src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1600&q=80" alt="Caregiver supporting a client at home">
+      <div class="hero__overlay"></div><div class="hero__blob hero__blob--1"></div><div class="hero__blob hero__blob--2"></div>
+      <div class="wrap"><div class="hero__inner" style="max-width:820px">
+        <span class="eyebrow" style="color:var(--gold)">Careers at Golden Years</span>
+        <h1>Do Work That Truly Matters</h1>
+        <p style="font-size:1.3rem;font-style:italic;font-family:'Playfair Display',serif">"The best way to find yourself is to lose yourself in the service of others."</p>
+        <p>Join a nurse-led team where compassion isn't a slogan — it's how we hire, train, and care for one another.</p>
+        <div class="hero__cta"><a class="btn btn--primary" href="#openings">View Open Positions</a><a class="btn btn--white-outline" href="/about">About Golden Years</a></div>
+      </div></div>
+    </div>
+    <div class="hslide">
+      <img class="hero__bg" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=1600&q=80" alt="Nurse reviewing a care plan">
+      <div class="hero__overlay"></div><div class="hero__blob hero__blob--1"></div><div class="hero__blob hero__blob--2"></div>
+      <div class="wrap"><div class="hero__inner" style="max-width:820px">
+        <span class="eyebrow" style="color:var(--gold)">Grow With Us</span>
+        <h1>Careers Built on Compassion</h1>
+        <p style="font-size:1.3rem;font-style:italic;font-family:'Playfair Display',serif">"Caring for others is the heart of who we are — come do it alongside people who feel the same."</p>
+        <p>From certified aides to registered nurses, every role at Golden Years is supported, supervised, and valued.</p>
+        <div class="hero__cta"><a class="btn btn--primary" href="#openings">Explore Our Roles</a><a class="btn btn--white-outline" href="/about#team">Meet Our Team</a></div>
+      </div></div>
+    </div>
+    <div class="hslide">
+      <img class="hero__bg" src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1600&q=80" alt="Caregiver and senior smiling together">
+      <div class="hero__overlay"></div><div class="hero__blob hero__blob--1"></div><div class="hero__blob hero__blob--2"></div>
+      <div class="wrap"><div class="hero__inner" style="max-width:820px">
+        <span class="eyebrow" style="color:var(--gold)">Your Next Chapter</span>
+        <h1>Find Your Place at Golden Years</h1>
+        <p style="font-size:1.3rem;font-style:italic;font-family:'Playfair Display',serif">"When you love what you do and who you do it for, it never feels like just a job."</p>
+        <p>Search our current openings below and discover where you belong.</p>
+        <div class="hero__cta"><a class="btn btn--primary" href="#openings">Search Openings</a><a class="btn btn--white-outline" href="/contact">Get in Touch</a></div>
+      </div></div>
+    </div>
+  </div>
+  <div class="hslider__arrows" id="pillNav" data-slide="0"><div class="hslider__fill"></div><button class="hslider__arrow hslider__arrow--prev" aria-label="Previous" onclick="moveSlide(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="hslider__spine"></div><button class="hslider__arrow hslider__arrow--next" aria-label="Next" onclick="moveSlide(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button></div>
+</section>
+
+<!-- SEARCH -->
+<section class="section" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:24px">
+      <span class="eyebrow">Find Your Role</span>
+      <h2>Search Open Positions</h2>
+      <hr class="gold-rule center">
+    </div>
+    <div class="job-search">
+      <div class="field"><input id="s-keyword" type="text" placeholder="Keyword (e.g., nurse, caregiver, RN)" oninput="filterJobs()"></div>
+      <div class="field"><select id="s-location" onchange="filterJobs()"><option value="">All Locations</option></select></div>
+      <div class="field"><select id="s-category" onchange="filterJobs()"><option value="">All Categories</option></select></div>
+      <button class="btn btn--primary" onclick="filterJobs()">Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="section">
+  <div class="wrap center" style="max-width:820px">
+    <span class="eyebrow center">Why People Choose Us</span>
+    <h2>Why So Many Caring People Find Their Way to Golden Years</h2>
+    <hr class="gold-rule center">
+    <p class="lead center">At Golden Years Home Health Supported Living, care flows in every direction. We're a nurse-led team rooted in Sumner and serving families across Pierce, King, Thurston, Lewis, and Pacific Counties — and we believe the people who care for our clients deserve to be cared for too. Here, you'll find hands-on training, genuine mentorship from experienced nurses, schedules that respect your life, and the deep satisfaction of helping someone live with dignity in their own home. Compassionate people find their way to us because they want work with meaning — and they stay because they finally feel supported in doing it.</p>
+  </div>
+</section>
+
+<!-- CAREER HIGHLIGHTS -->
+<section class="section section--mist">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:40px"><span class="eyebrow center">Career Paths</span><h2>Roles We Hire For Across Washington</h2><hr class="gold-rule center"></div>
+    <div class="career-hi">
+      <div class="hi-card"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=70" alt="Registered Nurse"><span>Registered Nurses (RN)</span></div>
+      <div class="hi-card"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=70" alt="Certified Home Care Aide"><span>Certified Home Care Aides</span></div>
+      <div class="hi-card"><img src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=600&q=70" alt="Caregiver"><span>Caregivers &amp; Personal Care</span></div>
+      <div class="hi-card"><img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=600&q=70" alt="Private Duty Nurse"><span>Private Duty Nurses</span></div>
+      <div class="hi-card"><img src="https://images.unsplash.com/photo-1573497491208-6b1acb260507?auto=format&fit=crop&w=600&q=70" alt="Care Coordinator"><span>Care Coordinators</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED JOBS -->
+<section class="section" id="openings">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:40px"><span class="eyebrow center">Current Openings</span><h2>Featured Jobs</h2><hr class="gold-rule center"></div>
+    <div id="jobList" class="job-list">
+      <div class="job-loading"><div class="job-spinner"></div>Loading open positions…</div>
+    </div>
+  </div>
+</section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>const SUPABASE_URL='https://uldywugntkykeftuzxys.supabase.co';
+const SUPABASE_KEY='sb_publishable_kCCHxG8VAO_APnGWxCgLDg_Wj6Vxjj7';
+const SITE_BASE='https://goldenyearshomehealthllc.com';
+const WEB3_KEY='40d97e85-xxxx-xxxx-xxxx-7624f70df2b0';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(m){var t=document.getElementById('toast');if(!t)return;t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3200);}
+</script>
+<script>
+// ---- Hero quote slider ----
+var _cur=0,_slides=document.querySelectorAll('.hslide'),_timer;
+function goSlide(n){var prev=_slides[_cur];prev.classList.remove('active');prev.classList.add('slide-out');setTimeout(function(){prev.classList.remove('slide-out');},800);_cur=(n+_slides.length)%_slides.length;_slides[_cur].classList.add('active');var p=document.getElementById('pillNav');if(p)p.setAttribute('data-slide',_cur);resetTimer();}
+function moveSlide(d){goSlide(_cur+d);}
+function resetTimer(){clearInterval(_timer);_timer=setInterval(function(){moveSlide(1);},7000);}
+resetTimer();
+
+// ---- Jobs ----
+var ALL_JOBS=[];
+function jobCard(j){
+  var tags='';
+  if(j.location) tags+='<span class="job-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5.2-8 12-8 12s-8-6.8-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'+esc(j.location)+'</span>';
+  if(j.category) tags+='<span class="job-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'+esc(j.category)+'</span>';
+  if(j.salary) tags+='<span class="job-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>'+esc(j.salary)+'</span>';
+  return '<div class="job-item"><div class="job-item__meta"><h3>'+esc(j.title)+'</h3><p>'+esc(j.summary||'')+'</p><div class="job-tags">'+tags+'</div></div><a class="btn btn--primary" href="/job?id='+j.id+'">Read More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>';
+}
+function renderJobs(list){
+  var box=document.getElementById('jobList');
+  if(!list.length){box.innerHTML='<div class="job-empty"><h3>No positions match your search</h3><p>Try clearing a filter, or check back soon — we post new openings regularly.</p></div>';return;}
+  box.innerHTML=list.map(jobCard).join('');
+}
+function filterJobs(){
+  var kw=(document.getElementById('s-keyword').value||'').toLowerCase().trim();
+  var loc=document.getElementById('s-location').value;
+  var cat=document.getElementById('s-category').value;
+  var f=ALL_JOBS.filter(function(j){
+    var hay=((j.title||'')+' '+(j.summary||'')+' '+(j.category||'')+' '+(j.location||'')).toLowerCase();
+    if(kw&&hay.indexOf(kw)===-1) return false;
+    if(loc&&j.location!==loc) return false;
+    if(cat&&j.category!==cat) return false;
+    return true;
+  });
+  renderJobs(f);
+}
+async function loadJobs(){
+  try{
+    var r=await sb.from('jobs').select('*').eq('published',true).order('created_at',{ascending:false});
+    if(r.error) throw r.error;
+    ALL_JOBS=r.data||[];
+    // populate filter dropdowns
+    var locs=[...new Set(ALL_JOBS.map(function(j){return j.location;}).filter(Boolean))].sort();
+    var cats=[...new Set(ALL_JOBS.map(function(j){return j.category;}).filter(Boolean))].sort();
+    var ls=document.getElementById('s-location'),cs=document.getElementById('s-category');
+    locs.forEach(function(l){var o=document.createElement('option');o.value=l;o.textContent=l;ls.appendChild(o);});
+    cats.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;cs.appendChild(o);});
+    renderJobs(ALL_JOBS);
+  }catch(e){
+    document.getElementById('jobList').innerHTML='<div class="job-empty"><h3>Could not load openings</h3><p>Please refresh the page shortly.</p></div>';
+  }
+}
+loadJobs();
+</script>
+<footer class="footer"><div class="wrap"><div class="footer__grid">
+  <div class="footer__brand"><a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years Home Health Supported Living logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub" style="color:var(--gold-light)">Home Health • Supported Living</span></span></a><p class="footer__tag">"Compassionate Care, Dignified Living, Trusted Support."</p><p style="font-size:.9rem">Nurse-led home health and supported living serving Sumner and the greater Pierce &amp; King County area of Washington State.</p><div class="footer__social"><a href="https://www.facebook.com/share/1D7sYp1msU/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8.5V7c0-1 .5-1.5 1.7-1.5H17V2.5h-2.5C11.8 2.5 11 4.3 11 6.3v2.2H8.5V12H11v9.5h3V12h2.3l.5-3.5Z"/></svg></a><a href="mailto:contact@goldenyearshomehealthllc.com" aria-label="Email Us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg></a><a href="https://www.instagram.com/goldenyearshomehealth?igsh=aGVhajcybGlqOHRt" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></div></div>
+  <div><h4>Services</h4><ul><li><a href="/skilled-nursing">Skilled Nursing</a></li><li><a href="/services#personal-care">Personal Care</a></li><li><a href="/nurse-delegation">Nurse Delegation</a></li><li><a href="/services#respite">Respite Care</a></li><li><a href="/services#supported-living">Supported Living</a></li><li><a href="/services">All Services</a></li></ul></div>
+  <div><h4>Company</h4><ul><li><a href="/">Home</a></li><li><a href="/about">About Us</a></li><li><a href="/hca-training">HCA Training</a></li><li><a href="/resources">Resources</a></li><li><a href="/careers">Careers</a></li><li><a href="/contact">Contact Us</a></li></ul></div>
+  <div><h4>Contact</h4><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5.2-8 12-8 12s-8-6.8-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> 614 Harrison St, Suite C,<br>Sumner, WA 98390</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg> <a href="tel:+12067171234">(206) 717-1234</a></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg> <a href="mailto:contact@goldenyearshomehealthllc.com">contact@goldenyearshomehealthllc.com</a></li></ul></div>
+</div><div class="footer__bottom"><span>© 2025 Golden Years Home Health Supported Living LLC. All Rights Reserved.</span><span><a href="/resources#hipaa">HIPAA Privacy Notice</a> • <a href="/resources#rights">Patient Rights</a> • <a href="/contact">Accessibility</a></span></div><div style="text-align:center;padding:14px 0 24px"><a href="/admin" style="font-size:.76rem;color:rgba(255,255,255,.38);letter-spacing:.05em">Staff Admin</a></div></div></footer>
+<a class="fab" href="tel:+12067171234" aria-label="Call Golden Years"><span class="tx-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg></span></a>
+<script>
+(function(){
+  var h=document.querySelector('.header');
+  function onScroll(){ if(h) h.classList.toggle('scrolled', window.scrollY>20); }
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('click',function(e){ var mm=document.getElementById('mm'); if(mm && e.target===mm) mm.classList.remove('open'); });
+})();
+</script>
+
+</body></html>

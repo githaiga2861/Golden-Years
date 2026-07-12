@@ -2,10 +2,301 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="canonical" href="https://goldenyearshomehealthllc.com/article">
-<meta http-equiv="refresh" content="0; url=/article">
-<script>var q=location.search||'';var h=location.hash||'';location.replace('/article'+q+h);</script>
-<title>Redirecting…</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article | Golden Years Home Health</title>
+<meta name="description" content="Read health articles and caregiver guidance from Golden Years Home Health, or create a new article.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="apple-touch-icon" href="/images/favicon.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* ===== Article system styles (scoped, reuse site tokens) ===== */
+.art-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:30px}
+.art-back{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.92rem;color:var(--teal);padding:9px 18px;border-radius:50px;background:var(--mist);transition:all .3s var(--ease)}
+.art-back:hover{background:var(--teal);color:#fff;transform:translateX(-3px)}
+.art-back svg{width:16px;height:16px}
+.article-hero__img{width:100%;max-height:440px;object-fit:cover;border-radius:var(--r-xl);box-shadow:var(--shadow-md);margin-bottom:30px}
+.article-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;color:var(--slate-2);font-size:.9rem;margin-bottom:18px}
+.article-meta .chip{display:inline-flex;align-items:center;gap:7px;background:var(--mist);color:var(--teal-700);padding:6px 15px;border-radius:50px;font-weight:600}
+.article-meta .chip svg{width:15px;height:15px}
+.article-body{font-size:1.08rem;line-height:1.8;color:var(--ink);max-width:760px}
+.article-body p{margin-bottom:1.3rem;color:var(--ink)}
+.article-body h2,.article-body h3{margin:34px 0 14px;color:var(--teal-700)}
+.article-body img{border-radius:var(--r-lg);margin:24px 0;box-shadow:var(--shadow-sm)}
+.article-body ul,.article-body ol{margin:0 0 1.3rem 1.3rem}.article-body li{margin-bottom:.5rem}
+.art-loading{text-align:center;padding:80px 0;color:var(--slate)}
+.art-spinner{width:42px;height:42px;border:3px solid var(--mist);border-top-color:var(--teal);border-radius:50%;animation:artspin .8s linear infinite;margin:0 auto 18px}
+@keyframes artspin{to{transform:rotate(360deg)}}
+.art-empty{text-align:center;padding:60px 24px;background:var(--mist-2);border-radius:var(--r-lg);color:var(--slate)}
+.svg-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:10px;margin-top:8px}
+.svg-pick label{cursor:pointer;border:2px solid var(--line);border-radius:12px;padding:12px;display:grid;place-items:center;color:var(--teal);transition:all .25s var(--ease);background:var(--mist-2)}
+.svg-pick label:hover{border-color:var(--teal-soft)}
+.svg-pick input{position:absolute;opacity:0;pointer-events:none}
+.svg-pick input:checked+label,.svg-pick label.sel{border-color:var(--teal);background:var(--mist);box-shadow:var(--ring)}
+.svg-pick svg{width:26px;height:26px}
+.pub-row{display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--line-2);border-radius:var(--r-lg);padding:20px;margin-bottom:16px;box-shadow:var(--shadow-xs);transition:box-shadow .3s}
+.pub-row:hover{box-shadow:var(--shadow-sm)}
+.pub-row__img{width:120px;height:88px;border-radius:12px;object-fit:cover;flex-shrink:0;background:var(--mist)}
+.pub-row__body{flex:1;min-width:0}
+.pub-row__body h3{margin-bottom:4px;font-size:1.12rem}
+.pub-row__body p{font-size:.9rem;margin-bottom:10px}
+.pub-status{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;padding:4px 12px;border-radius:50px;text-transform:uppercase;letter-spacing:.04em}
+.pub-status--draft{background:#fff4e0;color:#9a6b00}
+.pub-status--live{background:#e3f5ea;color:#1c7a45}
+.pub-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pub-btn{font-size:.84rem;font-weight:600;padding:8px 16px;border-radius:50px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:all .25s var(--ease)}
+.pub-btn:hover{border-color:var(--teal);color:var(--teal)}
+.pub-btn--go{background:var(--teal);color:#fff;border-color:var(--teal)}
+.pub-btn--go:hover{background:var(--teal-700);color:#fff}
+.pub-btn--warn:hover{border-color:#c0392b;color:#c0392b}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--teal-900);color:#fff;padding:14px 26px;border-radius:50px;font-weight:600;font-size:.92rem;box-shadow:var(--shadow-lg);opacity:0;transition:all .4s var(--ease);z-index:9999;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:640px){.pub-row{flex-direction:column}.pub-row__img{width:100%;height:160px}}
+</style>
 </head>
-<body><p>Redirecting to <a href="/article">/article</a>…</p></body>
-</html>
+<body>
+<a href="#main" class="skip">Skip to main content</a>
+<header class="header">
+  <div class="topbar">
+    <a class="topbar__phone" href="tel:+12067171234"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg>(206) 717-1234</a>
+    <div class="topbar__social">
+      <a href="https://www.facebook.com/share/1D7sYp1msU/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8.5V7c0-1 .5-1.5 1.7-1.5H17V2.5h-2.5C11.8 2.5 11 4.3 11 6.3v2.2H8.5V12H11v9.5h3V12h2.3l.5-3.5Z"/></svg></a>
+      <a href="mailto:contact@goldenyearshomehealthllc.com" aria-label="Email Us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg></a>
+      <a href="https://www.instagram.com/goldenyearshomehealth?igsh=aGVhajcybGlqOHRt" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+    </div>
+  </div>
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years Home Health Supported Living logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Health &bull; Supported Living</span></span></a>
+    <ul class="navlinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li class="has-drop"><a href="/services">Services<i class="caret"></i></a>
+        <ul class="dropdown dropdown--wide">
+          <li><a href="/services">All Services Overview</a></li>
+          <li><a href="/services#personal-care">Personal Care Services</a></li>
+          <li><a href="/services#medication">Medication Management</a></li>
+          <li><a href="/services#respite">Respite Care</a></li>
+          <li><a href="/services#pdn">Private Duty Nursing</a></li>
+          <li><a href="/services#chronic">Chronic Disease Management</a></li>
+          <li><a href="/nurse-delegation">Nurse Delegation</a></li>
+          <li><a href="/hca-training">Caregiver Training</a></li>
+          <li><a href="/services#post-surgery">Post-Surgery Care</a></li>
+          <li><a href="/services#rn-visit">RN Visitation</a></li>
+          <li><a href="/services#catheter">Catheter Care</a></li>
+          <li><a href="/services#enteral">Enteral Feeds / G-Tube</a></li>
+          <li><a href="/services#supported-living">Supported Living</a></li>
+          <li><a href="/services#care-coordination">Care Coordination</a></li>
+        </ul></li>
+      <li class="has-drop"><a href="/skilled-nursing">Skilled Nursing<i class="caret"></i></a>
+        <ul class="dropdown">
+          <li><a href="/skilled-nursing">Skilled Nursing Overview</a></li>
+          <li><a href="/skilled-nursing#wound">Wound Care</a></li>
+          <li><a href="/skilled-nursing#glucose">Blood Glucose &amp; Insulin</a></li>
+          <li><a href="/skilled-nursing#therapy">Therapy Services (PT/OT/ST)</a></li>
+          <li><a href="/skilled-nursing#post-hosp">Post-Hospitalization Care</a></li>
+          <li><a href="/skilled-nursing#team">Our Clinical Team</a></li>
+          <li><a href="/nurse-delegation">Nurse Delegation</a></li>
+          <li><a href="/hca-training">HCA Training</a></li>
+        </ul></li>
+      <li class="active"><a href="/resources">Resources</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    <div class="nav__actions"></div>
+    <button class="hamburger" aria-label="Open menu" onclick="document.getElementById('mm').classList.add('open')"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+<div class="mobile-menu" id="mm"><div class="mobile-menu__panel"><div class="mobile-menu__head"><a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub">Home Health &bull; Supported Living</span></span></a><button class="mobile-menu__close" aria-label="Close menu" onclick="document.getElementById('mm').classList.remove('open')">×</button></div><nav class="mobile-menu__nav"><a class="mm-item" href="/">Home</a><a class="mm-item" href="/about">About Us</a><div class="mm-group"><button class="mm-group__toggle" onclick="this.parentElement.classList.toggle('open')">Services <i class="mm-arrow"></i></button><div class="mm-group__links"><a href="/services">All Services</a><a href="/services#personal-care">Personal Care</a><a href="/services#medication">Medication Management</a><a href="/services#respite">Respite Care</a><a href="/services#pdn">Private Duty Nursing</a><a href="/services#chronic">Chronic Disease Management</a><a href="/services#post-surgery">Post-Surgery Care</a><a href="/services#supported-living">Supported Living</a></div></div><div class="mm-group"><button class="mm-group__toggle" onclick="this.parentElement.classList.toggle('open')">Skilled Nursing <i class="mm-arrow"></i></button><div class="mm-group__links"><a href="/skilled-nursing">Overview</a><a href="/skilled-nursing#wound">Wound Care</a><a href="/skilled-nursing#glucose">Blood Glucose &amp; Insulin</a><a href="/skilled-nursing#therapy">Therapy Services</a><a href="/skilled-nursing#post-hosp">Post-Hospitalization</a><a href="/nurse-delegation">Nurse Delegation</a><a href="/hca-training">HCA Training</a></div></div><a class="mm-item" href="/resources">Resources &amp; FAQ</a><a class="mm-item" href="/contact">Contact Us</a></nav><div class="mobile-menu__foot"><a class="btn btn--primary" href="/contact">Request Care</a><a class="mm-tel" href="tel:+12067171234"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg>(206) 717-1234</a></div></div></div>
+<main id="main">
+<section class="section" style="padding-top:206px">
+  <div class="wrap">
+
+    <!-- VIEW: single article -->
+    <div id="viewArticle" style="display:none">
+      <div class="art-actions">
+        <a class="art-back" href="/articles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> View all articles</a>
+        <a class="art-back" href="/resources#blog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to Resources</a>
+      </div>
+      <div id="articleContent"></div>
+    </div>
+
+    <!-- VIEW: create form (shown when no ?id=) -->
+    <div id="createForm" style="display:none">
+      <div class="art-actions">
+        <a class="art-back" href="/articles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> View all articles</a>
+        <a class="art-back" href="/resources#blog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to Resources</a>
+      </div>
+      <div class="center" style="margin-bottom:30px">
+        <span class="eyebrow">Caregiver Knowledge</span>
+        <h1>Write a New Article</h1>
+        <hr class="gold-rule center">
+        <p class="lead center">Create an article for the Resources section. When you publish, it is saved as a draft and an email is sent to the office with a link to review and make it live.</p>
+      </div>
+      <div class="form" style="max-width:820px;margin:0 auto">
+        <div class="field"><label for="f-title">Article Title *</label><input id="f-title" type="text" required placeholder="e.g., 5 Signs Your Loved One May Need Home Care"></div>
+        <div class="field"><label for="f-sub">Card Subtitle / Short Summary *</label><input id="f-sub" type="text" required placeholder="A one-sentence summary shown on the card"></div>
+        <div class="field"><label for="f-author">Author (optional)</label><input id="f-author" type="text" placeholder="e.g., Rose Mbote, BSN, RN"></div>
+        <div class="field"><label for="f-image">Card Image *</label><input id="f-image" type="file" accept="image/*"><p class="formnote" style="margin:8px 0 0">This image appears on the article card and at the top of the article.</p></div>
+        <div class="field"><label>Card Icon (pick one)</label>
+          <div class="svg-pick" id="svgPick"></div>
+        </div>
+        <div class="field"><label for="f-body">Article Body *</label><textarea id="f-body" required style="min-height:300px" placeholder="Write the full article here. Leave a blank line between paragraphs. You can use simple HTML like <h3>Headings</h3>, <ul><li>lists</li></ul>, and <strong>bold</strong> if you wish."></textarea><p class="formnote" style="margin:8px 0 0">Tip: leave a blank line between paragraphs. Basic HTML tags are supported.</p></div>
+        <div class="consent"><input id="f-consent" type="checkbox" required><label for="f-consent" style="font-weight:400;margin:0">I confirm this content is accurate and ready to be reviewed for publishing. *</label></div>
+        <button class="btn btn--primary" id="publishBtn" type="button" style="width:100%;justify-content:center" onclick="submitArticle()">Save &amp; Notify Office</button>
+        <div id="formMsg" style="display:none;text-align:center;padding:24px 0">
+          <div class="thankmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <h3>Article Saved as Draft</h3>
+          <p>An email has been sent to the office with a link to review and publish it. You can also <a href="/publish">go to the publish page now</a>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="loadingArticle" class="art-loading"><div class="art-spinner"></div>Loading…</div>
+  </div>
+</section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL='https://uldywugntkykeftuzxys.supabase.co';
+const SUPABASE_KEY='sb_publishable_kCCHxG8VAO_APnGWxCgLDg_Wj6Vxjj7';
+const SITE_BASE='https://goldenyearshomehealthllc.com';
+const WEB3_KEY='40d97e85-7635-4c96-9e51-7624f70df2b0';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3200);}
+function fmtDate(d){try{return new Date(d).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}catch(e){return '';}}
+
+// Curated SVG icon set (stroke icons matching site)
+var ICONS=[
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5.5 3.8 8.7 8 10 4.2-1.3 8-4.5 8-10V5Z"/><path d="m9 12 2 2 4-4"/></svg>',
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M9 21V9"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>',
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>',
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>',
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7Z"/></svg>',
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2 3 7v6c0 5 8 9 8 9s8-4 8-9V7Z"/></svg>',
+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 11.3 12 18l7.2-6.7a4.5 4.5 0 0 0-6.4-6.3l-.8.8-.8-.8a4.5 4.5 0 0 0-6.4 6.3Z"/></svg>'
+];
+function renderSvgPick(){
+  document.getElementById('svgPick').innerHTML=ICONS.map(function(svg,i){
+    return '<input type="radio" name="svgpick" id="svg'+i+'" value="'+i+'"'+(i===0?' checked':'')+'><label for="svg'+i+'" class="'+(i===0?'sel':'')+'">'+svg+'</label>';
+  }).join('');
+  document.querySelectorAll('#svgPick input').forEach(function(inp){
+    inp.addEventListener('change',function(){
+      document.querySelectorAll('#svgPick label').forEach(function(l){l.classList.remove('sel');});
+      this.nextElementSibling.classList.add('sel');
+    });
+  });
+}
+
+function paras(body){
+  // If contains block HTML, trust it; else split blank lines into <p>
+  if(/<(p|h2|h3|ul|ol|img|div)[ >]/i.test(body)) return body;
+  return body.split(/\n\s*\n/).map(function(p){return '<p>'+esc(p.trim()).replace(/\n/g,'<br>')+'</p>';}).join('');
+}
+
+async function loadOne(id){
+  try{
+    const {data,error}=await sb.from('articles').select('*').eq('id',id).single();
+    if(error||!data) throw error||new Error('not found');
+    document.getElementById('loadingArticle').style.display='none';
+    document.getElementById('viewArticle').style.display='block';
+    var draftBanner=data.published?'':'<div class="art-empty" style="margin-bottom:24px;background:#fff4e0;color:#9a6b00"><strong>Draft preview</strong> — this article is not yet published publicly.</div>';
+    var img=data.card_image?'<img class="article-hero__img" src="'+esc(data.card_image)+'" alt="'+esc(data.title)+'">':'';
+    document.getElementById('articleContent').innerHTML=
+      draftBanner+img+
+      '<div class="article-meta"><span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>'+fmtDate(data.created_at)+'</span>'+(data.author?'<span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>'+esc(data.author)+'</span>':'')+'</div>'+
+      '<h1 style="margin-bottom:14px">'+esc(data.title)+'</h1>'+
+      (data.subtitle?'<p class="lead" style="margin-bottom:26px">'+esc(data.subtitle)+'</p>':'')+
+      '<hr class="gold-rule"><div class="article-body">'+paras(data.body)+'</div>';
+    document.title=data.title+' | Golden Years Home Health';
+  }catch(e){
+    document.getElementById('loadingArticle').innerHTML='<div class="art-empty"><h3>Article not found</h3><p>This article may have been removed or the link is incorrect.</p><p style="margin-top:16px"><a class="art-back" href="/articles">View all articles</a></p></div>';
+  }
+}
+
+function showCreate(){
+  document.getElementById('loadingArticle').style.display='none';
+  document.getElementById('createForm').style.display='block';
+  renderSvgPick();
+}
+
+async function submitArticle(){
+  var title=document.getElementById('f-title').value.trim();
+  var sub=document.getElementById('f-sub').value.trim();
+  var author=document.getElementById('f-author').value.trim();
+  var body=document.getElementById('f-body').value.trim();
+  var consent=document.getElementById('f-consent').checked;
+  var fileInput=document.getElementById('f-image');
+  var svgIdx=(document.querySelector('#svgPick input:checked')||{}).value||0;
+  var card_svg=ICONS[svgIdx];
+  if(!title||!sub||!body){toast('Please fill in title, subtitle, and body.');return;}
+  if(!consent){toast('Please tick the confirmation box.');return;}
+  if(!fileInput.files||!fileInput.files[0]){toast('Please choose a card image.');return;}
+  var btn=document.getElementById('publishBtn');
+  btn.disabled=true;btn.textContent='Uploading image…';
+  try{
+    var file=fileInput.files[0];
+    var ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+    var path='article-'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+    var up=await sb.storage.from('article-images').upload(path,file,{cacheControl:'3600',upsert:false});
+    if(up.error) throw up.error;
+    var pub=sb.storage.from('article-images').getPublicUrl(path);
+    var imageUrl=pub.data.publicUrl;
+    btn.textContent='Saving…';
+    var ins=await sb.from('articles').insert([{title:title,subtitle:sub,author:author,body:body,card_image:imageUrl,card_svg:card_svg,published:false}]).select().single();
+    if(ins.error) throw ins.error;
+    var newId=ins.data.id;
+    var adminLink=SITE_BASE+'/admin?goto=articles';
+    var previewLink=SITE_BASE+'/article?id='+newId;
+    btn.textContent='Notifying office…';
+    var emailBody='A new article draft has been created on the Golden Years website.\n\n'+
+      'TITLE: '+title+'\nSUMMARY: '+sub+(author?'\nAUTHOR: '+author:'')+'\n\n'+
+      '--- ARTICLE BODY ---\n'+body+'\n--- END ---\n\n'+
+      'REVIEW & APPROVE IN YOUR ADMIN PAGE: '+adminLink+'\n'+
+      'PREVIEW THE DRAFT: '+previewLink+'\n\n'+
+      'Tip: You can review, approve, publish, and manage all articles more easily from your admin page.';
+    try{
+      await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({
+        access_key:WEB3_KEY,
+        subject:'New Article Draft: '+title,
+        from_name:'Golden Years Website',
+        email:'contact@goldenyearshomehealthllc.com',
+        message:emailBody
+      })});
+    }catch(mailErr){/* draft still saved even if email fails */}
+    document.getElementById('publishBtn').style.display='none';
+    document.getElementById('formMsg').style.display='block';
+    document.getElementById('formMsg').scrollIntoView({behavior:'smooth',block:'center'});
+  }catch(e){
+    toast('Something went wrong: '+(e.message||'please try again.'));
+    btn.disabled=false;btn.textContent='Save & Notify Office';
+  }
+}
+
+(function(){
+  var id=new URLSearchParams(location.search).get('id');
+  if(id) loadOne(id); else showCreate();
+})();
+</script>
+<footer class="footer"><div class="wrap"><div class="footer__grid">
+  <div class="footer__brand"><a class="brand" href="/"><span class="brand__mark"><img class="brand__logo" src="/images/logo.png" alt="Golden Years Home Health Supported Living logo"></span><span class="brand__text"><span class="brand__name">Golden Years</span><span class="brand__sub" style="color:var(--gold-light)">Home Health • Supported Living</span></span></a><p class="footer__tag">"Compassionate Care, Dignified Living, Trusted Support."</p><p style="font-size:.9rem">Nurse-led home health and supported living serving Sumner and the greater Pierce &amp; King County area of Washington State.</p><div class="footer__social"><a href="https://www.facebook.com/share/1D7sYp1msU/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8.5V7c0-1 .5-1.5 1.7-1.5H17V2.5h-2.5C11.8 2.5 11 4.3 11 6.3v2.2H8.5V12H11v9.5h3V12h2.3l.5-3.5Z"/></svg></a><a href="mailto:contact@goldenyearshomehealthllc.com" aria-label="Email Us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg></a><a href="https://www.instagram.com/goldenyearshomehealth?igsh=aGVhajcybGlqOHRt" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a></div></div>
+  <div><h4>Services</h4><ul><li><a href="/skilled-nursing">Skilled Nursing</a></li><li><a href="/services#personal-care">Personal Care</a></li><li><a href="/nurse-delegation">Nurse Delegation</a></li><li><a href="/services#respite">Respite Care</a></li><li><a href="/services#supported-living">Supported Living</a></li><li><a href="/services">All Services</a></li></ul></div>
+  <div><h4>Company</h4><ul><li><a href="/">Home</a></li><li><a href="/about">About Us</a></li><li><a href="/hca-training">HCA Training</a></li><li><a href="/resources">Resources</a></li><li><a href="/contact">Contact Us</a></li></ul></div>
+  <div><h4>Contact</h4><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5.2-8 12-8 12s-8-6.8-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> 614 Harrison St, Suite C,<br>Sumner, WA 98390</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg> <a href="tel:+12067171234">(206) 717-1234</a></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg> <a href="mailto:contact@goldenyearshomehealthllc.com">contact@goldenyearshomehealthllc.com</a></li></ul></div>
+</div><div class="footer__bottom"><span>© 2025 Golden Years Home Health Supported Living LLC. All Rights Reserved.</span><span><a href="/resources#hipaa">HIPAA Privacy Notice</a> • <a href="/resources#rights">Patient Rights</a> • <a href="/contact">Accessibility</a></span></div><div style="text-align:center;padding:14px 0 24px"><a href="/admin" style="font-size:.76rem;color:rgba(255,255,255,.38);letter-spacing:.05em">Staff Admin</a></div></div></footer>
+<a class="fab" href="tel:+12067171234" aria-label="Call Golden Years"><span class="tx-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.5h3.2l1.6 4-2 1.5a12 12 0 0 0 5.7 5.7l1.5-2 4 1.6V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5.5a2 2 0 0 1 2-2Z"/></svg></span></a>
+<script>
+(function(){
+  var h=document.querySelector('.header');
+  function onScroll(){ if(h) h.classList.toggle('scrolled', window.scrollY>20); }
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('click',function(e){ var mm=document.getElementById('mm'); if(mm && e.target===mm) mm.classList.remove('open'); });
+})();
+</script>
+</body></html>

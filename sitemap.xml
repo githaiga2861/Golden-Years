@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://goldenyearshomehealthllc.com/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://goldenyearshomehealthllc.com/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://goldenyearshomehealthllc.com/services.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://goldenyearshomehealthllc.com/skilled-nursing.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://goldenyearshomehealthllc.com/nurse-delegation.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://goldenyearshomehealthllc.com/hca-training.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://goldenyearshomehealthllc.com/resources.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://goldenyearshomehealthllc.com/contact.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://goldenyearshomehealthllc.com/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goldenyearshomehealthllc.com/services</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://goldenyearshomehealthllc.com/skilled-nursing</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goldenyearshomehealthllc.com/nurse-delegation</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goldenyearshomehealthllc.com/hca-training</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goldenyearshomehealthllc.com/resources</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://goldenyearshomehealthllc.com/contact</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url>
+    <loc>https://goldenyearshomehealthllc.com/careers</loc>
+  </url>
 </urlset>

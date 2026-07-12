@@ -72,6 +72,34 @@
 .adm-tab{padding:10px 22px;border-radius:50px;background:var(--mist);color:var(--teal-700);font-weight:600;cursor:pointer;border:none;font-size:.92rem}
 .adm-tab.active{background:var(--teal);color:#fff}
 </style>
+
+<script>
+// Inject JobPosting structured data (Google Jobs eligibility)
+function injectJobSchema(j){
+  try{
+    var d={
+      "@context":"https://schema.org","@type":"JobPosting",
+      "title": j.title,
+      "description": "<p>"+((j.overview||j.summary||"").replace(/</g,"&lt;"))+"</p>",
+      "datePosted": (j.created_at||"").slice(0,10),
+      "employmentType": (j.employment_type||"FULL_TIME").toUpperCase().replace(/[^A-Z]/g,"_"),
+      "hiringOrganization":{"@type":"Organization","name":"Golden Years Home Health Supported Living LLC",
+        "sameAs":"https://goldenyearshomehealthllc.com",
+        "logo":"https://goldenyearshomehealthllc.com/images/logo.png"},
+      "jobLocation":{"@type":"Place","address":{"@type":"PostalAddress",
+        "streetAddress":"614 Harrison St, Suite C","addressLocality":"Sumner",
+        "addressRegion":"WA","postalCode":"98390","addressCountry":"US"}},
+      "applicantLocationRequirements":{"@type":"Country","name":"USA"},
+      "directApply": true
+    };
+    if(j.identifier||j.reference){d.identifier={"@type":"PropertyValue","name":"Golden Years","value":j.reference||j.id};}
+    var el=document.createElement('script');
+    el.type='application/ld+json';
+    el.textContent=JSON.stringify(d);
+    document.head.appendChild(el);
+  }catch(e){}
+}
+</script>
 </head>
 
 <body>
@@ -228,7 +256,7 @@ async function loadJob(id){
   try{
     var r=await sb.from('jobs').select('*').eq('id',id).single();
     if(r.error||!r.data) throw r.error||new Error('not found');
-    var j=r.data;CURRENT_JOB=j;
+    var j=r.data;CURRENT_JOB=j;injectJobSchema(j);
     document.getElementById('jobLoading').style.display='none';
     document.title=j.title+' | Careers | Golden Years Home Health';
     var html='<span class="eyebrow">Now Hiring</span><h1 style="margin-bottom:8px">'+esc(j.title)+'</h1>';

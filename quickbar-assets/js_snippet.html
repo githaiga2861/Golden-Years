@@ -1,0 +1,71 @@
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var _mqSb=(typeof supabase!=='undefined')?supabase.createClient('https://uldywugntkykeftuzxys.supabase.co','sb_publishable_kCCHxG8VAO_APnGWxCgLDg_Wj6Vxjj7'):null;
+
+  window.toggleQformCategory=function(){
+    var val=document.getElementById('mq-category').value;
+    document.querySelectorAll('.qform__extra').forEach(function(el){el.classList.remove('active');});
+    var id='extra-'+val.replace(/\s+/g,'-');
+    var el=document.getElementById(id);
+    if(el) el.classList.add('active');
+  };
+
+  window.openMainQform=function(){document.getElementById('mainQform').classList.add('open');document.body.style.overflow='hidden';};
+  window.closeMainQform=function(){document.getElementById('mainQform').classList.remove('open');document.body.style.overflow='';};
+
+  function collectCategoryDetails(cat){
+    var d={};
+    if(cat==='General Care'){d['Care For']=val('mq-carefor');d['When Needed']=val('mq-when');}
+    else if(cat==='AFH Placement'){d['Placing For']=val('mq-afhwho');d['Placement Timeline']=val('mq-afhwhen');}
+    else if(cat==='Private Duty'){d['Level of Care']=val('mq-pdneeds');d['When Needed']=val('mq-pdwhen');}
+    else if(cat==='Careers'){d['Position of Interest']=val('mq-position');d['Availability']=val('mq-availability');}
+    return d;
+  }
+  function val(id){var el=document.getElementById(id);return el?el.value:'';}
+
+  window.submitMainQuick=function(e){
+    e.preventDefault();
+    var form=document.getElementById('mainQuickForm');
+    var em=document.getElementById('mq-email');
+    var rt=form.querySelector('input[name="replyto"]');
+    if(em&&rt) rt.value=em.value;
+
+    var cat=val('mq-category');
+    var name=val('mq-name');
+    var phone=val('mq-phone');
+    var email=em?em.value:'';
+    var msg=val('mq-msg');
+    var details=collectCategoryDetails(cat);
+    details['Enquiry Type']=cat;
+
+    var btn=document.getElementById('mqSubmit');
+    btn.disabled=true; btn.textContent='Sending…';
+
+    var savePromise=_mqSb?_mqSb.from('enquiries').insert([{
+      form_type:cat||'Quick Enquiry', name:name, email:email, phone:phone, details:details, message:msg
+    }]).then(function(){},function(){}):Promise.resolve();
+
+    savePromise.then(function(){
+      return fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
+    }).then(function(r){return r.json();})
+      .then(function(res){
+        if(res.success){form.style.display='none';document.getElementById('mqThanks').style.display='block';}
+        else{alert('Something went wrong — please call (206) 717-1234.');btn.disabled=false;btn.textContent='Send My Request';}
+      }).catch(function(){alert('Something went wrong — please call (206) 717-1234.');btn.disabled=false;btn.textContent='Send My Request';});
+    return false;
+  };
+
+  document.addEventListener('click', function(e){
+    var qf=document.getElementById('mainQform');
+    if(qf && e.target===qf) closeMainQform();
+  });
+
+  function onQbScroll(){
+    var qb=document.getElementById('mainQuickbar');
+    if(qb) qb.classList.toggle('show', window.scrollY>560);
+  }
+  window.addEventListener('scroll', onQbScroll, {passive:true});
+  onQbScroll();
+})();
+</script>

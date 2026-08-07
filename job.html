@@ -214,7 +214,7 @@ function injectJobSchema(j){
 <script>const SUPABASE_URL='https://uldywugntkykeftuzxys.supabase.co';
 const SUPABASE_KEY='sb_publishable_kCCHxG8VAO_APnGWxCgLDg_Wj6Vxjj7';
 const SITE_BASE='https://goldenyearshomehealthllc.com';
-const WEB3_KEY='40d97e85-xxxx-xxxx-xxxx-7624f70df2b0';
+const WEB3_KEY='40d97e85-7635-4c96-9e51-7624f70df2b0';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function toast(m){var t=document.getElementById('toast');if(!t)return;t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3200);}
@@ -388,6 +388,148 @@ async function submitApplication(){
   function onScroll(){ if(h) h.classList.toggle('scrolled', window.scrollY>20); }
   onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('click',function(e){ var mm=document.getElementById('mm'); if(mm && e.target===mm) mm.classList.remove('open'); });
+})();
+</script>
+
+<!-- STICKY LEAD-CAPTURE BAR -->
+<div class="quickbar" id="mainQuickbar"><div class="quickbar__inner">
+  <span class="quickbar__txt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Nurse-led care, home health &amp; more — let's talk.</span>
+  <span class="quickbar__cta"><button class="btn btn--gold" onclick="openMainQform()">Request a Consultation</button><a class="btn btn--white-outline" href="tel:+12067171234">Call (206) 717-1234</a></span>
+</div></div>
+
+<!-- QUICK ENQUIRY MODAL -->
+<div class="qform" id="mainQform">
+  <div class="qform__card">
+    <div class="qform__head">
+      <button class="qform__close" onclick="closeMainQform()" aria-label="Close">×</button>
+      <h3>How Can We Help?</h3>
+      <p>60 seconds — tell us a bit and our team will reach out the same business day.</p>
+    </div>
+    <div class="qform__body">
+      <form id="mainQuickForm" onsubmit="return submitMainQuick(event);">
+        <div class="field"><label for="mq-category">I'm Reaching Out About *</label>
+          <select id="mq-category" name="Category" required onchange="toggleQformCategory()">
+            <option value="">Please select…</option>
+            <option value="General Care">General / Home Health Care</option>
+            <option value="AFH Placement">Adult Family Home (AFH) Placement</option>
+            <option value="Private Duty">Private Duty Client</option>
+            <option value="Careers">Careers &amp; Job Opportunities</option>
+          </select>
+        </div>
+        <div class="field--row">
+          <div class="field"><label for="mq-name">Full Name *</label><input id="mq-name" name="Name" type="text" required></div>
+          <div class="field"><label for="mq-phone">Phone *</label><input id="mq-phone" name="Phone" type="tel" required></div>
+        </div>
+        <div class="field"><label for="mq-email">Email</label><input id="mq-email" name="email" type="email"></div>
+
+        <!-- Category-conditional field groups -->
+        <div class="qform__extra" id="extra-General-Care">
+          <div class="field"><label for="mq-carefor">Who Needs Care?</label><select id="mq-carefor"><option>My parent</option><option>My spouse / partner</option><option>Myself</option><option>Another family member</option></select></div>
+          <div class="field"><label for="mq-when">When Is Care Needed?</label><select id="mq-when"><option>As soon as possible</option><option>Within 2 weeks</option><option>Within a month</option><option>Just exploring options</option></select></div>
+        </div>
+        <div class="qform__extra" id="extra-AFH-Placement">
+          <div class="field"><label for="mq-afhwho">Who Are You Placing?</label><select id="mq-afhwho"><option>My parent</option><option>My spouse / partner</option><option>A client I represent</option><option>Another family member</option></select></div>
+          <div class="field"><label for="mq-afhwhen">Placement Timeline</label><select id="mq-afhwhen"><option>Immediately</option><option>Within 2 weeks</option><option>Within a month</option><option>Just exploring options</option></select></div>
+        </div>
+        <div class="qform__extra" id="extra-Private-Duty">
+          <div class="field"><label for="mq-pdneeds">Level of Care Needed</label><select id="mq-pdneeds"><option>A few hours a day</option><option>Daily visits</option><option>Live-in / 24-hour</option><option>Not sure yet</option></select></div>
+          <div class="field"><label for="mq-pdwhen">When Is Care Needed?</label><select id="mq-pdwhen"><option>As soon as possible</option><option>Within 2 weeks</option><option>Within a month</option><option>Just exploring options</option></select></div>
+        </div>
+        <div class="qform__extra" id="extra-Careers">
+          <div class="field"><label for="mq-position">Position of Interest</label><select id="mq-position"><option>Registered Nurse (RN)</option><option>Certified Nursing Assistant (CNA)</option><option>Home Care Aide (HCA)</option><option>Physical Therapist</option><option>Occupational Therapist</option><option>Other / Not Sure</option></select></div>
+          <div class="field"><label for="mq-availability">Availability</label><select id="mq-availability"><option>Full-Time</option><option>Part-Time</option><option>PRN / As-Needed</option></select></div>
+        </div>
+
+        <div class="field"><label for="mq-msg">Anything Else? (optional)</label><textarea id="mq-msg" placeholder="A few details help us prepare…"></textarea></div>
+
+        <input type="hidden" name="access_key" value="40d97e85-7635-4c96-9e51-7624f70df2b0">
+        <input type="hidden" name="subject" value="New Quick Enquiry — Golden Years Home Health">
+        <input type="hidden" name="from_name" value="Golden Years Website">
+        <input type="hidden" name="replyto" value="">
+        <input type="hidden" name="Manage in Admin" value="View & reply from your admin dashboard: https://goldenyearshomehealthllc.com/admin?goto=enquiries">
+        <input type="hidden" name="Tip" value="You can view every enquiry and reply more easily from your admin page.">
+
+        <button class="btn btn--primary" type="submit" id="mqSubmit" style="width:100%;justify-content:center">Send My Request</button>
+        <p style="font-size:.78rem;color:var(--slate-2);margin:14px 0 0;text-align:center">No obligation. Your details go only to our care team.</p>
+      </form>
+      <div id="mqThanks" style="display:none;text-align:center;padding:14px 0">
+        <div class="thankmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
+        <h3>Thank You!</h3>
+        <p>Your request is on its way to our team. We'll be in touch the same business day using the details you shared.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var _mqSb=(typeof supabase!=='undefined')?supabase.createClient('https://uldywugntkykeftuzxys.supabase.co','sb_publishable_kCCHxG8VAO_APnGWxCgLDg_Wj6Vxjj7'):null;
+
+  window.toggleQformCategory=function(){
+    var val=document.getElementById('mq-category').value;
+    document.querySelectorAll('.qform__extra').forEach(function(el){el.classList.remove('active');});
+    var id='extra-'+val.replace(/\s+/g,'-');
+    var el=document.getElementById(id);
+    if(el) el.classList.add('active');
+  };
+
+  window.openMainQform=function(){document.getElementById('mainQform').classList.add('open');document.body.style.overflow='hidden';};
+  window.closeMainQform=function(){document.getElementById('mainQform').classList.remove('open');document.body.style.overflow='';};
+
+  function collectCategoryDetails(cat){
+    var d={};
+    if(cat==='General Care'){d['Care For']=val('mq-carefor');d['When Needed']=val('mq-when');}
+    else if(cat==='AFH Placement'){d['Placing For']=val('mq-afhwho');d['Placement Timeline']=val('mq-afhwhen');}
+    else if(cat==='Private Duty'){d['Level of Care']=val('mq-pdneeds');d['When Needed']=val('mq-pdwhen');}
+    else if(cat==='Careers'){d['Position of Interest']=val('mq-position');d['Availability']=val('mq-availability');}
+    return d;
+  }
+  function val(id){var el=document.getElementById(id);return el?el.value:'';}
+
+  window.submitMainQuick=function(e){
+    e.preventDefault();
+    var form=document.getElementById('mainQuickForm');
+    var em=document.getElementById('mq-email');
+    var rt=form.querySelector('input[name="replyto"]');
+    if(em&&rt) rt.value=em.value;
+
+    var cat=val('mq-category');
+    var name=val('mq-name');
+    var phone=val('mq-phone');
+    var email=em?em.value:'';
+    var msg=val('mq-msg');
+    var details=collectCategoryDetails(cat);
+    details['Enquiry Type']=cat;
+
+    var btn=document.getElementById('mqSubmit');
+    btn.disabled=true; btn.textContent='Sending…';
+
+    var savePromise=_mqSb?_mqSb.from('enquiries').insert([{
+      form_type:cat||'Quick Enquiry', name:name, email:email, phone:phone, details:details, message:msg
+    }]).then(function(){},function(){}):Promise.resolve();
+
+    savePromise.then(function(){
+      return fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
+    }).then(function(r){return r.json();})
+      .then(function(res){
+        if(res.success){form.style.display='none';document.getElementById('mqThanks').style.display='block';}
+        else{alert('Something went wrong — please call (206) 717-1234.');btn.disabled=false;btn.textContent='Send My Request';}
+      }).catch(function(){alert('Something went wrong — please call (206) 717-1234.');btn.disabled=false;btn.textContent='Send My Request';});
+    return false;
+  };
+
+  document.addEventListener('click', function(e){
+    var qf=document.getElementById('mainQform');
+    if(qf && e.target===qf) closeMainQform();
+  });
+
+  function onQbScroll(){
+    var qb=document.getElementById('mainQuickbar');
+    if(qb) qb.classList.toggle('show', window.scrollY>560);
+  }
+  window.addEventListener('scroll', onQbScroll, {passive:true});
+  onQbScroll();
 })();
 </script>
 

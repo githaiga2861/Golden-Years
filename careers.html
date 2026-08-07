@@ -382,8 +382,8 @@ loadJobs();
           <div class="field"><label for="mq-pdwhen">When Is Care Needed?</label><select id="mq-pdwhen"><option>As soon as possible</option><option>Within 2 weeks</option><option>Within a month</option><option>Just exploring options</option></select></div>
         </div>
         <div class="qform__extra" id="extra-Careers">
-          <div class="field"><label for="mq-position">Position of Interest</label><select id="mq-position"><option>Registered Nurse (RN)</option><option>Certified Nursing Assistant (CNA)</option><option>Home Care Aide (HCA)</option><option>Physical Therapist</option><option>Occupational Therapist</option><option>Other / Not Sure</option></select></div>
-          <div class="field"><label for="mq-availability">Availability</label><select id="mq-availability"><option>Full-Time</option><option>Part-Time</option><option>PRN / As-Needed</option></select></div>
+          <div class="field"><label for="mq-position">Position of Interest</label><select id="mq-position" onchange="onPositionPicked()"><option value="">Loading current openings…</option><option value="Other / Not Sure">Other / Not Sure</option></select></div>
+          <div class="field"><label for="mq-availability">Availability</label><select id="mq-availability"><option value="">— Select a position above —</option><option>Full-Time</option><option>Part-Time</option><option>PRN / As-Needed</option><option>Per Diem</option><option>Contract</option></select></div>
         </div>
 
         <div class="field"><label for="mq-msg">Anything Else? (optional)</label><textarea id="mq-msg" placeholder="A few details help us prepare…"></textarea></div>
@@ -412,12 +412,55 @@ loadJobs();
 (function(){
   var _mqSb=(typeof supabase!=='undefined')?supabase.createClient('https://uldywugntkykeftuzxys.supabase.co','sb_publishable_kCCHxG8VAO_APnGWxCgLDg_Wj6Vxjj7'):null;
 
+  var _mqJobs = [];
+  var _mqJobsLoaded = false;
+  function loadCareerPositions(){
+    if(_mqJobsLoaded || !_mqSb) return;
+    _mqJobsLoaded = true;
+    _mqSb.from('jobs').select('title,employment_type').eq('published',true).order('created_at',{ascending:false})
+      .then(function(r){
+        var sel = document.getElementById('mq-position');
+        if(!sel) return;
+        _mqJobs = (r && r.data) ? r.data : [];
+        var opts = '<option value="">Please select a position…</option>';
+        _mqJobs.forEach(function(j){
+          opts += '<option value="'+j.title.replace(/"/g,'&quot;')+'">'+j.title+'</option>';
+        });
+        opts += '<option value="Other / Not Sure">Other / Not Sure</option>';
+        sel.innerHTML = opts;
+      }, function(){
+        var sel = document.getElementById('mq-position');
+        if(sel) sel.innerHTML = '<option value="">Could not load — pick "Other" below</option><option value="Other / Not Sure">Other / Not Sure</option>';
+      });
+  }
+
+  window.onPositionPicked = function(){
+    var pos = document.getElementById('mq-position').value;
+    var availSel = document.getElementById('mq-availability');
+    if(!availSel) return;
+    var match = _mqJobs.find(function(j){ return j.title === pos; });
+    if(match && match.employment_type){
+      var found = false;
+      Array.prototype.forEach.call(availSel.options, function(o){
+        if(o.value === match.employment_type || o.textContent === match.employment_type){ o.selected = true; found = true; }
+      });
+      if(!found && match.employment_type){
+        var newOpt = document.createElement('option');
+        newOpt.value = match.employment_type; newOpt.textContent = match.employment_type; newOpt.selected = true;
+        availSel.appendChild(newOpt);
+      }
+    } else {
+      availSel.value = '';
+    }
+  };
+
   window.toggleQformCategory=function(){
     var val=document.getElementById('mq-category').value;
     document.querySelectorAll('.qform__extra').forEach(function(el){el.classList.remove('active');});
     var id='extra-'+val.replace(/\s+/g,'-');
     var el=document.getElementById(id);
     if(el) el.classList.add('active');
+    if(val==='Careers') loadCareerPositions();
   };
 
   window.openMainQform=function(){document.getElementById('mainQform').classList.add('open');document.body.style.overflow='hidden';};

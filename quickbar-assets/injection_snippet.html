@@ -44,8 +44,8 @@
           <div class="field"><label for="mq-pdwhen">When Is Care Needed?</label><select id="mq-pdwhen"><option>As soon as possible</option><option>Within 2 weeks</option><option>Within a month</option><option>Just exploring options</option></select></div>
         </div>
         <div class="qform__extra" id="extra-Careers">
-          <div class="field"><label for="mq-position">Position of Interest</label><select id="mq-position"><option>Registered Nurse (RN)</option><option>Certified Nursing Assistant (CNA)</option><option>Home Care Aide (HCA)</option><option>Physical Therapist</option><option>Occupational Therapist</option><option>Other / Not Sure</option></select></div>
-          <div class="field"><label for="mq-availability">Availability</label><select id="mq-availability"><option>Full-Time</option><option>Part-Time</option><option>PRN / As-Needed</option></select></div>
+          <div class="field"><label for="mq-position">Position of Interest</label><select id="mq-position" onchange="onPositionPicked()"><option value="">Loading current openings…</option><option value="Other / Not Sure">Other / Not Sure</option></select></div>
+          <div class="field"><label for="mq-availability">Availability</label><select id="mq-availability"><option value="">— Select a position above —</option><option>Full-Time</option><option>Part-Time</option><option>PRN / As-Needed</option><option>Per Diem</option><option>Contract</option></select></div>
         </div>
 
         <div class="field"><label for="mq-msg">Anything Else? (optional)</label><textarea id="mq-msg" placeholder="A few details help us prepare…"></textarea></div>

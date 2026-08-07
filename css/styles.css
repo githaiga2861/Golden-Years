@@ -633,7 +633,7 @@ html,body{max-width:100%;overflow-x:hidden}
 .quickbar.show{transform:none}
 .quickbar__inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 24px;flex-wrap:wrap}
 .quickbar__txt{font-weight:600;font-size:.98rem;display:flex;align-items:center;gap:10px}
-.quickbar__txt svg{width:20px;height:20px;color:var(--gold)}
+.quickbar__txt svg{width:20px;height:20px;color:var(--gold);animation:phoneRing 2.4s var(--ease) infinite}
 .quickbar__cta{display:flex;gap:10px;flex-wrap:wrap}
 .quickbar .btn{padding:11px 24px;font-size:.92rem}
 .qform{display:none;position:fixed;inset:0;z-index:9997;background:rgba(4,30,79,.6);overflow-y:auto;padding:40px 16px}
@@ -684,3 +684,5 @@ html,body{max-width:100%;overflow-x:hidden}
 .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
 .reviews-grid .quotecard{height:auto}
 @media(max-width:640px){.reviews-grid{grid-template-columns:1fr}}
+
+.share-star{animation:phoneRing 2.4s var(--ease) infinite}

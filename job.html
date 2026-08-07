@@ -424,6 +424,7 @@ async function submitApplication(){
 
         <!-- Category-conditional field groups -->
         <div class="qform__extra" id="extra-General-Care">
+          <div class="field"><label for="mq-service">Specific Service Needed</label><select id="mq-service"><option>Not sure — please advise</option><option>Personal Care Services</option><option>Skilled Nursing</option><option>Medication Management</option><option>Respite Care</option><option>Chronic Disease Management</option><option>Post-Surgery Care</option><option>RN Visitation</option><option>Catheter Care</option><option>Enteral Feeds on G-Tube</option><option>Nurse Delegation</option><option>Caregiver Training</option><option>Supported Living Services</option><option>Care Coordination</option><option>Assistance with ADLs</option></select></div>
           <div class="field"><label for="mq-carefor">Who Needs Care?</label><select id="mq-carefor"><option>My parent</option><option>My spouse / partner</option><option>Myself</option><option>Another family member</option></select></div>
           <div class="field"><label for="mq-when">When Is Care Needed?</label><select id="mq-when"><option>As soon as possible</option><option>Within 2 weeks</option><option>Within a month</option><option>Just exploring options</option></select></div>
         </div>
@@ -442,7 +443,7 @@ async function submitApplication(){
 
         <div class="field"><label for="mq-msg">Anything Else? (optional)</label><textarea id="mq-msg" placeholder="A few details help us prepare…"></textarea></div>
 
-        <input type="hidden" name="access_key" value="40d97e85-7635-4c96-9e51-7624f70df2b0">
+        <input type="hidden" name="access_key" value="40d97e85-xxxx-xxxx-xxxx-7624f70df2b0">
         <input type="hidden" name="subject" value="New Quick Enquiry — Golden Years Home Health">
         <input type="hidden" name="from_name" value="Golden Years Website">
         <input type="hidden" name="replyto" value="">
@@ -479,7 +480,7 @@ async function submitApplication(){
 
   function collectCategoryDetails(cat){
     var d={};
-    if(cat==='General Care'){d['Care For']=val('mq-carefor');d['When Needed']=val('mq-when');}
+    if(cat==='General Care'){d['Specific Service']=val('mq-service');d['Care For']=val('mq-carefor');d['When Needed']=val('mq-when');}
     else if(cat==='AFH Placement'){d['Placing For']=val('mq-afhwho');d['Placement Timeline']=val('mq-afhwhen');}
     else if(cat==='Private Duty'){d['Level of Care']=val('mq-pdneeds');d['When Needed']=val('mq-pdwhen');}
     else if(cat==='Careers'){d['Position of Interest']=val('mq-position');d['Availability']=val('mq-availability');}

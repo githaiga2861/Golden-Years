@@ -647,7 +647,8 @@ html,body{max-width:100%;overflow-x:hidden}
 .qform__body{padding:28px 30px}
 .qform__extra{display:none}
 .qform__extra.active{display:block}
-.quickbar__inner{flex-wrap:nowrap;justify-content:space-between;align-items:center;padding:8px 12px;gap:8px;overflow-x:auto}
+@media(max-width:600px){
+  .quickbar__inner{flex-wrap:nowrap;justify-content:space-between;align-items:center;padding:8px 12px;gap:8px;overflow-x:auto}
   .quickbar__txt{font-size:0;gap:0;flex-shrink:0}
   .quickbar__txt svg{width:20px;height:20px}
   .quickbar__cta{gap:6px;flex-wrap:nowrap;flex-shrink:0}
@@ -655,6 +656,7 @@ html,body{max-width:100%;overflow-x:hidden}
   .chat-trigger{width:34px;height:34px;flex-shrink:0}
   .chat-trigger svg{width:17px;height:17px}
   .chat-badge{width:15px;height:15px;font-size:.6rem;top:-3px;right:-3px}
+}
 
 /* ============================================================
    TESTIMONIALS / REVIEWS SYSTEM

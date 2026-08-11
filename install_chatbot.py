@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
-"""Activates the real working chatbot on every main-site page.
-IMPORTANT: before running, edit this file and replace
-__VERCEL_APP_DOMAIN__ below with your actual Vercel app domain
-(e.g. golden-years-websites-admin.vercel.app).
-Run from inside ~/Golden-Years."""
-
-VERCEL_DOMAIN = "golden-years-websites-admin.vercel.app
-"  # <-- EDIT THIS LINE FIRST
-
-if "__" in VERCEL_DOMAIN or VERCEL_DOMAIN.strip() == "":
-    print("STOP: edit this file and set VERCEL_DOMAIN to your real Vercel app domain first.")
-    raise SystemExit(1)
+VERCEL_DOMAIN = "golden-years-websites-admin.vercel.app"
 
 PAGES = ['index.html','about.html','services.html','skilled-nursing.html',
          'nurse-delegation.html','hca-training.html','resources.html',
@@ -146,6 +135,3 @@ for page in PAGES:
     s = s.replace('</body>', CHAT_JS + '\n</body>', 1)
     with open(page, 'w', encoding='utf-8') as f: f.write(s)
     print(f"ACTIVATED: {page}")
-
-print("\nDone. Now append the CSS:")
-print("  cat chat_css_addition.css >> css/styles.css")

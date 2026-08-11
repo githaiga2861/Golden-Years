@@ -727,3 +727,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .chat-panel__foot{padding:12px 14px;border-top:1px solid var(--line-2);background:#fff}
 .chat-panel__foot input{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:50px;font-family:inherit;font-size:.86rem;background:var(--mist-2);color:var(--slate-2)}
 @media(max-width:480px){.chat-panel{left:12px;right:12px;width:auto;bottom:82px}}
+
+/* Chat send button + input row (real working chat) */
+.chat-panel__foot input{flex:1}
+.chat-send{background:var(--teal);border:none;width:40px;height:40px;border-radius:50%;color:#fff;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:background .2s}
+.chat-send:hover{background:var(--teal-700)}
+.chat-panel__body{max-height:340px;overflow-y:auto}

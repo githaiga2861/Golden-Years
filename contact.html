@@ -372,7 +372,13 @@
         </div>
         <div class="field"><label for="g-msg">Message / Additional Information</label><textarea id="g-msg" name="Message" placeholder="Tell us a little about your situation and how we can help…"></textarea></div>
         <div class="consent"><input id="g-consent" type="checkbox" required><label for="g-consent" style="font-weight:400;margin:0">I agree to be contacted by Golden Years Home Health regarding my inquiry. *</label></div>
-        <button class="btn btn--primary" type="submit" style="width:100%;justify-content:center">Send Message</button>
+        <div class="field optin-field">
+  <label class="optin-label">
+    <input type="checkbox" id="cf-optin-sendmessage">
+    <span><strong>Keep me updated.</strong> Send me occasional care tips, articles and service updates by email. Unsubscribe anytime.</span>
+  </label>
+</div>
+<button class="btn btn--primary" type="submit" style="width:100%;justify-content:center">Send Message</button>
       </form>
       <div id="thanks1" style="display:none;text-align:center;padding:30px 0">
         <div class="thankmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
@@ -432,7 +438,13 @@
         <div class="field"><label for="c-email">Email Address</label><input id="c-email" name="email" type="email" placeholder="So we can reply by email if needed"></div>
         <div class="field"><label for="c-notes">Additional Notes</label><textarea id="c-notes" name="Additional Notes" placeholder="Anything else that would help us prepare for your assessment…"></textarea></div>
         <div class="consent"><input id="c-consent" type="checkbox" required><label for="c-consent" style="font-weight:400;margin:0">I understand this is an initial inquiry and consent to be contacted by Golden Years Home Health. *</label></div>
-        <button class="btn btn--primary" type="submit" style="width:100%;justify-content:center">Submit Care Inquiry</button>
+        <div class="field optin-field">
+  <label class="optin-label">
+    <input type="checkbox" id="cf-optin-submitcareinquiry">
+    <span><strong>Keep me updated.</strong> Send me occasional care tips, articles and service updates by email. Unsubscribe anytime.</span>
+  </label>
+</div>
+<button class="btn btn--primary" type="submit" style="width:100%;justify-content:center">Submit Care Inquiry</button>
       </form>
       <div id="thanks2" style="display:none;text-align:center;padding:30px 0">
         <div class="thankmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="m12 5 1.9 1.9a1.4 1.4 0 0 1 0 2L12.5 10"/></svg></div>
@@ -477,6 +489,12 @@ function submitWeb3Form(e,formId,thanksId){
       form_type: formId==='careForm'?'Care Inquiry':'General',
       name:nm, email:em, phone:ph, message:msg, details:det
     }]).then(function(){}, function(){});
+    var _ob=form.querySelector('.optin-field input[type="checkbox"]');
+    if(_ob && _ob.checked && em){
+      _gySb.from('subscribers').upsert([{email:em,name:nm,
+        interest:(formId==='careForm'?'Care Inquiry':'General'),source:'Contact Page'}],
+        {onConflict:'email'}).then(function(){},function(){});
+    }
   }catch(_e){}
   var btn=form.querySelector('button[type="submit"]');
   if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
@@ -1005,7 +1023,7 @@ document.addEventListener('click', function(e){
           var firstUser = msgs.filter(function(m){ return m.role === 'user'; })[0];
           var preview = firstUser ? firstUser.content : '(no messages)';
           if(preview.length > 90) preview = preview.slice(0,90) + '…';
-          html += '<div class="chat-hist__item" onclick="openChatSession(\'' + sid + '\')">' +
+          html += '<div class="chat-hist__item" data-sid="' + sid + '">' +
                     '<div class="chat-hist__date">' + fmtHistDate(msgs[0].created_at) + '</div>' +
                     '<div class="chat-hist__prev">' + escChat(preview) + '</div>' +
                   '</div>';
@@ -1055,6 +1073,12 @@ document.addEventListener('click', function(e){
     }).catch(function(){ alert('Could not clear history — please try again.'); });
   };
 
+
+  /* Past-chat items are opened via delegation (robust against quoting) */
+  document.addEventListener('click', function(e){
+    var it = e.target.closest && e.target.closest('.chat-hist__item');
+    if(it && it.getAttribute('data-sid')) window.openChatSession(it.getAttribute('data-sid'));
+  });
   /* Opening the chat marks everything as read */
   document.addEventListener('click', function(e){
     if (e.target.closest('.chat-trigger')) setUnread(0);

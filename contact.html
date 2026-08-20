@@ -587,6 +587,12 @@ function submitWeb3Form(e,formId,thanksId){
         </div>
 
         <div class="field"><label for="mq-msg">Anything Else? (optional)</label><textarea id="mq-msg" placeholder="A few details help us prepare…"></textarea></div>
+        <div class="field" style="margin-top:4px">
+          <label style="display:flex;align-items:flex-start;gap:9px;font-weight:500;font-size:.86rem;color:var(--slate);cursor:pointer">
+            <input type="checkbox" id="mq-optin" style="width:auto;margin:2px 0 0;flex-shrink:0">
+            <span>Yes, send me occasional care tips, articles and updates by email. You can unsubscribe at any time.</span>
+          </label>
+        </div>
 
         <input type="hidden" name="access_key" value="40d97e85-7635-4c96-9e51-7624f70df2b0">
         <input type="hidden" name="subject" value="New Quick Enquiry — Golden Years Home Health">
@@ -694,9 +700,19 @@ function submitWeb3Form(e,formId,thanksId){
     var btn=document.getElementById('mqSubmit');
     btn.disabled=true; btn.textContent='Sending…';
 
+    var optin=document.getElementById('mq-optin');
+    var wantsUpdates=!!(optin&&optin.checked);
+
     var savePromise=_mqSb?_mqSb.from('enquiries').insert([{
       form_type:cat||'Quick Enquiry', name:name, email:email, phone:phone, details:details, message:msg
     }]).then(function(){},function(){}):Promise.resolve();
+
+    // Marketing list — only when the visitor has explicitly ticked the box
+    if(wantsUpdates && email && _mqSb){
+      _mqSb.from('subscribers').upsert([{
+        email:email, name:name, interest:cat||'General', source:'Quick Enquiry Modal'
+      }],{onConflict:'email'}).then(function(){},function(){});
+    }
 
     savePromise.then(function(){
       return fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});

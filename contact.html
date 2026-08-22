@@ -372,12 +372,7 @@
         </div>
         <div class="field"><label for="g-msg">Message / Additional Information</label><textarea id="g-msg" name="Message" placeholder="Tell us a little about your situation and how we can help…"></textarea></div>
         <div class="consent"><input id="g-consent" type="checkbox" required><label for="g-consent" style="font-weight:400;margin:0">I agree to be contacted by Golden Years Home Health regarding my inquiry. *</label></div>
-        <div class="field optin-field">
-  <label class="optin-label">
-    <input type="checkbox" id="cf-optin-sendmessage">
-    <span><strong>Keep me updated.</strong> Send me occasional care tips, articles and service updates by email. Unsubscribe anytime.</span>
-  </label>
-</div>
+        <div class="optin"><input id="cf-optin-sendmessage" type="checkbox"><label for="cf-optin-sendmessage"><strong>Keep me updated.</strong> Send me occasional care tips, articles and service updates by email. Unsubscribe anytime.</label></div>
 <button class="btn btn--primary" type="submit" style="width:100%;justify-content:center">Send Message</button>
       </form>
       <div id="thanks1" style="display:none;text-align:center;padding:30px 0">
@@ -438,12 +433,7 @@
         <div class="field"><label for="c-email">Email Address</label><input id="c-email" name="email" type="email" placeholder="So we can reply by email if needed"></div>
         <div class="field"><label for="c-notes">Additional Notes</label><textarea id="c-notes" name="Additional Notes" placeholder="Anything else that would help us prepare for your assessment…"></textarea></div>
         <div class="consent"><input id="c-consent" type="checkbox" required><label for="c-consent" style="font-weight:400;margin:0">I understand this is an initial inquiry and consent to be contacted by Golden Years Home Health. *</label></div>
-        <div class="field optin-field">
-  <label class="optin-label">
-    <input type="checkbox" id="cf-optin-submitcareinquiry">
-    <span><strong>Keep me updated.</strong> Send me occasional care tips, articles and service updates by email. Unsubscribe anytime.</span>
-  </label>
-</div>
+        <div class="optin"><input id="cf-optin-submitcareinquiry" type="checkbox"><label for="cf-optin-submitcareinquiry"><strong>Keep me updated.</strong> Send me occasional care tips, articles and service updates by email. Unsubscribe anytime.</label></div>
 <button class="btn btn--primary" type="submit" style="width:100%;justify-content:center">Submit Care Inquiry</button>
       </form>
       <div id="thanks2" style="display:none;text-align:center;padding:30px 0">
@@ -489,7 +479,7 @@ function submitWeb3Form(e,formId,thanksId){
       form_type: formId==='careForm'?'Care Inquiry':'General',
       name:nm, email:em, phone:ph, message:msg, details:det
     }]).then(function(){}, function(){});
-    var _ob=form.querySelector('.optin-field input[type="checkbox"]');
+    var _ob=form.querySelector('.optin input[type="checkbox"]');
     if(_ob && _ob.checked && em){
       _gySb.from('subscribers').upsert([{email:em,name:nm,
         interest:(formId==='careForm'?'Care Inquiry':'General'),source:'Contact Page'}],
